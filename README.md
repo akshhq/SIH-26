@@ -215,17 +215,3 @@ Team Name              : [Enter Your Team Name]
 ```
 
 ---
-
-## ⏱️ 3-Minute Hackathon Pitch Script (Slide-by-Slide Timing)
-
-| Slide | Allocated Time | Core Pitch Line |
-| :---: | :---: | :--- |
-| **Slide 1** | **0:00 – 0:20** (20s) | *"Under MPLADS, ₹4,000+ Crore flows every year across 544 constituencies. We present **MPLADS Sentinel**—an AI-powered early-warning and audit intelligence layer for eSAKSHI."* |
-| **Slide 2** | **0:20 – 0:50** (30s) | *"Auditors cannot manually inspect 18,000 projects across 700 districts. Sentinel triages 100% of works, identifying stalled funds, work-splitting, and cartel monopolies before audits happen."* |
-| **Slide 3** | **0:50 – 1:30** (40s) | *"Our technical core uses a 5-Pillar Engine: Sentence-BERT NLP for duplicate detection, Isolation Forest for unit-cost anomalies, and Bipartite HHI Graphs for contractor monopolies."* |
-| **Slide 4** | **1:30 – 2:05** (35s) | *"We avoid the black-box trap. Because public data lacks fraud labels, we rely on unsupervised statistical baselines and statutory rules, making our solution 100% legally and technically viable."* |
-| **Slide 5** | **2:05 – 2:35** (30s) | *"In a state with ₹500 Cr annual funds, curbing just 3% of leakage saves ₹15 Crore—enough for 150 rural healthcare centers. It cuts manual audit planning time by 80%."* |
-| **Slide 6** | **2:35 – 3:00** (25s) | *"Grounded in official MoSPI 2023 Guidelines, CAG audit findings, and peer-reviewed arXiv procurement research. Sentinel transforms public monitoring into intelligent governance. Thank you!"* |
-
----
-*Ready for immediate copy-pasting into your SIH Canva/PowerPoint template.*
