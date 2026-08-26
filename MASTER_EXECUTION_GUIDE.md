@@ -51,10 +51,10 @@ Every component in this project directly leverages the artifacts and datasets in
 
 | File in Repository | Domain Significance & Project Role |
 | :--- | :--- |
-| [`Allocated Limit for Honble MPs.csv`](file:///d:/Clg/SIH%2726/Allocated%20Limit%20for%20Honble%20MPs.csv) | **Ground Truth Allocation Dataset:** Contains all 544 Lok Sabha constituencies across 37 States/UTs totaling **₹8,306.21 Crore**. Reveals standard ₹14.70 Cr 3-tranche baseline (₹4.90 Cr net of 2% admin fee) and unspent balance carryovers up to ₹32.75 Cr (Malkajgiri). |
-| [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf) | **Statutory Rulebook:** The official revised guidelines governing the Central Nodal Agency (CNA) fund flow, role-based workflows, permissible/prohibited works (Annexure-I), and SC/ST allocation quotas. Indexed by our RAG system. |
-| [`Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_...pdf`](file:///d:/Clg/SIH%2726/Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_-_General_and_Social_Sector_Government_of_Gujarat.pdf) | **Real CAG Audit Ground Truth:** Contains real audit findings: work-splitting below ₹10L to evade tenders, parking unspent funds in IA accounts, stalled works with 80%+ funds drawn, and lack of physical inspections. |
-| [`financial and workflow for mplad.md`](file:///d:/Clg/SIH%2726/financial%20and%20workflow%20for%20mplad.md) | **12-Stage Lifecycle Engine:** Maps the end-to-end financial path from MP recommendation to community asset creation and Maker/Checker/Approver payment layers. |
+| [`Official_MPLADS_Allocated_Limit_Dataset.csv`](file:///d:/Clg/SIH%2726/Official_MPLADS_Allocated_Limit_Dataset.csv) | **Ground Truth Allocation Dataset:** Contains all 544 Lok Sabha constituencies across 37 States/UTs totaling **₹8,306.21 Crore**. Reveals standard ₹14.70 Cr 3-tranche baseline (₹4.90 Cr net of 2% admin fee) and unspent balance carryovers up to ₹32.75 Cr (Malkajgiri). |
+| [`Official_MPLADS_Guidelines_2023.pdf`](file:///d:/Clg/SIH%2726/Official_MPLADS_Guidelines_2023.pdf) | **Statutory Rulebook:** The official revised guidelines governing the Central Nodal Agency (CNA) fund flow, role-based workflows, permissible/prohibited works (Annexure-I), and SC/ST allocation quotas. Indexed by our RAG system. |
+| [`CAG_Compliance_Audit_Case_Study.pdf`](file:///d:/Clg/SIH%2726/CAG_Compliance_Audit_Case_Study.pdf) | **Real CAG Audit Ground Truth & Case Study:** Contains real audit findings: work-splitting below ₹10L to evade tenders, parking unspent funds in IA accounts, stalled works with 80%+ funds drawn, and lack of physical inspections. |
+| [`MPLADS_12_Stage_Financial_Workflow.md`](file:///d:/Clg/SIH%2726/MPLADS_12_Stage_Financial_Workflow.md) | **12-Stage Lifecycle Engine:** Maps the end-to-end financial path from MP recommendation to community asset creation and Maker/Checker/Approver payment layers. |
 | [`sample overview.md`](file:///d:/Clg/SIH%2726/sample%20overview.md) | **Problem Scope & Gaps Analysis:** Identifies root causes (why manual audit fails at scale), priority anomaly classes, and winning mentor presentation criteria. |
 | [`SIH26102_MPLADS_Deep_Dive_Analysis(1).md`](file:///d:/Clg/SIH%2726/SIH26102_MPLADS_Deep_Dive_Analysis%281%29.md) | **Architectural Deep-Dive:** Complete breakdown of the 5-pillar intelligence model, research citations, and failure modes. |
 | [`Chakravyuh SIH'25.pdf`](file:///d:/Clg/SIH%2726/Chakravyuh%20SIH%2725.pdf) | **Official Presentation Template:** Strict 6-slide template reference used for our winning SIH pitch deck. |
@@ -96,7 +96,7 @@ Mapped directly from [`financial and workflow for mplad.md`](file:///d:/Clg/SIH%
 
 # 4. Data Ingestion, Database Schema & Synthesis Engine
 
-To power the prototype, we create a script `backend/database/data_loader.py` that ingests the real 544 MP allocations from [`Allocated Limit for Honble MPs.csv`](file:///d:/Clg/SIH%2726/Allocated%20Limit%20for%20Honble%20MPs.csv) and generates realistic multi-year works grounded in authentic CAG patterns.
+To power the prototype, we create a script `backend/database/data_loader.py` that ingests the real 544 MP allocations from [`Official_MPLADS_Allocated_Limit_Dataset.csv`](file:///d:/Clg/SIH%2726/Official_MPLADS_Allocated_Limit_Dataset.csv) and generates realistic multi-year works grounded in authentic CAG patterns.
 
 ### Canonical Database Schema (`backend/database/schema.sql`)
 ```sql
@@ -235,9 +235,9 @@ SIH-26/
 │   │   └── routes_agent.py
 │   └── main.py
 ├── frontend/
-├── Allocated Limit for Honble MPs.csv
-├── mplads_guidelines_2023pdf.pdf
-└── Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_...pdf
+├── Official_MPLADS_Allocated_Limit_Dataset.csv
+├── Official_MPLADS_Guidelines_2023.pdf
+└── CAG_Compliance_Audit_Case_Study.pdf
 ```
 
 ### Core API Endpoints in `main.py`
@@ -319,7 +319,7 @@ This proves mathematically that your algorithm **discriminates signal from noise
 │                          6-STAGE IMPLEMENTATION SPRINT                      │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Step 1: Database Setup & Data Ingestion (data_loader.py)                   │
-│ • Load `Allocated Limit for Honble MPs.csv` into SQLite `mplads.db`.        │
+│ • Load `Official_MPLADS_Allocated_Limit_Dataset.csv` into SQLite db.        │
 │ • Synthesize canonical works dataset grounded in CAG audit distributions.   │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Step 2: Core Risk Engine Pipeline (risk_scorer.py)                          │

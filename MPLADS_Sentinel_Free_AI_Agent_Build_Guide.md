@@ -101,7 +101,7 @@ pip install pandas numpy scikit-learn sentence-transformers networkx fastapi uvi
 
 # 4. Step 1: Ingesting Real Data (`data_loader.py`)
 
-Create `backend/database/data_loader.py` to ingest [`Allocated Limit for Honble MPs.csv`](file:///d:/Clg/SIH%2726/Allocated%20Limit%20for%20Honble%20MPs.csv) and build a canonical SQLite database `mplads.db`.
+Create `backend/database/data_loader.py` to ingest [`Official_MPLADS_Allocated_Limit_Dataset.csv`](file:///d:/Clg/SIH%2726/Official_MPLADS_Allocated_Limit_Dataset.csv) and build a canonical SQLite database `mplads.db`.
 
 ```python
 """
@@ -157,7 +157,7 @@ def init_database():
     conn.commit()
     conn.close()
 
-def load_real_mps_data(csv_path="Allocated Limit for Honble MPs.csv"):
+def load_real_mps_data(csv_path="Official_MPLADS_Allocated_Limit_Dataset.csv"):
     if not os.path.exists(csv_path):
         print(f"Error: {csv_path} not found.")
         return
@@ -345,7 +345,7 @@ def compute_work_risk(work_id: str) -> Dict[str, Any]:
 
 # 6. Step 3: Document RAG Engine (`rag_pipeline.py`)
 
-Create `backend/rag/rag_pipeline.py` to index and search [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf) and [`Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_...pdf`](file:///d:/Clg/SIH%2726/Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_-_General_and_Social_Sector_Government_of_Gujarat.pdf).
+Create `backend/rag/rag_pipeline.py` to index and search [`Official_MPLADS_Guidelines_2023.pdf`](file:///d:/Clg/SIH%2726/Official_MPLADS_Guidelines_2023.pdf) and [`CAG_Compliance_Audit_Case_Study.pdf`](file:///d:/Clg/SIH%2726/CAG_Compliance_Audit_Case_Study.pdf).
 
 ```python
 """
@@ -358,8 +358,8 @@ import pypdf
 from typing import List, Dict
 
 DOC_PATHS = [
-    os.path.join(os.path.dirname(__file__), "..", "..", "mplads_guidelines_2023pdf.pdf"),
-    os.path.join(os.path.dirname(__file__), "..", "..", "Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_-_General_and_Social_Sector_Government_of_Gujarat.pdf")
+    os.path.join(os.path.dirname(__file__), "..", "..", "Official_MPLADS_Guidelines_2023.pdf"),
+    os.path.join(os.path.dirname(__file__), "..", "..", "CAG_Compliance_Audit_Case_Study.pdf")
 ]
 
 # Knowledge base cache

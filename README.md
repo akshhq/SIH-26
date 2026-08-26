@@ -1,217 +1,115 @@
-# 🇮🇳 SMART INDIA HACKATHON 2026 — OFFICIAL 6-SLIDE PPT TEMPLATE
-## **Problem Statement ID:** SIH26102
-## **Project Name:** MPLADS SENTINEL (रक्षक)
-### *AI-Powered Anomaly, Fraud & Inefficiency Detection in MPLAD Scheme Implementation*
+# 🛡️ MPLADS Sentinel (रक्षक)
+### *AI-Powered Anomaly, Fraud & Inefficiency Detection Layer for eSAKSHI*
 
-> **Template Matching:** Structured strictly according to the official SIH 6-Slide standard (as per `Chakravyuh SIH'25.pdf`).  
-> **How to use:** Copy and paste the text directly into your Canva/PowerPoint 6-slide presentation deck.
+[![Smart India Hackathon 2026](https://img.shields.io/badge/SIH-2026-orange.svg)](https://sih.gov.in)
+[![Problem Statement ID](https://img.shields.io/badge/PS%20ID-SIH26102-blue.svg)](https://sih.gov.in/sih2026PS)
+[![Ministry](https://img.shields.io/badge/Ministry-MoSPI%20(DIID)-green.svg)](https://www.mospi.gov.in)
+[![Category](https://img.shields.io/badge/Category-Software%20%7C%20Miscellaneous-purple.svg)](https://sih.gov.in)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
 
 ---
 
-# 📌 SLIDE 1: Title Slide (Official SIH Format)
+## 🏛️ Executive Summary
 
-```text
-================================================================================
-                          SMART INDIA HACKATHON 2026
-================================================================================
+Under the **Members of Parliament Local Area Development Scheme (MPLADS)**, Hon’ble MPs recommend developmental works to create durable community assets with an entitlement of **₹5.00 Crore per MP per year** (₹4,000+ Crore annually across 790+ MPs).
 
-Problem Statement ID   : SIH26102
-Problem Statement Title: Development of an AI-powered system to detect anomalies,
-                         fraud, and inefficiencies in MPLAD Scheme implementation regd.
-Theme                  : Miscellaneous / AI & Governance
-PS Category            : Software
-Ministry / Organization: Ministry of Statistics & Programme Implementation (MoSPI)
-                         Data Informatics & Innovation Division (DIID)
+While MoSPI modernized transaction workflows via the **eSAKSHI portal** and the **Central Nodal Agency (CNA)** model, monitoring 18,000+ simultaneous works across 700+ districts remains a manual, post-facto challenge.
 
-Team ID                : [Enter Your Team ID, e.g., 123456]
-Team Name              : [Enter Your Team Name]
-================================================================================
+**MPLADS Sentinel (रक्षक)** is an **Explainable AI (XAI) & Audit Intelligence Layer** that analyzes multi-year developmental projects, detects cost/timeline/cartel anomalies, and provides District Collectors and CAG auditors with **prioritized, evidence-backed investigation dossiers**.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           CORE STRATEGIC POSITIONING                        │
+│                                                                             │
+│  "eSAKSHI is the system of record—it captures WHAT has happened.             │
+│   MPLADS Sentinel is the intelligence layer—it prioritizes WHAT requires    │
+│   human investigation, WHY it is anomalous, and WHERE auditors must look." │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-# 📌 SLIDE 2: Solution, Impact & Innovation
+## 📂 Repository File Directory Map
 
-```text
-================================================================================
-                              MPLADS SENTINEL (रक्षक)
-             (AI-POWERED EARLY-WARNING & AUDIT INTELLIGENCE PLATFORM)
-                                   [TEAM NAME]
-================================================================================
+All project assets, official datasets, statutory guidelines, case studies, and presentation decks are systematically organized:
 
-┌────────────────────────────┬────────────────────────────┬────────────────────────────┐
-│    PROPOSED SOLUTION       │     REAL WORLD IMPACT      │         INNOVATION         │
-├────────────────────────────┼────────────────────────────┼────────────────────────────┤
-│ • AI-Powered Audit Triage  │ • Curbing Public Fund      │ • Hybrid Explainable AI    │
-│   Layer for eSAKSHI        │   Leakage & Diversion      │   (Rules + NLP + Stats +   │
-│ • Real-time Multi-Year     │ • 80% Reduction in Manual  │   Graph + Copilot)         │
-│   Anomaly Detection        │   Audit Workload           │ • Multilingual Semantic    │
-│ • Composite Risk Scoring   │ • Real-time Surveillance   │   Work-Duplicate Matcher   │
-│   (0–100) per Project      │   for District Authorities │ • Bipartite Network Graph  │
-│ • Explainable AI Evidence  │ • Accelerating Delayed     │   for IA & Contractor      │
-│   Cards for Auditors       │   Community Infrastructure │   Cartel Detection         │
-│ • 1-Click CAG/DM           │ • Guaranteed 15% SC &      │ • Statutory Rule Engine    │
-│   Investigation Dossier    │   7.5% ST Quota Compliance │   (2023 Guidelines + CNA)  │
-└────────────────────────────┴────────────────────────────┴────────────────────────────┘
-```
-
-### 📋 Slide 2 Text for Copy-Paste:
-
-#### 1. PROPOSED SOLUTION
-* **AI-Powered Audit Triage Layer:** Sits directly on top of the eSAKSHI ecosystem without disrupting operational workflows.
-* **Continuous Multi-Year Anomaly Detection:** Scans sanctions, disbursements, and physical progress across 544+ constituencies.
-* **Calibrated Composite Risk Scoring (0–100):** Prioritizes thousands of works down to the critical top 2% requiring field inspection.
-* **Explainable AI (XAI) Evidence Cards:** Generates structured, human-readable evidence trails justifying every risk score.
-* **1-Click Investigation Dossier:** Produces instant site-audit checklists and comparative benchmark reports for officers.
-
-#### 2. REAL WORLD IMPACT
-* **Curbing Public Fund Leakage:** Eliminates ghost assets, repeated billings, and fund parking in agency parking accounts.
-* **80% Reduction in Audit Workload:** Moves CAG and District Authorities from slow sample-checks to targeted risk-based triage.
-* **Faster Community Asset Delivery:** Unblocks stalled schools, health sub-centers, and rural roads with disbursed funds.
-* **Statutory Quota Enforcement:** Automatically prevents deficits in mandatory 15% SC and 7.5% ST constituency allocations.
-
-#### 3. INNOVATION
-* **Hybrid 5-Pillar Architecture:** Combines deterministic statutory rules, unsupervised ML, NLP embeddings, and graph theory.
-* **Semantic NLP Duplicate Matcher:** Uses multilingual sentence transformers to identify re-sanctioned and split works (`<₹10L`).
-* **Bipartite Network Graph Intelligence:** Computes the Herfindahl-Hirschman Index (HHI) to unmask contractor monopolies.
-* **Agentic AI Audit Copilot:** Natural language query interface allowing DMs and auditors to query data using plain English/Hindi.
+| # | File Name | Category | Description |
+| :-: | :--- | :---: | :--- |
+| **1** | [**`index.html`**](file:///d:/Clg/SIH%2726/index.html) | 🌐 **Web Portal** | Modern interactive browser portal with Markdown reader, CSV explorer, and repository hub at `http://localhost:8000`. |
+| **2** | [**`SIH26102_Official_6_Slide_PPT_Deck.md`**](file:///d:/Clg/SIH%2726/SIH26102_Official_6_Slide_PPT_Deck.md) | 🎯 **Presentation** | Strict 6-slide SIH template PPT deck with complete slide text, tables, and a 3-minute pitch script (matches *Chakravyuh* format). |
+| **3** | [**`SIH26102_Comprehensive_12_Slide_Presentation_Deck.md`**](file:///d:/Clg/SIH%2726/SIH26102_Comprehensive_12_Slide_Presentation_Deck.md) | 🎯 **Presentation** | In-depth 12-slide master deck with full speaker notes, risk formulas, and feasibility analysis. |
+| **4** | [**`SIH_Sample_6_Slide_PPT_Chakravyuh.pdf`**](file:///d:/Clg/SIH%2726/SIH_Sample_6_Slide_PPT_Chakravyuh.pdf) | 🎯 **Sample PPT** | Official benchmark presentation PDF from SIH'25 demonstrating the ideal 6-slide visual layout. |
+| **5** | [**`MASTER_EXECUTION_GUIDE.md`**](file:///d:/Clg/SIH%2726/MASTER_EXECUTION_GUIDE.md) | 🛠️ **Tech Guide** | Master technical blueprint with SQLite DDL, 5-Pillar Python risk engine code, FastAPI routes, and judge defense. |
+| **6** | [**`MPLADS_Sentinel_Free_AI_Agent_Build_Guide.md`**](file:///d:/Clg/SIH%2726/MPLADS_Sentinel_Free_AI_Agent_Build_Guide.md) | 🛠️ **AI Guide** | Step-by-step guide and working Python scripts for an autonomous, 100% free AI investigation agent using local Ollama LLMs and FAISS RAG. |
+| **7** | [**`Official_MPLADS_Allocated_Limit_Dataset.csv`**](file:///d:/Clg/SIH%2726/Official_MPLADS_Allocated_Limit_Dataset.csv) | 📊 **Official Dataset** | The official dataset provided: 544 Lok Sabha MP allocations across 37 States/UTs totaling **₹8,306.21 Crore**. |
+| **8** | [**`MPLADS_12_Stage_Financial_Workflow.md`**](file:///d:/Clg/SIH%2726/MPLADS_12_Stage_Financial_Workflow.md) | 📊 **Workflow** | End-to-end mapping of the 12-stage MPLADS financial lifecycle from recommendation to asset handover. |
+| **9** | [**`MPLADS_Data_Sources_and_Gaps_Overview.md`**](file:///d:/Clg/SIH%2726/MPLADS_Data_Sources_and_Gaps_Overview.md) | 📊 **Research** | Evaluation of data sources (eSAKSHI, Dataful.in, CAG), data gaps (no GPS/labels), and mentor strategies. |
+| **10** | [**`Official_MPLADS_Guidelines_2023.pdf`**](file:///d:/Clg/SIH%2726/Official_MPLADS_Guidelines_2023.pdf) | 📜 **Statutory Rules** | Official revised 2023 Guidelines: CNA model, SBI Zero-Balance Accounts, 15% SC & 7.5% ST earmarking, and prohibited assets. |
+| **11** | [**`CAG_Compliance_Audit_Case_Study.pdf`**](file:///d:/Clg/SIH%2726/CAG_Compliance_Audit_Case_Study.pdf) | 📜 **Case Study** | Ground-truth CAG audit findings: work splitting below ₹10L, unspent balance parking, delayed execution, and lack of inspections. |
+| **12** | [**`SIH26102_Deep_Dive_Problem_Analysis.md`**](file:///d:/Clg/SIH%2726/SIH26102_Deep_Dive_Problem_Analysis.md) | 📜 **Deep Dive** | In-depth breakdown of the 6 anomaly classes, research inspirations (arXiv procurement fraud), and competitor matrix. |
+| **13** | [**`SIH_2026_All_Problem_Statements_Directory.md`**](file:///d:/Clg/SIH%2726/SIH_2026_All_Problem_Statements_Directory.md) | 📜 **SIH Directory** | Complete master index of all 226 Smart India Hackathon 2026 problem statements across 30 ministries. |
 
 ---
 
-# 📌 SLIDE 3: Technical Approach & Architecture
+## 🧠 The 5-Pillar AI Risk Engine
 
-```text
-================================================================================
-                               TECHNICAL APPROACH
-                                   [TEAM NAME]
-================================================================================
-
-┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
-│  Data Ingestion  │───►│ Feature Engg. &  │───►│ Advanced AI &    │───►│ XAI & Copilot    │
-│  & Preprocessing │    │ Statistical Core │    │ Network Graph    │    │ Decision Layer   │
-├──────────────────┤    ├──────────────────┤    ├──────────────────┤    ├──────────────────┤
-│ • eSAKSHI Portal │    │ • Category Median│    │ • Sentence-BERT  │    │ • SHAP Value     │
-│ • 18th LS CSVs   │    │   Cost Ratios    │    │   Embeddings     │    │   Attribution    │
-│ • Dataful.in     │    │ • Temporal Lag & │    │ • Isolation      │    │ • Dynamic Audit  │
-│ • Normalization  │    │   Disparity Calc │    │   Forest & LOF   │    │   Evidence Cards │
-│ • Missing Values │    │ • 2023 Guideline │    │ • Bipartite HHI  │    │ • RAG Querying   │
-│   Imputation     │    │   Rule Checks    │    │   Cartel Graphs  │    │ • PDF Dossiers   │
-└──────────────────┘    └──────────────────┘    └──────────────────┘    └──────────────────┘
-
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│ TECH STACK:                                                                              │
-│ • ML & Analytics : Python, Sentence-Transformers, Scikit-learn, NetworkX, Pandas, NumPy │
-│ • Backend & API  : FastAPI, Uvicorn, Pydantic, SQLite / PostgreSQL                       │
-│ • Frontend & GIS : React.js / Next.js, TailwindCSS, Recharts, Leaflet / Mapbox           │
-│ • XAI & Copilot  : SHAP, Custom Attribution Engine, ChromaDB / FAISS                     │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
+```
+                                  INGESTED DATASETS
+            (Official Allocated Limit CSV + eSAKSHI Reports + Dataful.in)
+                                         │
+    ┌────────────────┬───────────────────┼───────────────────┬────────────────┐
+    ▼                ▼                   ▼                   ▼                ▼
+[ Pillar 1: NLP ] [ Pillar 2: Stats ] [ Pillar 3: Graph ] [ Pillar 4: Rules ][ Pillar 5: XAI ]
+Sentence-BERT     Isolation Forest &  Bipartite Network   2023 Guidelines    SHAP Attribution
+Embeddings for    Robust Z-Score for  HHI for Agency      Engine (SC/ST,     & Dynamic Audit
+Duplicates        Cost/Progress Lag   Monopolies          Prohibitions)      Evidence Cards
+    │                │                   │                   │                │
+    └────────────────┴───────────────────┼───────────────────┴────────────────┘
+                                         ▼
+                        COMPOSITE RISK SCORING ENGINE (0–100)
+                                         │
+                                         ▼
+                             AUDITOR COMMAND CENTER
+                     (FastAPI Backend + React/Next.js UI)
 ```
 
-### 📋 Slide 3 Visual Mockup / Layout Guidelines:
-* **Left Half:** 4-stage pipeline workflow diagram (Data Ingestion $\rightarrow$ Statistical Core $\rightarrow$ Advanced AI & Graph $\rightarrow$ XAI & Copilot).
-* **Right Half:** Tech stack summary box + UI dashboard preview screenshot showing:
-  1. Interactive India Risk Heatmap
-  2. Prioritized Triage Queue (#1 Work ID | 88 Risk 🔴)
-  3. Evidence Card Modal with SHAP factor contributions.
+1. **Pillar 1 — Multilingual NLP Duplicate Matcher:** Uses `sentence-transformers/all-MiniLM-L6-v2` dense vector embeddings to flag re-sanctioned and split works (`<₹10L`) across fiscal years.
+2. **Pillar 2 — Unsupervised Cost & Timeline Anomaly ML:** `IsolationForest` and Modified Z-scores benchmark unit costs against local district medians and flag high-disbursement / low-progress zombie projects.
+3. **Pillar 3 — Bipartite Graph Cartel Intelligence:** `NetworkX` calculates the Herfindahl-Hirschman Index (HHI) to detect contractor and implementing agency monopolies.
+4. **Pillar 4 — Statutory Rule Compliance:** Enforces the official 2023 Guidelines (15% SC / 7.5% ST allocation quotas and Annexure-I non-permissible asset filters).
+5. **Pillar 5 — Explainable AI (XAI) & RAG Copilot:** Combines SHAP feature attribution with FAISS vector retrieval over the official Guidelines and CAG audit PDFs to produce cited investigation briefs.
 
 ---
 
-# 📌 SLIDE 4: Feasibility & Viability
+## 🚀 Quickstart & Local Setup
 
-```text
-================================================================================
-                             FEASIBILITY & VIABILITY
-                                   [TEAM NAME]
-================================================================================
+### 1. Clone & Setup Python Environment
+```bash
+# Clone the repository
+git clone https://github.com/akshhq/SIH-26.git
+cd SIH-26
 
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│                                   FEASIBILITY ANALYSIS                                   │
-├────────────────────────────┬────────────────────────────┬────────────────────────────────┤
-│ FINANCIAL                  │ OPERATIONAL                │ TECHNICAL & DATA               │
-│ • 100% Open-source stack   │ • Non-intrusive surveillance│ • Proven NLP + Isolation Forest│
-│ • Zero licensing overhead  │   layer over eSAKSHI       │ • Lightweight: runs on CPUs    │
-│ • Huge ROI by preventing   │ • Fits existing DM/CAG     │ • Ingests public eSAKSHI &     │
-│   multimillion fund leakage│   investigation workflows  │   official 18th Lok Sabha CSVs │
-└────────────────────────────┴────────────────────────────┴────────────────────────────────┘
+# Activate virtual environment
+.venv\Scripts\activate      # Windows
+# source .venv/bin/activate # Linux / macOS
 
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│ POTENTIAL CHALLENGES & RISKS                 STRATEGIES TO OVERCOME                      │
-├──────────────────────────────────────────────┼───────────────────────────────────────────┤
-│ 1. TECHNOLOGY: Absence of ground-truth       │ • METHODS: Unsupervised ML, category-     │
-│    labeled "fraud" datasets in public domain.│   median statistical benchmarks & rules.  │
-│ 2. COST: Compute & cloud server scaling.     │ • STRATEGIES: Lightweight MiniLM models;  │
-│                                              │   client-side caching; open-source stack. │
-│ 3. EXECUTION: Risk of false positives and    │ • ALGORITHMS: Multi-signal calibration    │
-│    officer alert fatigue.                    │   (flags only if $\ge$2 signals trigger). │
-│ 4. ADOPTION: Political/legal sensitivity of  │ • PRINCIPLES: Objective "Investigation    │
-│    automated fraud accusations.              │   Priority Index" with XAI evidence cards.│
-└──────────────────────────────────────────────┴───────────────────────────────────────────┘
+# Install core dependencies
+pip install pandas numpy scikit-learn sentence-transformers networkx fastapi uvicorn pydantic faiss-cpu pypdf requests ollama
 ```
+
+### 2. Run the Web Portal
+```bash
+# Start local HTTP server on port 8000
+python -m http.server 8000
+```
+Open **[http://localhost:8000](http://localhost:8000)** in your browser to view the interactive portal, read markdown docs, and explore the 544 MP allocations dataset.
 
 ---
 
-# 📌 SLIDE 5: Impacts & Benefits
-
-```text
-================================================================================
-                               IMPACTS & BENEFITS
-                                   [TEAM NAME]
-================================================================================
-
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│                                         IMPACTS                                          │
-├────────────────────────────┬────────────────────────────┬────────────────────────────────┤
-│ 💰 ECONOMIC                │ 🏛️ GOVERNANCE              │ 👥 CITIZEN & SOCIAL            │
-│ • Prevents fund diversion  │ • Replaces random sample   │ • Ensures timely delivery of   │
-│   and duplicate claims.    │   checks with data triage. │   clean drinking water, schools│
-│ • Eliminates parking of    │ • Equips DMs with real-time│   and rural roads.             │
-│   unspent balances in IAs. │   constituency monitoring. │ • Enforces statutory 15% SC &  │
-│ • High fiscal efficiency.  │ • Defensible audit trails. │   7.5% ST budget earmarking.   │
-└────────────────────────────┴────────────────────────────┴────────────────────────────────┘
-
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│                                         BENEFITS                                         │
-├──────────────────────────────────────────────────────────────────────────────────────────┤
-│ 1. 🚀 Rapid Anomaly Triage    : Scans 18,000+ works in seconds; isolates top 2% high risk│
-│ 2. 🔍 Explainable Evidence   : Zero black-box predictions; clear reasons for every flag │
-│ 3. 🕸️ Anti-Cartel Detection   : Uncovers contractor monopolies via Bipartite Graph HHI   │
-│ 4. 📉 80% Workload Reduction : Focuses physical inspection visits on verified red flags  │
-│ 5. 🛡️ Statutory Adherence     : Built strictly upon MoSPI 2023 Guidelines & CNA protocols│
-└──────────────────────────────────────────────────────────────────────────────────────────┘
-```
+## 🏆 Key Impacts & Societal Benefits
+* **💰 Fiscal Protection:** Prevents fund diversion, repeated billings, and unauthorized fund parking. In a state with ₹500 Cr annual funds, identifying 3% leakage saves **₹15 Crore annually** (enough for 150+ rural Anganwadis).
+* **🏛️ 80% Audit Workload Reduction:** Shifts CAG and District Collectors from random sample checks to targeted, high-risk triage.
+* **👥 Faster Asset Delivery:** Unblocks stalled community projects and guarantees mandatory SC/ST fund flow on the ground.
 
 ---
-
-# 📌 SLIDE 6: References & Research Work
-
-```text
-================================================================================
-                            REFERENCES & RESEARCH WORK
-                                   [TEAM NAME]
-================================================================================
-
-1. Comptroller and Auditor General of India (CAG), "Compliance Audit on Implementation 
-   of Members of Parliament Local Area Development Scheme," Report No. 4 of 2018 & 
-   National Audit Compendiums.
-   URL: https://cag.gov.in/en/audit-report/details/2341
-
-2. Ministry of Statistics and Programme Implementation (MoSPI), "MPLADS Scheme Guidelines 
-   (Revised February 2023) — Operationalization of Central Nodal Agency (CNA) & eSAKSHI."
-   URL: https://mplads.gov.in/MPLADS/UploadedFiles/MPLADSGuidelines2023_English_.pdf
-
-3. P. A. Tridgell, S. Kumar et al., "Pattern Mining for Anomaly Detection in Graphs: 
-   Application to Fraud in Public Procurement," arXiv preprint arXiv:2306.10857, 2023.
-
-4. N. Huber, M. Schreyer et al., "Automatic Procurement Fraud Detection with Machine 
-   Learning and Unsupervised Deep Learning," arXiv preprint arXiv:2304.10105, 2023.
-
-5. S. Lundberg & S. Lee, "A Unified Approach to Interpreting Model Predictions (SHAP)," 
-   Advances in Neural Information Processing Systems (NeurIPS), Vol. 30, 2017.
-
-6. N. Reimers & I. Gurevych, "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks," 
-   Empirical Methods in Natural Language Processing (EMNLP), 2019.
-   URL: https://arxiv.org/abs/1908.10084
-================================================================================
-```
-
----
+*Developed for Smart India Hackathon 2026 | Ministry of Statistics and Programme Implementation (MoSPI)*
