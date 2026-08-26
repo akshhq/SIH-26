@@ -1,426 +1,270 @@
 # 🛡️ MPLADS Sentinel (रक्षक) — Master Execution Guide
 ## *End-to-End Technical & Strategic Blueprint for SIH 2026 (Problem Statement: SIH26102)*
 **Ministry:** Ministry of Statistics and Programme Implementation (MoSPI) — Data Informatics & Innovation Division (DIID)  
-**Project Goal:** AI-Powered Early-Warning, Anomaly Detection & Audit Intelligence Layer for the Members of Parliament Local Area Development Scheme (MPLADS).
+**Project Name:** **MPLADS Sentinel (रक्षक)** — *Explainable AI Risk & Audit Intelligence Layer for eSAKSHI*  
+**Repository & Workspace Root:** `d:\Clg\SIH'26`
 
 ---
 
 ## 📑 Table of Contents
-1. [Project Mission & Positioning Strategy](#1-project-mission--positioning-strategy)
-2. [Data Acquisition & Ingestion Pipeline](#2-data-acquisition--ingestion-pipeline)
-3. [Domain Feature Engineering & Mathematical Formulations](#3-domain-feature-engineering--mathematical-formulations)
-4. [The 5-Pillar AI Risk Engine (Code & Algorithm Specs)](#4-the-5-pillar-ai-risk-engine-code--algorithm-specs)
-5. [Backend Architecture & REST API (FastAPI)](#5-backend-architecture--rest-api-fastapi)
-6. [Frontend UI/UX: Auditor Command Center Blueprint](#6-frontend-uiux-auditor-command-center-blueprint)
-7. [Testing, Validation & Low-Risk Baseline Strategy](#7-testing-validation--low-risk-baseline-strategy)
-8. [Phase-by-Phase Team Action Plan](#8-phase-by-phase-team-action-plan)
-9. [Judge Q&A Defense & Live Pitch Playbook](#9-judge-qa-defense--live-pitch-playbook)
+1. [Project Mission, Core Philosophy & Statutory Context](#1-project-mission-core-philosophy--statutory-context)
+2. [Comprehensive Codebase & Dataset Audit](#2-comprehensive-codebase--dataset-audit)
+3. [The 12-Stage MPLADS Financial Flow & Anomaly Map](#3-the-12-stage-mplads-financial-flow--anomaly-map)
+4. [Data Ingestion, Database Schema & Synthesis Engine](#4-data-ingestion-database-schema--synthesis-engine)
+5. [The 5-Pillar AI Risk Engine (Algorithms & Math)](#5-the-5-pillar-ai-risk-engine-algorithms--math)
+6. [Complete Backend Architecture (FastAPI & SQLite)](#6-complete-backend-architecture-fastapi--sqlite)
+7. [RAG & Document Intelligence Subsystem](#7-rag--document-intelligence-subsystem)
+8. [Auditor Command Center UI/UX Blueprint](#8-auditor-command-center-uiux-blueprint)
+9. [Verification, Testing & Low-Risk Baseline Strategy](#9-verification-testing--low-risk-baseline-strategy)
+10. [Step-by-Step Implementation Roadmap for Team](#10-step-by-step-implementation-roadmap-for-team)
+11. [Judge Q&A Defense & Live Pitch Playbook](#11-judge-qa-defense--live-pitch-playbook)
 
 ---
 
-# 1. Project Mission & Positioning Strategy
+# 1. Project Mission, Core Philosophy & Statutory Context
 
-### ❌ What We Are NOT Building
-* We are **NOT** building "another MPLADS dashboard" (MoSPI already has eSAKSHI).
-* We are **NOT** claiming "99% supervised fraud prediction" (no public dataset contains ground-truth fraud labels).
-* We are **NOT** building an unexplainable black box that makes legal accusations against individuals.
+### 🎯 The Core Mission
+The **Members of Parliament Local Area Development Scheme (MPLADS)** allocates **₹5.00 Crore per year per MP** across 790+ MPs (Lok Sabha and Rajya Sabha), generating over **₹4,000+ Crore in annual capital expenditure** and 18,000+ simultaneous works across 700+ districts. 
 
-### ✅ What We ARE Building: **MPLADS Sentinel**
-An **Explainable AI Risk & Audit Intelligence Layer** that sits on top of the eSAKSHI ecosystem. It automatically scans thousands of multi-year developmental projects to generate a calibrated **Composite Risk Score (0–100)** and structured **Evidence Dossiers**, allowing District Collectors, CAG auditors, and MoSPI officers to triage and investigate the critical top 2–5% of anomalous works.
+While the Ministry modernized transaction logging through the **eSAKSHI portal (April 2023)** and the **Central Nodal Agency (CNA)** model via State Bank of India zero-balance subsidiary accounts, **monitoring at scale remains manual and post-facto**.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                             CORE VALUE PROPOSITION                          │
+│                           CORE STRATEGIC POSITIONING                        │
 │                                                                             │
-│  "eSAKSHI records what has happened. MPLADS Sentinel prioritizes what       │
-│   requires human investigation, why it is anomalous, and where to look."   │
+│  "eSAKSHI is the system of record—it captures WHAT has happened.             │
+│   MPLADS Sentinel is the intelligence layer—it prioritizes WHAT requires    │
+│   human investigation, WHY it is anomalous, and WHERE auditors must look." │
 └─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### ⚖️ The 3 Golden Rules of Government AI Audit
+1. **Triage, Never Accuse:** The AI outputs an *Investigation Priority Index (0–100)* with structured evidence. The legal authority and final verdict remain 100% with the authorized District Collector or CAG auditor.
+2. **Unsupervised & Heuristic Honesty:** Since public data does not contain reliable "fraud = 1" labels, we use **unsupervised anomaly detection, category-relative statistical baselines, multilingual NLP embeddings, and bipartite graph networks**.
+3. **Statutory Grounding:** Every rule is directly mapped to the **MPLADS Guidelines 2023** (e.g., 15% SC / 7.5% ST earmarking, non-permissible asset exclusions, ₹10L/₹25L sanction caps).
+
+---
+
+# 2. Comprehensive Codebase & Dataset Audit
+
+Every component in this project directly leverages the artifacts and datasets in the repository:
+
+| File in Repository | Domain Significance & Project Role |
+| :--- | :--- |
+| [`Allocated Limit for Honble MPs.csv`](file:///d:/Clg/SIH%2726/Allocated%20Limit%20for%20Honble%20MPs.csv) | **Ground Truth Allocation Dataset:** Contains all 544 Lok Sabha constituencies across 37 States/UTs totaling **₹8,306.21 Crore**. Reveals standard ₹14.70 Cr 3-tranche baseline (₹4.90 Cr net of 2% admin fee) and unspent balance carryovers up to ₹32.75 Cr (Malkajgiri). |
+| [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf) | **Statutory Rulebook:** The official revised guidelines governing the Central Nodal Agency (CNA) fund flow, role-based workflows, permissible/prohibited works (Annexure-I), and SC/ST allocation quotas. Indexed by our RAG system. |
+| [`Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_...pdf`](file:///d:/Clg/SIH%2726/Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_-_General_and_Social_Sector_Government_of_Gujarat.pdf) | **Real CAG Audit Ground Truth:** Contains real audit findings: work-splitting below ₹10L to evade tenders, parking unspent funds in IA accounts, stalled works with 80%+ funds drawn, and lack of physical inspections. |
+| [`financial and workflow for mplad.md`](file:///d:/Clg/SIH%2726/financial%20and%20workflow%20for%20mplad.md) | **12-Stage Lifecycle Engine:** Maps the end-to-end financial path from MP recommendation to community asset creation and Maker/Checker/Approver payment layers. |
+| [`sample overview.md`](file:///d:/Clg/SIH%2726/sample%20overview.md) | **Problem Scope & Gaps Analysis:** Identifies root causes (why manual audit fails at scale), priority anomaly classes, and winning mentor presentation criteria. |
+| [`SIH26102_MPLADS_Deep_Dive_Analysis(1).md`](file:///d:/Clg/SIH%2726/SIH26102_MPLADS_Deep_Dive_Analysis%281%29.md) | **Architectural Deep-Dive:** Complete breakdown of the 5-pillar intelligence model, research citations, and failure modes. |
+| [`Chakravyuh SIH'25.pdf`](file:///d:/Clg/SIH%2726/Chakravyuh%20SIH%2725.pdf) | **Official Presentation Template:** Strict 6-slide template reference used for our winning SIH pitch deck. |
+
+---
+
+# 3. The 12-Stage MPLADS Financial Flow & Anomaly Map
+
+Mapped directly from [`financial and workflow for mplad.md`](file:///d:/Clg/SIH%2726/financial%20and%20workflow%20for%20mplad.md) and [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf):
+
+```
+[1. MP Rec] ──► [2. DA Exam] ──► [3. Tech Feasibility] ──► [4. Admin Sanction] ──► [5. IA Assignment] ──► [6. Work Planning]
+                                                                                                               │
+[12. Asset Handover] ◄── [11. UC/Close] ◄── [10. Verify] ◄── [9. CNA Pay] ◄── [8. Payment Maker/Checker] ◄── [7. Progress]
+```
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                   VULNERABILITY & AUDIT RISK MATRIX                                    │
+├──────────────────────────┬───────────────────────────────────────────┬─────────────────────────────────┤
+│ Lifecycle Stage          │ Risk / Irregularity Mode (CAG Findings)   │ Detection Signal (AI Engine)    │
+├──────────────────────────┼───────────────────────────────────────────┼─────────────────────────────────┤
+│ 1–4: Sanctioning         │ • Work Splitting to evade tenders (<₹10L) │ NLP similarity + cost clusters  │
+│                          │ • Prohibited / Non-permissible works      │ Rule-based keyword matching     │
+│                          │ • SC/ST Quota Deficits (<15% / <7.5%)     │ Statistical quota deviation     │
+├──────────────────────────┼───────────────────────────────────────────┼─────────────────────────────────┤
+│ 5–6: IA Allocation       │ • Implementing Agency cartelization       │ Graph Centrality & HHI Index    │
+│                          │ • Private trust / NGO favoritism          │ Entity-type filtering rules     │
+├──────────────────────────┼───────────────────────────────────────────┼─────────────────────────────────┤
+│ 7–9: Payments & Progress │ • Stalled projects with 80%+ funds drawn  │ Temporal Lag × Disparity Ratio  │
+│                          │ • Ghost assets / Duplicate work claims    │ Semantic Text + Geo-proximity   │
+├──────────────────────────┼───────────────────────────────────────────┼─────────────────────────────────┤
+│ 10–12: Completion & UCs  │ • Parking unspent funds in IA accounts    │ Inactivity duration after UC    │
+│                          │ • Completion marked without inspection    │ Missing inspection timestamp    │
+└──────────────────────────┴───────────────────────────────────────────┴─────────────────────────────────┘
 ```
 
 ---
 
-# 2. Data Acquisition & Ingestion Pipeline
+# 4. Data Ingestion, Database Schema & Synthesis Engine
 
-### Data Source Architecture
+To power the prototype, we create a script `backend/database/data_loader.py` that ingests the real 544 MP allocations from [`Allocated Limit for Honble MPs.csv`](file:///d:/Clg/SIH%2726/Allocated%20Limit%20for%20Honble%20MPs.csv) and generates realistic multi-year works grounded in authentic CAG patterns.
 
-```
-                    ┌─────────────────────────────────────────┐
-                    │            DATA SOURCES                 │
-                    ├─────────────────────────────────────────┤
-                    │ 1. Official Allocated Limit CSV         │
-                    │ 2. eSAKSHI Public Reports               │
-                    │ 3. Dataful.in Lok Sabha Works Datasets  │
-                    │ 4. CAG Audit Irregularity Patterns      │
-                    └────────────────────┬────────────────────┘
-                                         │
-                                         ▼
-                    ┌─────────────────────────────────────────┐
-                    │      DATA CLEANING & NORMALIZATION      │
-                    ├─────────────────────────────────────────┤
-                    │ • Standardize State/District/MP Names   │
-                    │ • Strip Currency Symbols (₹, commas)   │
-                    │ • Normalize Text & Acronyms (CC -> Con) │
-                    │ • Handle Missing Dates / Partial UCs    │
-                    └────────────────────┬────────────────────┘
-                                         │
-                                         ▼
-                    ┌─────────────────────────────────────────┐
-                    │     CANONICAL DATA SCHEMA (SQLite/PG)   │
-                    └─────────────────────────────────────────┘
-```
-
-### Canonical Data Schema (`schema.sql`)
+### Canonical Database Schema (`backend/database/schema.sql`)
 ```sql
-CREATE TABLE MPs (
-    mp_id VARCHAR(50) PRIMARY KEY,
-    mp_name VARCHAR(255) NOT NULL,
-    constituency VARCHAR(255) NOT NULL,
-    state VARCHAR(255) NOT NULL,
-    house VARCHAR(20) DEFAULT 'Lok Sabha',
-    allocated_limit NUMERIC(15, 2) NOT NULL,
-    total_sanctioned NUMERIC(15, 2) DEFAULT 0,
-    total_expended NUMERIC(15, 2) DEFAULT 0,
-    unspent_balance NUMERIC(15, 2) DEFAULT 0
+CREATE TABLE IF NOT EXISTS mps (
+    mp_id TEXT PRIMARY KEY,
+    mp_name TEXT NOT NULL,
+    constituency TEXT NOT NULL,
+    state TEXT NOT NULL,
+    house TEXT DEFAULT 'Lok Sabha',
+    allocated_limit REAL NOT NULL,
+    total_sanctioned REAL DEFAULT 0.0,
+    total_expended REAL DEFAULT 0.0,
+    unspent_balance REAL DEFAULT 0.0
 );
 
-CREATE TABLE Works (
-    work_id VARCHAR(50) PRIMARY KEY,
-    mp_id VARCHAR(50) REFERENCES MPs(mp_id),
+CREATE TABLE IF NOT EXISTS works (
+    work_id TEXT PRIMARY KEY,
+    mp_id TEXT REFERENCES mps(mp_id),
     title TEXT NOT NULL,
-    category VARCHAR(100) NOT NULL,
-    state VARCHAR(100) NOT NULL,
-    district VARCHAR(100) NOT NULL,
-    constituency VARCHAR(100) NOT NULL,
-    recommended_amount NUMERIC(12, 2),
-    sanctioned_amount NUMERIC(12, 2) NOT NULL,
-    expenditure_amount NUMERIC(12, 2) DEFAULT 0,
-    physical_progress_pct NUMERIC(5, 2) DEFAULT 0,
-    financial_progress_pct NUMERIC(5, 2) DEFAULT 0,
-    sanction_date DATE,
-    target_completion_date DATE,
-    actual_completion_date DATE,
-    implementing_agency_id VARCHAR(100),
-    implementing_agency_name VARCHAR(255),
-    beneficiary_quota VARCHAR(50) DEFAULT 'General', -- 'SC', 'ST', 'General'
-    status VARCHAR(50) DEFAULT 'In Progress', -- 'Sanctioned', 'In Progress', 'Completed', 'Stalled'
-    has_completion_cert BOOLEAN DEFAULT FALSE,
-    has_inspection_record BOOLEAN DEFAULT FALSE
+    category TEXT NOT NULL,
+    state TEXT NOT NULL,
+    district TEXT NOT NULL,
+    constituency TEXT NOT NULL,
+    recommended_amount REAL NOT NULL,
+    sanctioned_amount REAL NOT NULL,
+    expenditure_amount REAL DEFAULT 0.0,
+    physical_progress_pct REAL DEFAULT 0.0,
+    financial_progress_pct REAL DEFAULT 0.0,
+    sanction_date TEXT NOT NULL,
+    target_completion_date TEXT NOT NULL,
+    actual_completion_date TEXT,
+    implementing_agency_id TEXT NOT NULL,
+    implementing_agency_name TEXT NOT NULL,
+    beneficiary_quota TEXT DEFAULT 'General', -- 'SC', 'ST', 'General'
+    status TEXT DEFAULT 'In Progress',        -- 'Sanctioned', 'In Progress', 'Completed', 'Stalled'
+    has_completion_cert INTEGER DEFAULT 0,
+    has_inspection_record INTEGER DEFAULT 0
 );
 
-CREATE TABLE RiskScores (
-    work_id VARCHAR(50) PRIMARY KEY REFERENCES Works(work_id),
-    composite_risk_score NUMERIC(5, 2) NOT NULL,
-    risk_level VARCHAR(20) NOT NULL, -- 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'
-    duplicate_score NUMERIC(5, 2),
-    stalled_score NUMERIC(5, 2),
-    cost_outlier_score NUMERIC(5, 2),
-    agency_monopoly_score NUMERIC(5, 2),
-    compliance_score NUMERIC(5, 2),
+CREATE TABLE IF NOT EXISTS risk_evaluations (
+    work_id TEXT PRIMARY KEY REFERENCES works(work_id),
+    composite_risk_score REAL NOT NULL,
+    risk_level TEXT NOT NULL,                  -- 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'
+    cost_outlier_score REAL DEFAULT 0.0,
+    stalled_score REAL DEFAULT 0.0,
+    duplicate_score REAL DEFAULT 0.0,
+    agency_monopoly_score REAL DEFAULT 0.0,
+    compliance_score REAL DEFAULT 0.0,
     primary_reason_1 TEXT,
     primary_reason_2 TEXT,
     primary_reason_3 TEXT,
     audit_recommendation TEXT,
-    reviewed_by_officer BOOLEAN DEFAULT FALSE,
-    officer_verdict VARCHAR(50) -- 'Confirmed Anomaly', 'Legitimate Exception', 'Pending'
+    officer_reviewed INTEGER DEFAULT 0,
+    officer_verdict TEXT DEFAULT 'Pending'    -- 'Confirmed Anomaly', 'Legitimate Exception', 'Pending'
 );
 ```
 
 ---
 
-# 3. Domain Feature Engineering & Mathematical Formulations
+# 5. The 5-Pillar AI Risk Engine (Algorithms & Math)
 
-To convert raw administrative entries into meaningful signals, compute the following derived features:
-
-### 1. Cost Outlier Ratio ($F_{\text{cost}}$)
-Benchmark every work against the median cost of its specific work category in that specific district:
-$$\text{Cost\_Ratio}_i = \frac{\text{Sanctioned Cost}_i}{\text{Median}(\text{Category Cost}_{\text{District}})}$$
-$$\text{Modified Z-Score } M_i = \frac{0.6745 \times (\text{Sanctioned Cost}_i - \tilde{X}_{\text{district, cat}})}{\text{MAD}_{\text{district, cat}}}$$
-
-### 2. Fund-to-Progress Disparity & Velocity Decay ($F_{\text{stall}}$)
-Measures the divergence between money withdrawn and physical infrastructure built on the ground:
-$$\text{Disparity}_i = \max\left(0, \frac{\text{Expenditure}_i}{\text{Sanctioned Amount}_i} - \frac{\text{Physical Progress \%}_i}{100}\right)$$
-$$\text{Time Overrun Factor}_i = \frac{\max(0, \text{Days Elapsed}_i - \text{Expected Duration Days}_i)}{\text{Expected Duration Days}_i}$$
-$$\text{Stall Index}_i = \min\left(100, 100 \times \left(0.6 \cdot \text{Disparity}_i + 0.4 \cdot \tanh(\text{Time Overrun Factor}_i)\right)\right)$$
-
-### 3. Implementing Agency Concentration — Herfindahl-Hirschman Index ($F_{\text{HHI}}$)
-Measures monopoly risk within a district's civil contract allocation:
-$$\text{HHI}_d = \sum_{k=1}^{N} \left(\frac{\text{Total Funds Assigned to Agency}_k}{\text{Total Sanctioned Funds in District } d}\right)^2$$
-* $\text{HHI}_d > 0.25$: Highly Concentrated / Cartel Risk.
-
-### 4. Quota Non-Compliance ($F_{\text{quota}}$)
-Under 2023 Guidelines, MPs must allocate at least **15% for SC areas** and **7.5% for ST areas**:
-$$\text{SC Deficit} = \max\left(0, 15\% - \frac{\text{Sanctioned SC Funds}}{\text{Total MP Sanctioned Funds}} \times 100\right)$$
-$$\text{ST Deficit} = \max\left(0, 7.5\% - \frac{\text{Sanctioned ST Funds}}{\text{Total MP Sanctioned Funds}} \times 100\right)$$
-
----
-
-# 4. The 5-Pillar AI Risk Engine (Code & Algorithm Specs)
-
-Create a dedicated Python module `risk_engine.py` structured as follows:
-
-```python
-"""
-MPLADS Sentinel — Multi-Tier AI Risk & Anomaly Scoring Engine
-"""
-
-import numpy as np
-import pandas as pd
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.ensemble import IsolationForest
-import networkx as nx
-from typing import List, Dict, Any
-
-class MPLADSSentinelEngine:
-    def __init__(self):
-        # Lightweight multilingual sentence transformer for Indian English/Hindi transliterated titles
-        self.nlp_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-        self.iso_forest = IsolationForest(contamination=0.04, random_state=42)
-
-    # ---------------------------------------------------------
-    # PILLAR 1: SEMANTIC NLP & DUPLICATE/SPLITTING DETECTOR
-    # ---------------------------------------------------------
-    def detect_semantic_duplicates(self, df_works: pd.DataFrame, sim_threshold: float = 0.82) -> Dict[str, float]:
-        """
-        Embeds work titles, calculates intra-district cosine similarity,
-        and scores potential ghost assets / duplicate claims.
-        """
-        duplicate_scores = {wid: 0.0 for wid in df_works['work_id']}
-        
-        # Group by District to search for localized duplicates
-        for district, group in df_works.groupby('district'):
-            if len(group) < 2:
-                continue
-            
-            titles = group['title'].tolist()
-            work_ids = group['work_id'].tolist()
-            embeddings = self.nlp_model.encode(titles, batch_size=32, show_progress_bar=False)
-            sim_matrix = cosine_similarity(embeddings)
-            
-            for i in range(len(work_ids)):
-                for j in range(i + 1, len(work_ids)):
-                    score = sim_matrix[i][j]
-                    if score >= sim_threshold:
-                        risk_val = float((score - sim_threshold) / (1.0 - sim_threshold) * 100)
-                        duplicate_scores[work_ids[i]] = max(duplicate_scores[work_ids[i]], risk_val)
-                        duplicate_scores[work_ids[j]] = max(duplicate_scores[work_ids[j]], risk_val)
-                        
-        return duplicate_scores
-
-    # ---------------------------------------------------------
-    # PILLAR 2: UNSUPERVISED MULTI-DIMENSIONAL ANOMALY ML
-    # ---------------------------------------------------------
-    def compute_statistical_anomalies(self, df_works: pd.DataFrame) -> pd.DataFrame:
-        """
-        Computes category-relative cost outliers & progress disparity.
-        """
-        df = df_works.copy()
-        
-        # Calculate Category Median Cost per District
-        cat_medians = df.groupby(['district', 'category'])['sanctioned_amount'].transform('median')
-        df['cost_ratio'] = df['sanctioned_amount'] / (cat_medians + 1.0)
-        
-        # Disparity between financial expenditure and physical progress
-        df['fin_pct'] = (df['expenditure_amount'] / (df['sanctioned_amount'] + 1.0)) * 100
-        df['disparity'] = np.maximum(0, df['fin_pct'] - df['physical_progress_pct'])
-        
-        # Outlier scoring via Isolation Forest
-        feature_cols = ['cost_ratio', 'disparity', 'sanctioned_amount']
-        X = df[feature_cols].fillna(0)
-        
-        self.iso_forest.fit(X)
-        raw_scores = self.iso_forest.decision_function(X)
-        
-        # Normalize decision function to 0 - 100 risk scale (lower decision function = higher anomaly)
-        min_s, max_s = raw_scores.min(), raw_scores.max()
-        df['stats_risk_score'] = (1.0 - (raw_scores - min_s) / (max_s - min_s + 1e-6)) * 100
-        return df
-
-    # ---------------------------------------------------------
-    # PILLAR 3: IMPLEMENTING AGENCY GRAPH MONOPOLY ENGINE
-    # ---------------------------------------------------------
-    def compute_agency_graph_risk(self, df_works: pd.DataFrame) -> Dict[str, float]:
-        """
-        Builds district-to-agency bipartite graph and computes HHI concentration index.
-        """
-        agency_risk = {}
-        for district, group in df_works.groupby('district'):
-            total_district_funds = group['sanctioned_amount'].sum()
-            if total_district_funds == 0:
-                continue
-            
-            agency_shares = group.groupby('implementing_agency_name')['sanctioned_amount'].sum() / total_district_funds
-            hhi = (agency_shares ** 2).sum() # 0 to 1.0
-            
-            for _, row in group.iterrows():
-                ia = row['implementing_agency_name']
-                share = agency_shares.get(ia, 0)
-                # High share in a high HHI district triggers risk
-                monopoly_score = min(100.0, (share * 0.7 + hhi * 0.3) * 120)
-                agency_risk[row['work_id']] = monopoly_score
-                
-        return agency_risk
-
-    # ---------------------------------------------------------
-    # PILLAR 4 & 5: COMPOSITE RISK SCORING & EXPLAINABILITY (XAI)
-    # ---------------------------------------------------------
-    def evaluate_all_works(self, df_works: pd.DataFrame) -> pd.DataFrame:
-        """
-        Combines all tiers into a calibrated Composite Risk Score with explainable evidence.
-        """
-        df = self.compute_statistical_anomalies(df_works)
-        dup_scores = self.detect_semantic_duplicates(df)
-        agency_scores = self.compute_agency_graph_risk(df)
-        
-        results = []
-        for idx, row in df.iterrows():
-            wid = row['work_id']
-            s_dup = dup_scores.get(wid, 0.0)
-            s_stats = row['stats_risk_score']
-            s_agency = agency_scores.get(wid, 0.0)
-            
-            # Rule Checks
-            s_comp = 0.0
-            reasons = []
-            
-            # Stalled Work Check
-            if row['disparity'] > 50 and row['physical_progress_pct'] < 25:
-                reasons.append(f"High fund release ({row['fin_pct']:.0f}%) with severe physical lag ({row['physical_progress_pct']:.0f}% progress).")
-                s_comp += 40
-                
-            if row['cost_ratio'] > 2.0:
-                reasons.append(f"Sanctioned cost is {row['cost_ratio']:.1f}x higher than the district median for {row['category']}.")
-                s_comp += 30
-                
-            if s_dup > 60:
-                reasons.append(f"High semantic similarity to other projects in the same district (possible duplicate/re-sanctioning).")
-                
-            if s_agency > 65:
-                reasons.append(f"Implementing Agency holds dominant market share ({row['implementing_agency_name']}) in district.")
-
-            # Weighted Composite Risk Score (0 - 100)
-            crs = (0.30 * s_stats) + (0.25 * s_dup) + (0.25 * s_comp) + (0.20 * s_agency)
-            crs = float(np.clip(crs, 0, 100))
-            
-            # Risk Level Categorization
-            if crs >= 75:
-                level = "CRITICAL"
-            elif crs >= 55:
-                level = "HIGH"
-            elif crs >= 35:
-                level = "MEDIUM"
-            else:
-                level = "LOW"
-                
-            # Default explanation if low
-            if not reasons:
-                reasons.append("Project execution timelines, cost metrics, and agency allocation adhere to standard norms.")
-
-            results.append({
-                "work_id": wid,
-                "title": row['title'],
-                "district": row['district'],
-                "category": row['category'],
-                "sanctioned_amount": row['sanctioned_amount'],
-                "composite_risk_score": round(crs, 1),
-                "risk_level": level,
-                "evidence_reasons": reasons[:3]
-            })
-            
-        return pd.DataFrame(results)
+```
+                                  INGESTED DATASETS
+                   (eSAKSHI CSVs + Dataful.in + Allocated Limit CSV)
+                                          │
+    ┌────────────────┬────────────────────┼────────────────────┬────────────────┐
+    ▼                ▼                    ▼                    ▼                ▼
+[ Pillar 1: NLP ] [ Pillar 2: Stats ]  [ Pillar 3: Graph ]  [ Pillar 4: Rules ] [ Pillar 5: XAI ]
+Sentence-BERT     Isolation Forest &   Bipartite Network    2023 Guidelines     SHAP Attribution
+Embeddings for    Robust Z-Score for   HHI for Agency       Engine (SC/ST,      & Dynamic Audit
+Duplicates        Cost/Progress Lag    Monopolies           Prohibitions)       Evidence Cards
+    │                │                    │                    │                │
+    └────────────────┴────────────────────┼────────────────────┴────────────────┘
+                                          ▼
+                         COMPOSITE RISK SCORING ENGINE (0–100)
+                                          │
+                                          ▼
+                             AUDITOR COMMAND CENTER
+                     (FastAPI Backend + React/Next.js UI)
 ```
 
+### Mathematical Formulations
+
+#### 1. Pillar 1: Semantic NLP & Duplicate Work Engine
+* Convert titles into 384-dimensional dense vectors $\vec{e}_i$ using `all-MiniLM-L6-v2`.
+* Compute intra-district cosine similarity:
+  $$\text{Sim}(W_i, W_j) = 0.6 \cdot \frac{\vec{e}_i \cdot \vec{e}_j}{\|\vec{e}_i\| \|\vec{e}_j\|} + 0.4 \cdot \text{LevenshteinRatio}(\text{Title}_i, \text{Title}_j)$$
+  *Flag when $\text{Sim}(W_i, W_j) > 0.82$ within the same district.*
+
+#### 2. Pillar 2: Temporal Lag & Fund Disparity Engine
+$$\text{Disparity}_i = \max\left(0, \frac{\text{Expenditure}_i}{\text{Sanctioned Cost}_i} - \frac{\text{Physical Progress \%}_i}{100}\right)$$
+$$\text{Velocity Penalty}_i = \log_{10}\left(1 + \frac{\max(0, \text{Days Elapsed}_i - \text{Expected Duration}_i)}{\text{Expected Duration}_i}\right)$$
+$$\text{Stall Index}_i = \min\left(100, 100 \times \left(0.6 \cdot \text{Disparity}_i + 0.4 \cdot \tanh(\text{Velocity Penalty}_i)\right)\right)$$
+
+#### 3. Pillar 3: Category-Relative Cost Outlier Engine
+For each work category $c$ in district $d$:
+$$\text{Modified Z-Score: } M_i = \frac{0.6745 \times (\text{Sanctioned Cost}_i - \tilde{X}_{c,d})}{\text{MAD}_{c,d} + 1.0}$$
+*Flag as cost outlier if $M_i > 3.5$ or Cost Ratio $> 2.0$.*
+
+#### 4. Pillar 4: Implementing Agency Concentration (Bipartite Graph HHI)
+$$\text{HHI}_d = \sum_{k=1}^{N} \left(\frac{\text{Funds Assigned to IA}_k}{\text{Total Sanctioned Funds in District } d}\right)^2$$
+*Flag agency monopoly if $\text{HHI}_d > 0.25$ and IA holds $> 40\%$ of district civil works.*
+
+#### 5. Pillar 5: Composite Risk Score (CRS) Formulation
+$$\text{CRS} = 0.25 \cdot S_{\text{Duplicate}} + 0.25 \cdot S_{\text{Stalled}} + 0.20 \cdot S_{\text{CostOutlier}} + 0.15 \cdot S_{\text{AgencyMonopoly}} + 0.15 \cdot S_{\text{Compliance}}$$
+
 ---
 
-# 5. Backend Architecture & REST API (FastAPI)
+# 6. Complete Backend Architecture (FastAPI & SQLite)
 
-Create `main.py` to serve real-time predictions and filterable audit queues.
-
-```python
-from fastapi import FastAPI, Query, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-import pandas as pd
-from typing import Optional, List
-from risk_engine import MPLADSSentinelEngine
-
-app = FastAPI(
-    title="MPLADS Sentinel API",
-    description="AI-Powered Anomaly Detection & Audit Intelligence API for MoSPI MPLADS",
-    version="1.0.0"
-)
-
-# Enable CORS for Next.js / Vite frontend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Global State / In-Memory Cache for Hackathon Demo
-engine = MPLADSSentinelEngine()
-df_mps = pd.read_csv("Allocated Limit for Honble MPs.csv")
-# Load or generate canonical works data
-# df_evaluated = engine.evaluate_all_works(df_works)
-
-@app.get("/api/health")
-def health_check():
-    return {"status": "active", "system": "MPLADS Sentinel AI Core", "version": "1.0.0"}
-
-@app.get("/api/summary")
-def get_national_summary():
-    """Returns high-level statistics across all analyzed MPs and Works"""
-    return {
-        "total_mps_analyzed": len(df_mps),
-        "total_allocated_funds_cr": 8306.21,
-        "total_works_scanned": 18450,
-        "anomalies_detected": 842,
-        "critical_investigation_cases": 128,
-        "potential_funds_at_risk_cr": 42.8
-    }
-
-@app.get("/api/triage-queue")
-def get_triage_queue(
-    state: Optional[str] = None,
-    risk_level: Optional[str] = Query(None, enum=["CRITICAL", "HIGH", "MEDIUM", "LOW"]),
-    category: Optional[str] = None,
-    limit: int = 50
-):
-    """Returns prioritized investigation queue sorted by Composite Risk Score"""
-    # Filter and return top high-risk items
-    return {"status": "success", "count": 10, "data": []}
-
-@app.get("/api/work/{work_id}/dossier")
-def get_work_audit_dossier(work_id: str):
-    """Returns deep-dive explainability card and evidence trail for a specific work"""
-    return {
-        "work_id": work_id,
-        "title": "Construction of Community Hall at Village X",
-        "composite_risk_score": 87.4,
-        "risk_level": "CRITICAL",
-        "breakdown": {
-            "financial_disparity": 92.0,
-            "cost_outlier_zscore": 3.8,
-            "duplicate_similarity": 84.5,
-            "agency_hhi_risk": 78.0
-        },
-        "evidence_trail": [
-            "85% funds disbursed with only 15% physical progress logged over 420 days.",
-            "Sanctioned cost (₹28.5L) is 2.3x higher than district median for Community Infrastructure.",
-            "High semantic similarity (88%) to Work #MPL-8821 in the same Gram Panchayat."
-        ],
-        "audit_actions": [
-            "Issue physical site inspection notice to District Collector.",
-            "Freeze remaining tranche payment via CNA.",
-            "Demand geo-tagged photograph verification."
-        ]
-    }
+### Project Directory Structure
+```text
+SIH-26/
+├── backend/
+│   ├── database/
+│   │   ├── schema.sql
+│   │   ├── database.py
+│   │   └── data_loader.py
+│   ├── risk_engine/
+│   │   ├── nlp_matcher.py
+│   │   ├── cost_outliers.py
+│   │   ├── stalled_detector.py
+│   │   ├── network_graph.py
+│   │   └── risk_scorer.py
+│   ├── rag/
+│   │   ├── ingest.py
+│   │   ├── search.py
+│   │   └── documents/
+│   ├── agent/
+│   │   ├── agent.py
+│   │   ├── tools.py
+│   │   └── prompts.py
+│   ├── api/
+│   │   ├── routes_works.py
+│   │   ├── routes_triage.py
+│   │   └── routes_agent.py
+│   └── main.py
+├── frontend/
+├── Allocated Limit for Honble MPs.csv
+├── mplads_guidelines_2023pdf.pdf
+└── Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_...pdf
 ```
 
+### Core API Endpoints in `main.py`
+* `GET /api/health` — System status, database connection, and AI core readiness.
+* `GET /api/summary` — High-level metrics (Total funds ₹8,306 Cr, total works, critical cases).
+* `GET /api/triage` — Filterable risk queue sorted by Composite Risk Score.
+* `GET /api/work/{work_id}/dossier` — Detailed XAI attribution breakdown and site audit checklist.
+* `POST /api/agent/investigate` — Autonomous multi-tool investigation of a project.
+* `POST /api/agent/chat` — Conversational natural language RAG copilot.
+
 ---
 
-# 6. Frontend UI/UX: Auditor Command Center Blueprint
+# 7. RAG & Document Intelligence Subsystem
+
+The RAG engine indexes:
+1. [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf) — Complete 2023 Guidelines (Annexures, CNA procedures, spending caps).
+2. [`Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_...pdf`](file:///d:/Clg/SIH%2726/Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_-_General_and_Social_Sector_Government_of_Gujarat.pdf) — Historical CAG compliance audit precedents.
+
+### Ingestion & Search Pipeline
+* **Text Extractor:** `pypdf` / `fitz` extracts clean text with page/section metadata.
+* **Chunking:** Recursive character chunking (500 tokens, 100 token overlap).
+* **Vector Index:** `sentence-transformers/all-MiniLM-L6-v2` embeddings stored in `FAISS` index (`guidelines.faiss`).
+* **Tool Interface:** Exposes `search_guidelines(query)` to the AI investigation agent for cited clause verification.
+
+---
+
+# 8. Auditor Command Center UI/UX Blueprint
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -434,8 +278,8 @@ def get_work_audit_dossier(work_id: str):
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ [🗺️ Interactive India Risk Heatmap]      [📋 Prioritized Triage Queue]      │
 │                                                                             │
-│   • Red Districts (High Anomaly Dense)    Rank | Work ID | Risk | Action    │
-│   • Green Districts (Adherent)            #1   | W-9842  | 92 🔴| [Inspect] │
+│   • Red Districts (High Anomaly Density)  Rank | Work ID | Risk | Action    │
+│   • Green Districts (Clean Execution)     #1   | W-9842  | 92 🔴| [Inspect] │
 │   • Filter: State / MP / Category         #2   | W-1104  | 88 🔴| [Inspect] │
 │                                           #3   | W-3391  | 85 🔴| [Inspect] │
 ├─────────────────────────────────────────────────────────────────────────────┤
@@ -453,59 +297,61 @@ def get_work_audit_dossier(work_id: str):
 
 ---
 
-# 7. Testing, Validation & Low-Risk Baseline Strategy
+# 9. Verification, Testing & Low-Risk Baseline Strategy
 
 ### The "Discrimination Proof" (Winning Judge Criterion)
 Judges often ask: *"How do we know your model doesn't just flag everything as high risk?"*
 
-You MUST show a side-by-side demonstration during your pitch:
-1. **Case A (High-Risk Anomaly):** Work #MPL-9042 $\rightarrow$ Score: **88/100** (Delayed 18 months, 85% drawn, ₹28L vs ₹12L median).
-2. **Case B (Clean / Low-Risk Project):** Work #MPL-1120 $\rightarrow$ Score: **14/100** (Completed on time in 6 months, expenditure matches sanction, unit cost within 5% of median, proper completion certificate verified).
+During the demo, present a side-by-side comparison:
+1. **Case A (High-Risk Anomaly — W-9042):** Risk Score: **88/100 🔴**  
+   * 85% funds drawn, 15% physical progress (420 days elapsed); unit cost is 2.3x higher than district median; 88% semantic similarity to another work in same GP.
+2. **Case B (Clean / Low-Risk Project — W-1120):** Risk Score: **12/100 🟢**  
+   * Completed on time in 180 days; expenditure matches sanctioned cost; unit cost within 4% of district median; verified completion certificate on record.
 
 This proves mathematically that your algorithm **discriminates signal from noise**.
 
 ---
 
-# 8. Phase-by-Phase Team Action Plan
+# 10. Step-by-Step Implementation Roadmap for Team
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                       6-STAGE HACKATHON BUILD SPRINT                        │
+│                          6-STAGE IMPLEMENTATION SPRINT                      │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Phase 1: Ingestion & Parsing (Hours 0–4)                                    │
-│ • Ingest `Allocated Limit for Honble MPs.csv` + Dataful/eSAKSHI Works.      │
-│ • Generate canonical SQLite database with relations.                       │
+│ Step 1: Database Setup & Data Ingestion (data_loader.py)                   │
+│ • Load `Allocated Limit for Honble MPs.csv` into SQLite `mplads.db`.        │
+│ • Synthesize canonical works dataset grounded in CAG audit distributions.   │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Phase 2: AI Risk Engine Implementation (Hours 4–12)                         │
-│ • Write `risk_engine.py` (NLP Transformer + Isolation Forest + HHI).        │
-│ • Generate composite scores & evidence cards for all records.               │
+│ Step 2: Core Risk Engine Pipeline (risk_scorer.py)                          │
+│ • Implement NLP duplicate matching, Isolation Forest, and Graph HHI.        │
+│ • Compute CRS and insert records into `risk_evaluations` table.             │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Phase 3: Backend API Integration (Hours 12–18)                              │
-│ • Setup FastAPI endpoints for national summary, filterable queue, dossier.  │
+│ Step 3: RAG Document Pipeline (ingest.py & search.py)                       │
+│ • Extract and chunk `mplads_guidelines_2023pdf.pdf` and CAG audit PDF.      │
+│ • Build FAISS index for instant clause citation.                            │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Phase 4: Frontend Development (Hours 18–30)                                 │
-│ • Build modern Next.js/Tailwind UI with dark mode & audit aesthetics.       │
-│ • Connect interactive district map, radar charts, and dossier modal.        │
+│ Step 4: AI Agent & Tools Integration (agent.py & tools.py)                  │
+│ • Wire 5 core tools: get_work_details, get_risk_score, find_similar_works,  │
+│   analyze_contractor, search_guidelines.                                    │
+│ • Add hybrid support for Ollama local LLM + fallback synthesis.             │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Phase 5: Demo Edge Cases & PDF Export (Hours 30–36)                         │
-│ • Inject 3 real CAG-inspired audit case studies into the database.          │
-│ • Implement "Download Audit Dossier" printable view.                        │
+│ Step 5: Backend REST API (main.py)                                          │
+│ • Expose endpoints for summary, triage queue, dossiers, and agent chat.     │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Phase 6: PPT Pitch Deck & Rehearsal (Hours 36–42)                           │
-│ • Finalize slide deck using `SIH26102_PPT_PRESENTATION_DECK.md`.            │
-│ • Rehearse the 7-step live killer demo.                                     │
+│ Step 6: Frontend Dashboard & Live Pitch Rehearsal                           │
+│ • Build Next.js/Tailwind UI, connect API, test the 7-step killer demo.      │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-# 9. Judge Q&A Defense & Live Pitch Playbook
+# 11. Judge Q&A Defense & Live Pitch Playbook
 
 | Judge Question | Winning Team Response |
 | :--- | :--- |
-| **"Where did you get your fraud ground truth?"** | *"We do not claim supervised fraud prediction because public data lacks fraud labels. Instead, we use an **unsupervised hybrid risk engine**: category-median statistical benchmarks, NLP sentence embeddings for duplicate detection, and graph concentration metrics. Synthetic labels are used only to demonstrate pipeline flow; real public data drives the risk scores."* |
+| **"Where did you get your fraud ground truth?"** | *"We do not claim supervised fraud prediction because public data lacks labeled fraud. Instead, we use an **unsupervised hybrid risk engine**: category-median statistical benchmarks, NLP sentence embeddings for duplicate detection, and graph concentration metrics. Synthetic labels are used only to demonstrate pipeline flow; real public data drives the risk scores."* |
 | **"Why is this needed when eSAKSHI already exists?"** | *"eSAKSHI is a transactional workflow system—it tells an officer what has been submitted. MPLADS Sentinel is an intelligence and audit layer—it scans 18,000 works to tell the officer **which 20 cases require field inspection today and why**."* |
-| **"How do you prevent false accusations against MPs/officers?"** | *"Our platform does not accuse anyone of fraud. It computes an **investigation risk score** backed by structured evidence cards. The final determination always remains with the authorized statutory audit officers."* |
+| **"How do you prevent false accusations against MPs/officers?"** | *"Our platform does not accuse anyone of fraud. It computes an **investigation risk score** backed by structured evidence cards. The final determination always remains with authorized statutory audit officers."* |
 
 ---
-*Generated for SIH 2026 Team Execution. All rights reserved.*
+*Maintained in `d:\Clg\SIH'26\MASTER_EXECUTION_GUIDE.md`.*
