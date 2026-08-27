@@ -55,15 +55,15 @@ Every component in this project directly leverages the artifacts and datasets in
 | [`Official_MPLADS_Guidelines_2023.pdf`](file:///d:/Clg/SIH%2726/Official_MPLADS_Guidelines_2023.pdf) | **Statutory Rulebook:** The official revised guidelines governing the Central Nodal Agency (CNA) fund flow, role-based workflows, permissible/prohibited works (Annexure-I), and SC/ST allocation quotas. Indexed by our RAG system. |
 | [`CAG_Compliance_Audit_Case_Study.pdf`](file:///d:/Clg/SIH%2726/CAG_Compliance_Audit_Case_Study.pdf) | **Real CAG Audit Ground Truth & Case Study:** Contains real audit findings: work-splitting below ₹10L to evade tenders, parking unspent funds in IA accounts, stalled works with 80%+ funds drawn, and lack of physical inspections. |
 | [`MPLADS_12_Stage_Financial_Workflow.md`](file:///d:/Clg/SIH%2726/MPLADS_12_Stage_Financial_Workflow.md) | **12-Stage Lifecycle Engine:** Maps the end-to-end financial path from MP recommendation to community asset creation and Maker/Checker/Approver payment layers. |
-| [`sample overview.md`](file:///d:/Clg/SIH%2726/sample%20overview.md) | **Problem Scope & Gaps Analysis:** Identifies root causes (why manual audit fails at scale), priority anomaly classes, and winning mentor presentation criteria. |
-| [`SIH26102_MPLADS_Deep_Dive_Analysis(1).md`](file:///d:/Clg/SIH%2726/SIH26102_MPLADS_Deep_Dive_Analysis%281%29.md) | **Architectural Deep-Dive:** Complete breakdown of the 5-pillar intelligence model, research citations, and failure modes. |
-| [`Chakravyuh SIH'25.pdf`](file:///d:/Clg/SIH%2726/Chakravyuh%20SIH%2725.pdf) | **Official Presentation Template:** Strict 6-slide template reference used for our winning SIH pitch deck. |
+| [`MPLADS_Data_Sources_and_Gaps_Overview.md`](file:///d:/Clg/SIH%2726/MPLADS_Data_Sources_and_Gaps_Overview.md) | **Problem Scope & Gaps Analysis:** Identifies root causes (why manual audit fails at scale), priority anomaly classes, and winning mentor presentation criteria. |
+| [`SIH26102_Deep_Dive_Problem_Analysis.md`](file:///d:/Clg/SIH%2726/SIH26102_Deep_Dive_Problem_Analysis.md) | **Architectural Deep-Dive:** Complete breakdown of the 5-pillar intelligence model, research citations, and failure modes. |
+| [`SIH_Sample_6_Slide_PPT_Chakravyuh.pdf`](file:///d:/Clg/SIH%2726/SIH_Sample_6_Slide_PPT_Chakravyuh.pdf) | **Official Presentation Template:** Strict 6-slide template reference used for our winning SIH pitch deck. |
 
 ---
 
 # 3. The 12-Stage MPLADS Financial Flow & Anomaly Map
 
-Mapped directly from [`financial and workflow for mplad.md`](file:///d:/Clg/SIH%2726/financial%20and%20workflow%20for%20mplad.md) and [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf):
+Mapped directly from [`MPLADS_12_Stage_Financial_Workflow.md`](file:///d:/Clg/SIH%2726/MPLADS_12_Stage_Financial_Workflow.md) and [`Official_MPLADS_Guidelines_2023.pdf`](file:///d:/Clg/SIH%2726/Official_MPLADS_Guidelines_2023.pdf):
 
 ```
 [1. MP Rec] ──► [2. DA Exam] ──► [3. Tech Feasibility] ──► [4. Admin Sanction] ──► [5. IA Assignment] ──► [6. Work Planning]
@@ -253,8 +253,8 @@ SIH-26/
 # 7. RAG & Document Intelligence Subsystem
 
 The RAG engine indexes:
-1. [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf) — Complete 2023 Guidelines (Annexures, CNA procedures, spending caps).
-2. [`Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_...pdf`](file:///d:/Clg/SIH%2726/Chapter_3_Compliance_Audit_of_Report_No_4_of_2018_-_General_and_Social_Sector_Government_of_Gujarat.pdf) — Historical CAG compliance audit precedents.
+1. [`Official_MPLADS_Guidelines_2023.pdf`](file:///d:/Clg/SIH%2726/Official_MPLADS_Guidelines_2023.pdf) — Complete 2023 Guidelines (Annexures, CNA procedures, spending caps).
+2. [`CAG_Compliance_Audit_Case_Study.pdf`](file:///d:/Clg/SIH%2726/CAG_Compliance_Audit_Case_Study.pdf) — Historical CAG compliance audit precedents.
 
 ### Ingestion & Search Pipeline
 * **Text Extractor:** `pypdf` / `fitz` extracts clean text with page/section metadata.
@@ -327,7 +327,7 @@ This proves mathematically that your algorithm **discriminates signal from noise
 │ • Compute CRS and insert records into `risk_evaluations` table.             │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Step 3: RAG Document Pipeline (ingest.py & search.py)                       │
-│ • Extract and chunk `mplads_guidelines_2023pdf.pdf` and CAG audit PDF.      │
+│ • Extract and chunk `Official_MPLADS_Guidelines_2023.pdf` and CAG audit PDF.  │
 │ • Build FAISS index for instant clause citation.                            │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Step 4: AI Agent & Tools Integration (agent.py & tools.py)                  │

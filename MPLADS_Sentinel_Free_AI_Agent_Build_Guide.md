@@ -57,7 +57,7 @@
 
 ### 🧠 Core Principles:
 1. **The LLM is NOT the Calculator:** The local LLM never guesses or calculates numerical anomaly scores. It acts as an **orchestrator and reasoning engine** that calls your deterministic ML algorithms and RAG search tools.
-2. **Evidence-Based Explanations:** Every claim made by the agent must link directly to observed database records or cited clauses from [`mplads_guidelines_2023pdf.pdf`](file:///d:/Clg/SIH%2726/mplads_guidelines_2023pdf.pdf).
+2. **Evidence-Based Explanations:** Every claim made by the agent must link directly to observed database records or cited clauses from [`Official_MPLADS_Guidelines_2023.pdf`](file:///d:/Clg/SIH%2726/Official_MPLADS_Guidelines_2023.pdf).
 3. **100% Free & Local:** Runs entirely offline on standard laptops using **Ollama** (`qwen2.5:7b`, `llama3:8b`, or `mistral`) with built-in zero-dependency fallbacks for lightweight development.
 
 ---
