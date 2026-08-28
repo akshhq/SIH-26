@@ -1,0 +1,8 @@
+# Ignore New_folder directory and all its contents
+New_folder/
+New_folder/**
+
+# Virtual Environment & Python cache
+.venv/
+__pycache__/
+*.pyc
