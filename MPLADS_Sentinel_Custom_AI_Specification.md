@@ -4,6 +4,16 @@
 
 ---
 
+## ⚠️ Scope Lock — read this before anything else
+
+We checked the real eSAKSHI/MPLADS export we're actually building on (12 CSVs, ~52k rows: Works Recommended/Sanctioned/Completed, Expenditure, Allocated Limits, Calamity Consent). It contains **no images and no document content** — the only trace of "evidence" is a text placeholder (`"Images"`) in one column, not an actual image, link, or file.
+
+**Consequence:** Document Intelligence (Module 6, 7) and Image Verification (Module 8, checks A–F) cannot run on real data. Building them anyway means demoing entirely synthetic images/documents and hoping no judge asks "is this real?" — that's a credibility risk, not a differentiator.
+
+**Decision:** these modules move to **Phase 2 / Future** in this spec. Every section below that depends on them is marked `[DEFERRED]`. The MVP AI stack (Section 28) has been rewritten to only include what real data supports. This keeps the spec internally consistent with `SIH26102_Complete_Knowledge_Base.md` §27 (MUST / BONUS / FUTURE) and `MPLADS_Sentinel_Curated_Project_Definition.md`.
+
+---
+
 # 1. AI Philosophy
 
 The project should not use one AI model for everything.
@@ -38,61 +48,37 @@ Architecture:
 
 | Module | Purpose | Technique | Priority |
 |---|---|---|---|
-| Proposal AI | Evaluate proposal anomalies | NLP + statistics | 🔥 |
-| Compliance AI | Check rules/guidelines | Rules + NLP | 🔥 |
-| Cost AI | Detect unusual estimates | ML/statistics | 🔥 |
-| Timeline AI | Detect/predict delays | rules + ML | 🔥 |
-| Duplicate AI | Find similar projects | NLP + embeddings + GIS | 🔥 |
-| Document AI | Understand documents | OCR + NLP/LLM | 🔥 |
-| Image AI | Verify visual evidence | CV | 🔥 |
-| Financial AI | Detect payment anomalies | statistics/ML | 🔥 |
-| Evidence AI | Cross-check claims | multimodal reasoning | 🔥 |
-| Graph AI | Detect network anomalies | graph algorithms/ML | ⭐ |
-| Prediction AI | Forecast risk | ML | ⭐ |
-| Audit Copilot | Explain/query cases | LLM + structured retrieval | ⭐ |
+| Compliance AI | Check rules/guidelines | Rules + NLP | 🔥 MVP |
+| Cost AI | Detect unusual estimates | ML/statistics | 🔥 MVP |
+| Timeline AI | Detect/predict delays | rules + ML | 🔥 MVP |
+| Duplicate AI | Find similar projects (text-based, no GIS/images) | NLP + embeddings | 🔥 MVP |
+| Financial AI | Detect payment anomalies | statistics/ML | 🔥 MVP |
+| Graph AI | Detect network anomalies (vendor/agency concentration) | graph algorithms/ML | 🔥 MVP — already validated on real data (see §17 note) |
+| Prediction AI | Forecast risk | ML | ⭐ Bonus |
+| Audit Copilot | Explain/query cases (over structured data only) | LLM + structured retrieval | ⭐ Bonus |
+| Proposal AI | Evaluate proposal anomalies | NLP + statistics | ⭐ Bonus — mostly overlaps Cost AI + Duplicate AI |
+| Document AI | Understand documents | OCR + NLP/LLM | 🔮 **[DEFERRED — no real document data]** |
+| Image AI | Verify visual evidence | CV | 🔮 **[DEFERRED — no real image data]** |
+| Evidence AI | Cross-check claims across docs/images | multimodal reasoning | 🔮 **[DEFERRED — depends on Document AI + Image AI]** |
 
 ---
 
-# 3. AI Module 1 — Proposal Intelligence
+# 3. AI Module 1 — Proposal Intelligence *(⭐ Bonus, not MVP)*
+
+> This module is really Cost AI (§5) + Duplicate AI (§7) applied at the recommendation stage instead of the sanctioned stage. Don't build it as a separate pipeline — reuse those two modules and just run them earlier in the lifecycle if time permits. Listed here for completeness only.
 
 ## Objective
 
-Evaluate a proposal before or around sanction.
+Evaluate a proposal before or around sanction, using the same cost-comparison and description-similarity logic as Modules 3 and 5.
 
-## Inputs
+## Inputs available in real data
 
-- Work description
-- Work category
-- State
-- District
-- Location
-- Recommended amount
-- Historical comparable projects
-- Relevant guidelines
+- Work description, Work category, State, IDA, Recommended amount, Recommended date
 
-## AI tasks
+## Inputs we do NOT have (drop from scope)
 
-### Cost comparison
-
-Compare proposed amount against similar projects.
-
-### Description similarity
-
-Find previously recommended/sanctioned projects with similar descriptions.
-
-### Eligibility/compliance
-
-Identify potential prohibited or questionable patterns.
-
-### Duplicate proposal
-
-Detect:
-
-- same location
-- similar description
-- similar amount
-- similar beneficiary
-- similar project category
+- District/precise location, GPS coordinates — real data only has State + Constituency, not finer geography
+- "Similar beneficiary" — no beneficiary field exists in the export
 
 ## Output
 
@@ -100,9 +86,8 @@ Detect:
 Proposal Risk: 63/100
 
 Reasons:
-⚠️ 34% above comparable median
-⚠️ Similar project within 1.2 km
-⚠️ Description highly similar to Project X
+⚠️ 34% above comparable median (same category, same state)
+⚠️ Description highly similar to Project X (text similarity only — no GPS confirmation available)
 ```
 
 ---
@@ -237,14 +222,12 @@ Predicted delay:
 
 Detect multiple projects that may represent the same or substantially overlapping work.
 
-## Inputs
+## Inputs (real fields only — no GPS/coordinates in our data)
 
 - work description
-- project category
-- location
-- coordinates
-- MP
-- agency
+- work category
+- State + Constituency (coarse location proxy — not GPS)
+- MP / IDA
 - amount
 - date
 
@@ -253,11 +236,11 @@ Detect multiple projects that may represent the same or substantially overlappin
 ```text
 Description
     ↓
-Embedding
+Embedding (Sentence-BERT)
     ↓
 Similarity search
     ↓
-GIS proximity
+Same State + Constituency check   ← proxy for "location," not true GIS proximity
     ↓
 Cost similarity
     ↓
@@ -272,16 +255,26 @@ Duplicate probability
 Possible duplicate
 
 NLP similarity: 92%
-Location similarity: 97%
+Same constituency: yes
 Cost similarity: 89%
 
 Overall:
 91%
 ```
 
+Be explicit in the demo that "location similarity" here means *same constituency*, not GPS proximity — we don't have coordinates. Don't imply more precision than the data supports.
+
 ---
 
-# 8. AI Module 6 — Document Intelligence
+---
+
+## 🔮 DEFERRED BLOCK — Modules 6, 7, 8 (Sections 8–16)
+
+Everything from here to Section 17 (Document Intelligence, Document Similarity, and all six Image Verification checks) is **kept in this document as a designed-but-not-built roadmap**, not part of the SIH MVP. Reason: zero real document or image data exists in the current MPLADS export (see the Scope Lock note at the top of this file). Do not schedule engineering time against these sections unless the team explicitly decides to build a small, clearly-labeled synthetic demo — and if so, say "synthetic" out loud on every slide and screen that shows it.
+
+---
+
+# 8. AI Module 6 — Document Intelligence *(🔮 deferred)*
 
 ## Objective
 
@@ -336,7 +329,7 @@ Completion Certificate
 
 ---
 
-# 9. AI Module 7 — Document Similarity
+# 9. AI Module 7 — Document Similarity *(🔮 deferred)*
 
 Detect:
 
@@ -359,9 +352,9 @@ Output:
 
 ---
 
-# 10. AI Module 8 — Image Verification
+# 10. AI Module 8 — Image Verification *(🔮 deferred)*
 
-This is one of the most important modules.
+Designed in full for the Phase 2 roadmap. Not part of the SIH MVP — see the deferred-block note above §8.
 
 ## Objective
 
@@ -385,7 +378,7 @@ Determine whether submitted evidence is consistent with:
 
 ---
 
-# 11. Image Check A — Location
+# 11. Image Check A — Location *(🔮 deferred)*
 
 Compare:
 
@@ -409,7 +402,7 @@ Do not fabricate certainty.
 
 ---
 
-# 12. Image Check B — Reuse
+# 12. Image Check B — Reuse *(🔮 deferred)*
 
 Methods:
 
@@ -436,7 +429,7 @@ Possible reused evidence.
 
 ---
 
-# 13. Image Check C — Wrong Asset
+# 13. Image Check C — Wrong Asset *(🔮 deferred)*
 
 Compare expected:
 
@@ -452,7 +445,7 @@ This is a risk signal, not a final verdict.
 
 ---
 
-# 14. Image Check D — Progress
+# 14. Image Check D — Progress *(🔮 deferred)*
 
 Build project-specific visual stages.
 
@@ -486,7 +479,7 @@ This is feasible for selected project categories in an MVP if the visual taxonom
 
 ---
 
-# 15. Image Check E — Temporal Consistency
+# 15. Image Check E — Temporal Consistency *(🔮 deferred)*
 
 Compare:
 
@@ -503,7 +496,7 @@ Detect:
 
 ---
 
-# 16. Image Check F — Manipulation Signals
+# 16. Image Check F — Manipulation Signals *(🔮 deferred)*
 
 Potential signals:
 
@@ -559,60 +552,55 @@ Component budget ≠ component spending.
 
 ---
 
-# 18. AI Module 10 — Financial vs Physical Intelligence
+# 18. AI Module 10 — Financial vs Status Intelligence *(MVP — redefined for real data)*
 
-This should be a core feature.
+This should be a core feature — but "Physical Progress %" was originally scoped assuming visual/inspection data we don't have. Redefine using fields that actually exist: `Work Status` (Sanctioned/In Progress/Completed) from `Works_Sanctioned.csv`, cross-referenced with cumulative disbursed amount from `Expenditure.csv`.
 
 Calculate:
 
 ```text
-Financial Progress
+Financial Progress  (disbursed ÷ sanctioned amount)
 vs
-Physical Progress
+Status Progress     (crude proxy: "Completed" = 100%, "In Progress" = 50%, else 0%)
 ```
 
 Example:
 
 ```text
 Financial: 88%
-Physical: 52%
+Status: "In Progress" → 50% proxy
 
-Gap: 36 percentage points
+Gap: 38 percentage points
 ```
 
-Large unexplained gaps increase risk.
+Large unexplained gaps increase risk — this is your "zombie project" signal (high spend, no completion), and it's fully backed by real data. Label the status-proxy honestly in the UI as an approximation, not verified physical progress.
 
 ---
 
 # 19. AI Module 11 — Graph Intelligence
 
-## Graph entities
+## Graph entities *(real-data version — Document/Image/Officer dropped, none exist in our export)*
 
 ```text
 MP
-PROJECT
-DISTRICT
-AGENCY
-OFFICER
+PROJECT (Work)
+STATE / CONSTITUENCY
+AGENCY (IDA)
 VENDOR
 PAYMENT
-DOCUMENT
-IMAGE
-LOCATION
 ```
 
 ## Edges
 
 ```text
 MP → recommends → Project
-Project → assigned_to → Agency
+Project → assigned_to → Agency (IDA)
 Agency → uses → Vendor
 Vendor → receives → Payment
-Project → has → Document
-Project → has → Image
-Project → located_at → Location
-Officer → uploads → Evidence
+Project → located_in → State/Constituency
 ```
+
+This is the module that's already validated on real data — see the "Ajay Kumar Singh" finding in the technical build guide: 119 near-identical payments to one vendor from one MP, ~10x the 99th-percentile vendor concentration across the whole Lok Sabha expenditure dataset. This is your strongest, fully-real demo case. Lead with it.
 
 ## Detect
 
@@ -627,38 +615,32 @@ Officer → uploads → Evidence
 
 # 20. AI Module 12 — Risk Aggregation
 
-All modules feed a common risk engine.
+All MVP modules feed a common risk engine. (Document Risk and Image Risk removed from the live formula — deferred, see Scope Lock. Re-add them here once real evidence data exists.)
 
 ```text
-Proposal Risk
+Financial Risk       25%
       +
-Compliance Risk
+Timeline Risk        20%
       +
-Financial Risk
+Compliance Risk      20%
       +
-Timeline Risk
+Duplicate Risk       15%
       +
-Document Risk
-      +
-Image Risk
-      +
-Duplicate Risk
-      +
-Graph Risk
+Graph/Agency Risk    20%
       ↓
-TOTAL RISK
+TOTAL RISK (0–100)
 ```
 
-Example:
+Example, using the real vendor-concentration case:
 
 ```text
-PROJECT RISK = 84/100
+PROJECT RISK = 79/100
 
-Financial        21
-Timeline         17
-Image            19
-Document         12
-Graph            15
+Financial (payment structuring pattern)   24
+Graph (vendor concentration, 10x 99th pctile)  20
+Compliance (works below Rs.2.5L threshold)     18
+Timeline                                        9
+Duplicate                                       8
 ```
 
 ---
@@ -671,11 +653,11 @@ The AI must answer:
 
 It should retrieve the actual structured evidence.
 
-Example:
+Example, using only real-data signals:
 
-> “The project has a risk score of 84 because expenditure is 31% above comparable projects, reported completion is 146 days late, and two submitted images are highly similar to evidence from another project.”
+> "This vendor has a risk score of 79 because it received 119 payments from a single MP — roughly 10x the volume of the 99th-percentile vendor across the entire Lok Sabha dataset — with unusually uniform amounts (~₹20,000 each, minimal variance), a pattern consistent with fund structuring below scrutiny thresholds."
 
-Every statement should link back to evidence.
+Every statement should link back to a real, queryable data point — no invented evidence.
 
 ---
 
@@ -687,23 +669,23 @@ Examples:
 
 ### Query
 
-> Show high-risk projects where spending is above 80% but physical progress is below 50%.
+> Show works where disbursed amount is above 80% of sanctioned but status is still "In Progress."
 
 ### Query
 
-> Why is Project X high risk?
+> Why is this vendor high risk?
 
 ### Query
 
-> Show projects with repeated completion certificates.
+> Which MPs have the highest share of works below the ₹2.5 lakh sanction threshold?
 
 ### Query
 
-> Which vendors are associated with the most high-risk projects?
+> Which vendors are associated with the most high-risk works?
 
-### Query
+### Query (deferred — needs document data)
 
-> What evidence should I verify for this case?
+> ~~Show projects with repeated completion certificates.~~ *Not possible until Document Intelligence ships — no certificate data exists yet.*
 
 The LLM should query structured data rather than hallucinate.
 
@@ -833,81 +815,78 @@ This is more meaningful for an investigation-prioritization system.
 A powerful development tool:
 
 ```text
-REAL PROJECT
+REAL WORK RECORD
      ↓
-ATTACK GENERATOR
-     ├── Inflate cost
-     ├── Duplicate image
-     ├── Change date
-     ├── Delay milestone
-     ├── Alter amount
-     ├── Duplicate document
-     └── Create payment anomaly
+ATTACK GENERATOR (structured-data only — MVP scope)
+     ├── Inflate cost vs. category median
+     ├── Change recommend→sanction date gap
+     ├── Delay completion beyond 1 year
+     ├── Alter amount below Rs.2.5L threshold (splitting)
+     ├── Duplicate work description in same constituency
+     └── Create artificial vendor-payment concentration
      ↓
 AI
      ↓
 Can it detect the attack?
 ```
 
-This can become a strong SIH demo.
+("Duplicate image" / "Duplicate document" attacks removed — deferred along with the modules they'd test.) This can become a strong SIH demo precisely because every attack type above is something the AI can actually be shown catching, live, on real data.
 
 ---
 
-# 28. Recommended MVP AI Stack
+# 28. Recommended MVP AI Stack *(real-data only)*
 
 ## Must build
 
 ### Financial
 
-- Robust statistics
+- Robust statistics (Modified Z-score / MAD)
 - Isolation Forest
+- Vendor concentration analysis (already validated — see §19 note)
 
 ### NLP
 
-- Sentence embeddings
-- Similarity search
+- Sentence embeddings (Sentence-BERT / all-MiniLM-L6-v2)
+- Similarity search over work descriptions
 
-### Documents
+### Compliance
 
-- OCR
-- Structured extraction
-- Cross-document rules
-
-### Vision
-
-- Image embeddings
-- Perceptual hashing
-- Controlled asset classification
-- Metadata/GPS validation
+- Deterministic rule engine against MPLADS Guidelines 2023 thresholds (₹2.5L minimum, 45-day sanction SLA, 1-year completion norm, SC/ST quotas, prohibited categories)
 
 ### Timeline
 
-- Rule-based delay
-- Simple prediction model
+- Rule-based delay detection (recommend→sanction, sanction→completion gaps)
+- Simple prediction model (optional, if time allows)
 
 ### Risk
 
-- Weighted aggregation
-- Explainable reason generator
+- Weighted aggregation (5 components, see §20)
+- Explainable reason generator — plain-language, cites the actual data field that triggered each flag
 
 ---
 
-# 29. Strong Bonus
+# 29. Strong Bonus *(if time allows, still real-data only)*
 
 ### Graph
 
-- NetworkX
-- Neo4j if useful
+- NetworkX — HHI-style agency/vendor concentration scoring
+- Full bipartite graph visualization in the dashboard
 
 ### AI Copilot
 
-- LLM + retrieval
-- SQL/function calling
+- LLM + retrieval over the structured risk-engine output (not raw documents — none exist yet)
+- SQL/function calling against the cleaned CSVs
 
-### Advanced CV
+---
 
-- stage classification
-- image consistency
+# 29b. Phase 2 / Future *(explicitly out of SIH MVP scope)*
+
+- Document Intelligence (OCR, cross-document consistency, forgery signals) — needs real document data MoSPI doesn't currently expose
+- Image Verification (reuse detection, GPS/timestamp checks, progress-stage CV, manipulation signals) — needs real image data MoSPI doesn't currently expose
+- Advanced predictive risk models requiring longer historical time series
+- Satellite imagery cross-verification
+
+State this plainly in the pitch as a roadmap item, not a gap in your team's ability — the data simply isn't public yet.
 
 ---
 
@@ -939,40 +918,41 @@ Confidence / uncertainty
 # 31. Final AI Architecture
 
 ```text
-                    MPLADS DATA
+              MPLADS DATA (structured CSVs, real)
                          │
-              ┌──────────┴──────────┐
-              ↓                     ↓
-       STRUCTURED DATA          DOCUMENTS
-              │                     │
-              ↓                     ↓
-       FEATURE ENGINE           OCR / NLP
-              │                     │
-              └──────────┬──────────┘
+                         ↓
+                  FEATURE ENGINE
+                         │
                          ↓
                ┌──────────────────┐
                │   AI ENGINES     │
                │                  │
                │ Financial        │
                │ Timeline         │
-               │ Duplicate        │
-               │ Document         │
-               │ Vision           │
-               │ Graph            │
-               │ Prediction       │
+               │ Compliance Rules │
+               │ Duplicate (NLP)  │
+               │ Graph (Vendor/   │
+               │   Agency HHI)    │
+               │ Prediction ⭐    │
                └────────┬─────────┘
                         ↓
                   RISK ENGINE
                         ↓
               EXPLANATION ENGINE
                         ↓
-                  AI COPILOT
+                AI COPILOT ⭐
                         ↓
                  OFFICER UI
                         ↓
                   CASE OUTCOME
                         ↓
                     FEEDBACK
+
+   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+   🔮 Phase 2 (not wired in until real data exists):
+   DOCUMENTS → OCR/NLP → Document AI ─┐
+   IMAGES    → CV       → Vision AI  ─┴→ feeds into RISK ENGINE above
+   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
 ```
 
 ---

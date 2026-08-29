@@ -3,11 +3,15 @@
 > **This is the curated project definition.**  
 > A new team member should be able to read this document and understand exactly what the project is, what is in scope, what is not, and how the system works.
 
+> **⚠️ Scope Lock:** We verified the real MPLADS export (12 CSVs, 45,806 rows after cleaning) contains no images and no document content — the "Image" field in Works Completed is a text placeholder, not actual image data. Every section below involving Document or Image Intelligence is marked `[DEFERRED — Phase 2]` and is *not* part of the SIH MVP. This keeps this doc consistent with `MPLADS_Sentinel_Custom_AI_Specification.md`, `SIH26102_Complete_Knowledge_Base.md`, and the PPT content bank.
+
 ---
 
 # 1. 🎯 One-Line Definition
 
-> **MPLADS Sentinel is an AI-powered evidence and risk-intelligence layer for MPLADS/eSAKSHI that continuously verifies project claims, financial activity, documents, images and progress, and prioritizes potentially irregular works for investigation.**
+> **MPLADS Sentinel is an AI-powered evidence and risk-intelligence layer for MPLADS/eSAKSHI that continuously verifies project claims, financial activity, and progress against real MPLADS data, and prioritizes potentially irregular works for investigation.**
+
+*(Document/image verification dropped from the MVP definition — no real document or image data exists in the current export. See §10–11 for the Phase 2 version of this claim.)*
 
 ---
 
@@ -27,15 +31,15 @@ The existing digital ecosystem records these activities, but there is a major in
 
 > **How do we automatically determine whether the information being reported is internally consistent and supported by evidence?**
 
-Examples:
+Examples — ✅ = detectable with real data now, 🔮 = needs data we don't have:
 
-- Project claims 90% completion but only 55% physical progress is visible.
-- ₹90 lakh has been spent while only 50% of the work appears complete.
-- Two projects have nearly identical descriptions and locations.
-- The same photograph appears in multiple projects.
-- A completion certificate contradicts the expenditure ledger.
-- A vendor appears unusually frequently across high-risk projects.
-- A project is repeatedly delayed or its budget repeatedly revised.
+- ✅ ₹90 lakh has been spent while status still shows "In Progress," never "Completed."
+- ✅ Two works have nearly identical descriptions in the same MP's constituency.
+- ✅ A vendor appears unusually frequently, receiving many small, uniform payments across a single MP's works — this pattern is already confirmed in our real data (see §18).
+- ✅ A work is repeatedly delayed against the guideline's 45-day sanction SLA or 1-year completion norm.
+- 🔮 Project claims 90% completion but only 55% physical progress is visible. *(needs image data)*
+- 🔮 The same photograph appears in multiple projects. *(needs image data)*
+- 🔮 A completion certificate contradicts the expenditure ledger. *(needs document data)*
 
 ---
 
@@ -157,40 +161,34 @@ A future citizen transparency layer can expose safe project-status information w
 
 # 7. 📝 Project Blueprint
 
-Every project is converted into a structured object.
+Every project is converted into a structured object. Fields marked `🔮` are not in the real data — this is the full target model, not the MVP.
 
 ## Identity
 
-- Project ID
+- Project ID (Work ID)
 - MP
 - State
 - Constituency
-- District
-- Location
-- GPS
 - Work category
 - Work description
 - Implementing Agency
+- 🔮 District, Location, GPS — real data only has State + Constituency
 
 ## Budget
 
-- Total planned amount
+- Recommended amount
 - Sanctioned amount
-- Component budgets
-- Milestone budgets
-- Commitments
-- Payments
-- Verified expenditure
+- Disbursed amount (from Expenditure records)
+- 🔮 Component budgets, milestone budgets, commitments — not in real data
 
 ## Timeline
 
-- Planned start
-- Planned completion
-- Milestones
-- Dependencies
-- Actual dates
+- Recommended date
+- Sanction date
+- Completion date (where status = "Completed")
+- 🔮 Milestones, dependencies — not in real data; timeline intelligence in the MVP runs on these three dates only
 
-## Evidence
+## Evidence `[DEFERRED — Phase 2, see Scope Lock]`
 
 Each milestone specifies:
 
@@ -218,61 +216,50 @@ PAID
 VERIFIED
 ```
 
-It checks:
+It checks — ✅ real-data MVP, 🔮 deferred:
 
-- sanctioned vs paid
-- planned vs sanctioned
-- expenditure velocity
-- unusual payment amounts
-- payment timing
-- vendor concentration
-- repeated payments
-- duplicate payments
-- component overspending
-
----
-
-# 9. ⏱️ Timeline Intelligence
-
-Every project has:
-
-### Planned timeline
-
-```text
-Foundation
-Jan 1–10
-
-Structure
-Jan 11–30
-
-Electrical
-Feb 1–10
-```
-
-### Actual timeline
-
-```text
-Foundation
-Jan 4–17
-
-Structure
-Jan 25–Feb 20
-
-Electrical
-Feb 25–...
-```
-
-The system calculates:
-
-- delay
-- milestone slippage
-- dependency violations
-- stalled work
-- predicted completion risk
+- ✅ sanctioned vs disbursed
+- ✅ recommended vs sanctioned
+- ✅ expenditure velocity
+- ✅ unusual payment amounts (statistical outliers)
+- ✅ payment timing (clustering, uniformity)
+- ✅ vendor concentration — already validated on real data (§18)
+- 🔮 duplicate payments (needs invoice-level detail beyond what's exported)
+- 🔮 component overspending (needs component-level budget, not in real data)
 
 ---
 
-# 10. 📄 Document Intelligence
+# 9. ⏱️ Timeline Intelligence *(MVP — using the three real dates only)*
+
+Real data gives us three dates per work: Recommended date, Sanction date, Completion date. No milestone-level schedule exists, so the MVP works at the whole-work level, not sub-task level.
+
+### What we can actually calculate
+
+```text
+Recommend → Sanction gap     (flag if > 45 days, guideline SLA)
+Sanction → Completion gap    (flag if > 1 year, guideline norm)
+Status = "In Progress" for far longer than the norm, with high disbursement
+```
+
+### 🔮 Deferred — needs milestone-level data we don't have
+
+```text
+Foundation: Jan 1–10 planned vs. Jan 4–17 actual
+Structure: Jan 11–30 planned vs. Jan 25–Feb 20 actual
+```
+
+The system calculates, on real data:
+
+- recommend→sanction delay
+- sanction→completion delay
+- stalled work (high disbursement, non-"Completed" status)
+- 🔮 milestone slippage, dependency violations — need milestone data
+
+---
+
+# 10. 📄 Document Intelligence `[DEFERRED — Phase 2, no real document data]`
+
+Kept here as the designed target for when document data becomes available. Not part of the SIH MVP — see Scope Lock at top.
 
 Documents are not merely stored.
 
@@ -327,9 +314,9 @@ not:
 
 ---
 
-# 11. 📸 Image Intelligence
+# 11. 📸 Image Intelligence `[DEFERRED — Phase 2, no real image data]`
 
-This is one of the main differentiators.
+Kept here as the designed target for when image data becomes available. Not part of the SIH MVP — see Scope Lock at top. (This section was previously pitched as "one of the main differentiators" — that claim now belongs to §18/Graph Intelligence instead, which *is* real and already validated.)
 
 ## Problems we want to detect
 
@@ -355,7 +342,9 @@ This is one of the main differentiators.
 
 ---
 
-# 12. 🧠 Visual Progress Verification
+# 12. 🧠 Visual Progress Verification `[DEFERRED — Phase 2, no real image data]`
+
+Kept as designed target only. Not part of the SIH MVP.
 
 For suitable project categories:
 
@@ -384,25 +373,25 @@ Not:
 
 # 13. 🔗 Evidence Graph
 
-Every claim links to its evidence.
+Every claim links to its evidence. `🔮` = Phase 2, not in real data.
 
 ```text
-PROJECT
+WORK
  ↓
-MILESTONE
+CLAIM (financial/timeline, from real fields)
  ↓
-CLAIM
+🔮 DOCUMENT
  ↓
-DOCUMENT
- ↓
-IMAGE
+🔮 IMAGE
  ↓
 PAYMENT
  ↓
-PERSON / AGENCY
+VENDOR / AGENCY
  ↓
-LOCATION
+🔮 LOCATION (GPS) — real data only gives State/Constituency
 ```
+
+For the SIH MVP, this graph is: **Work → Claim (cost/timeline/compliance) → Payment → Vendor/Agency**. The Document/Image/GPS layers are the Phase 2 extension.
 
 This allows an officer to go from:
 
@@ -416,54 +405,48 @@ to:
 
 # 14. 🕸️ Graph Intelligence
 
-Entities:
+Entities — real-data MVP:
 
 ```text
 MP
-PROJECT
-DISTRICT
-AGENCY
-OFFICER
+WORK
+STATE / CONSTITUENCY
+AGENCY (IDA)
 VENDOR
 PAYMENT
-DOCUMENT
-IMAGE
-LOCATION
 ```
 
-Detect:
+`🔮 Deferred`: OFFICER, DOCUMENT, IMAGE, precise LOCATION/GPS — none exist in real data.
 
-- vendor concentration
-- repeated entities
-- suspicious clusters
-- unusual agency patterns
-- reused evidence
-- connected vendors/accounts where data permits
+Detect — already validated on real data:
+
+- **Vendor concentration**: "Ajay Kumar Singh" — 119 payments from a single MP, ~10x the 99th-percentile vendor across the entire Lok Sabha expenditure dataset, with unusually uniform payment amounts. This is your strongest, fully-real demo case.
+- Agency concentration by state/constituency
+- Suspicious work-description clusters (text similarity)
+- 🔮 reused evidence, connected accounts — needs document/image data
 
 ---
 
 # 15. 🔥 Core Risk Signals
 
-The first version should prioritize:
+The first version should prioritize — ✅ = real-data MVP, 🔮 = deferred:
 
-1. Cost anomaly
-2. Timeline anomaly
-3. Financial-physical mismatch
-4. Duplicate project similarity
-5. Duplicate image/evidence
-6. Document inconsistency
-7. Location mismatch
-8. Compliance violation
-9. Payment anomaly
-10. Vendor/agency concentration
-11. Repeated budget revisions
-12. Missing evidence
+1. ✅ Cost anomaly
+2. ✅ Timeline anomaly (recommend→sanction, sanction→completion)
+3. ✅ Financial-vs-status mismatch (disbursed % vs. status proxy)
+4. ✅ Duplicate work similarity (text-based, same constituency)
+5. ✅ Compliance violation (guideline thresholds)
+6. ✅ Payment anomaly (amount, timing, uniformity)
+7. ✅ Vendor/agency concentration — already validated on real data
+8. 🔮 Duplicate image/evidence
+9. 🔮 Document inconsistency
+10. 🔮 Location mismatch (needs GPS)
+11. 🔮 Repeated budget revisions (needs version history)
+12. 🔮 Missing evidence (needs document/image data)
 
 ---
 
 # 16. 🧮 Risk Score
-
-Example:
 
 ```text
 Risk Score =
@@ -471,20 +454,21 @@ Risk Score =
 20% Timeline
 20% Compliance
 15% Duplicate Similarity
-10% Graph / Agency
-10% Evidence / Documentation
+20% Graph / Agency
 ```
 
-Example output:
+(Evidence/Documentation component removed from the live formula — deferred, no real evidence data yet. Re-add once Document/Image Intelligence ships in Phase 2.)
+
+Example output, using the real vendor-concentration case:
 
 ```text
-RISK SCORE: 84 / 100
+RISK SCORE: 79 / 100
 
-Financial anomaly       +21
-Timeline anomaly        +17
-Image inconsistency     +19
-Document inconsistency  +12
-Duplicate evidence      +15
+Financial anomaly (payment structuring)        +24
+Graph/vendor concentration (10x 99th pctile)   +20
+Compliance (works below Rs.2.5L threshold)     +18
+Timeline anomaly                                +9
+Duplicate similarity                            +8
 ```
 
 ---
@@ -519,22 +503,18 @@ It never claims:
 
 # 18. 📊 Real Data We Are Using
 
-Current prototype datasets include:
+Current prototype datasets (verified counts, after stripping the "Grand Total" footer row every raw file contains):
 
-- Works Recommended — Lok Sabha
-- Works Recommended — Rajya Sabha
-- Works Sanctioned — Lok Sabha
-- Works Sanctioned — Rajya Sabha
-- Works Completed — Lok Sabha
-- Works Completed — Rajya Sabha
-- Expenditure — Lok Sabha
-- Expenditure — Rajya Sabha
-- MP Allocated Limit — Lok Sabha
-- MP Allocated Limit — Rajya Sabha
-- Calamity Consent — Lok Sabha
-- Calamity Consent — Rajya Sabha
+| Dataset | Real rows (LS + RS) |
+|---|---:|
+| Works Recommended | 7,000 + 4,000 = 11,000 |
+| Works Sanctioned | 5,000 + 5,000 = 10,000 |
+| Works Completed | 3,000 + 6,000 = 9,000 |
+| Expenditure | 8,000 + 7,000 = 15,000 |
+| Allocated Limit | 543 + 231 = 774 |
+| Calamity Consent | 12 + 20 = 32 |
 
-Total uploaded rows are approximately **51.8k**.
+**Total real rows: 45,806** (corrects the earlier "~51.8k" estimate — that number wasn't computed from the actual cleaned data).
 
 ---
 
@@ -544,26 +524,21 @@ Total uploaded rows are approximately **51.8k**.
 
 Used for:
 
-- actual project analysis
+- actual work analysis
 - historical patterns
 - expenditure analysis
 - recommendation/sanction/completion relationships
-- vendor patterns
+- vendor concentration patterns — already validated (§14, §18)
 
-### Synthetic data
+### Synthetic data — used sparingly, and never for the MVP's core claims
 
-Used only where public data does not expose fields required for a complete demonstration.
+The SIH MVP is built **entirely on real data**. We do not use synthetic data to fill Document/Image/GPS gaps for the core demo — those modules are deferred to Phase 2 instead (see Scope Lock). If a synthetic attack-generator demo is built as a bonus (see the technical build guide's "Synthetic Attack Generator"), it must:
 
-Examples:
+- run only on structured fields we actually have (cost, dates, amounts, vendor payments)
+- be labelled "synthetic" on every screen where it appears
+- never be presented alongside real findings without a clear visual distinction
 
-- detailed payment records
-- milestone records
-- stage-by-stage image metadata
-- detailed invoices
-- GPS
-- inspection outcomes
-
-Synthetic data must always be labelled as synthetic.
+Fields we explicitly do NOT attempt to synthesize for demo purposes: images, documents, GPS, inspection outcomes. These are Phase 2, full stop — not "Phase 2, but faked for now."
 
 ---
 
@@ -573,34 +548,35 @@ Synthetic data must always be labelled as synthetic.
 
 ### Dashboard
 
-- national/state/district view
+- national/state/constituency view
 - risk distribution
-- project list
+- work list
 - risk filtering
 
-### Project page
+### Work page
 
-- project information
-- budget
-- timeline
-- evidence
+- work information (from real fields)
+- budget (recommended/sanctioned/disbursed)
+- timeline (recommend/sanction/completion dates)
 - risk score
 - explanations
+- 🔮 evidence panel — placeholder only, Phase 2
 
 ### AI
 
 - financial anomaly
 - timeline anomaly
-- duplicate project detection
-- document consistency
-- image reuse
-- financial/physical mismatch
+- duplicate work detection (text + constituency, no GPS)
+- financial-vs-status mismatch
+- vendor/agency concentration — already validated on real data
+- 🔮 document consistency — deferred
+- 🔮 image reuse — deferred
 
 ### Governance
 
-- role-based workflow
+- role-based workflow (conceptual for demo)
 - audit trail
-- evidence linkage
+- evidence linkage (structured evidence only — payment/timeline records, not documents/images)
 
 ---
 
@@ -614,7 +590,7 @@ Every AI alert has evidence.
 
 ### 2. Hybrid intelligence
 
-Rules + ML + NLP + CV + Graph.
+Rules + ML + NLP + Graph. (CV dropped from the current differentiator claim — deferred to Phase 2, see Scope Lock.)
 
 ### 3. Lifecycle view
 
@@ -633,25 +609,25 @@ AI prioritizes and explains; authorized officials make final determinations.
 # 22. 🏆 Core Demo
 
 ```text
-12,482 works analyzed
+11,000 real works (Works Recommended, LS+RS)
       ↓
-843 anomalies
+Risk Engine
       ↓
-127 high-risk
+[N] anomalies flagged        ← use your actual pipeline output here, not a placeholder
       ↓
-18 critical
+[N] high-risk
+      ↓
+[N] critical
 ```
 
-Select one:
+Select the real, already-validated case:
 
 ```text
-RISK = 87
+VENDOR: "Ajay Kumar Singh"        RISK = 79
 
-31% cost deviation
-146-day delay
-Similar project nearby
-Agency anomaly
-Evidence gap
+119 payments from a single MP — ~10x the 99th-percentile vendor
+Payment amounts unusually uniform (~₹19,992 each, minimal variance)
+Multiple works near the ₹2.5L minimum-sanction threshold
 ```
 
 Then:
@@ -665,14 +641,14 @@ Risk
  ↓
 Reason
  ↓
-Document
+Payment record (real data)
  ↓
-Image
+Work / Vendor / Agency
  ↓
-Payment
- ↓
-Project event
+Original expenditure row
 ```
+
+`[Phase 2]`: extend this drill-down to Document/Image evidence once that data exists — not part of the MVP demo.
 
 Then:
 
@@ -683,21 +659,23 @@ Then:
 # 23. Technical Architecture
 
 ```text
-                  MPLADS / eSAKSHI
+                  MPLADS / eSAKSHI (structured CSVs, real)
                          ↓
                    DATA INGESTION
                          ↓
                   DATA NORMALIZATION
                          ↓
-                  PROJECT DATA MODEL
+                  WORK DATA MODEL
                          ↓
                  ┌───────┼────────┐
                  ↓       ↓        ↓
-               RULES    ML       AI/CV
-                 ↓       ↓        ↓
+               RULES    ML      NLP
+              (Compliance)  (Financial/  (Duplicate
+                          Timeline)    detection)
                  └───────┼────────┘
                          ↓
                     GRAPH LAYER
+                    (Vendor/Agency HHI)
                          ↓
                     RISK ENGINE
                          ↓
@@ -706,6 +684,12 @@ Then:
                  OFFICER DASHBOARD
                          ↓
                    CASE MANAGEMENT
+
+   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+   🔮 Phase 2 (not wired in — no real data yet):
+   DOCUMENTS → OCR/NLP  ─┐
+   IMAGES    → CV        ┴→ would feed into RISK ENGINE above
+   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
 ```
 
 ---
@@ -722,4 +706,6 @@ If it can answer that convincingly with real MPLADS data, the core project is su
 
 # 25. One-Sentence Pitch
 
-> **MPLADS Sentinel transforms MPLADS from a system that records project activity into an evidence-driven intelligence system that continuously verifies financial, documentary, visual and operational claims and prioritizes high-risk cases for investigation.**
+> **MPLADS Sentinel transforms MPLADS from a system that records work activity into an evidence-driven intelligence system that continuously verifies financial and operational claims against real data, and prioritizes high-risk cases for investigation — with document and visual verification on the Phase 2 roadmap once that data becomes publicly available.**
+
+*(Trimmed from the original, which claimed "documentary, visual" verification as already built — that's the Phase 2 vision, not the SIH MVP. See Scope Lock at the top of this file.)*

@@ -2,6 +2,8 @@
 
 ## Based on the SIH 2026 Idea Presentation Format
 
+> **⚠️ Scope Lock:** Our real MPLADS export has no images and no document content (the "Image" field in Works Completed is a text placeholder, not an image). Every slide-content block below involving Document/Image/GPS verification is marked `[DEFERRED]` and should NOT be presented as working, demoed functionality — use it only for the "roadmap / future scope" slide content, never the "what we built" slide content. Consistent with `MPLADS_Sentinel_Custom_AI_Specification.md` and `SIH26102_Complete_Knowledge_Base.md`.
+
 > **Purpose:** This is the complete internal content bank for the SIH presentation. It is intentionally much larger than the final six-slide PPT. Nothing here is being aggressively compressed; the team can later select the strongest content for the final submission.
 
 The supplied SIH template has six content slides including the title slide: **Title Page, Idea/Proposed Solution, Technical Approach, Feasibility & Viability, Impact & Benefits, and Research & References.** The template also instructs teams to keep the maximum to six slides, use points/diagrams/infographics/pictures, keep explanations precise, use the provided template, and submit the final file as PDF.
@@ -111,16 +113,16 @@ The core difficulty is not merely collecting this information.
 
 > **An AI-powered verification and risk-intelligence layer for the MPLADS lifecycle that analyzes financial data, timelines, documents, images, locations, relationships and reported progress to identify anomalies and prioritize high-risk cases for investigation.**
 
-The solution should combine:
+The full solution combines:
 
-- deterministic compliance rules
-- statistical anomaly detection
-- machine learning
-- NLP/document intelligence
-- computer vision
-- geospatial validation
-- graph analytics
-- predictive analytics
+- deterministic compliance rules ✅ MVP
+- statistical anomaly detection ✅ MVP
+- machine learning (Isolation Forest, etc.) ✅ MVP
+- graph analytics (vendor/agency concentration) ✅ MVP — already validated on real data
+- NLP/document intelligence — text similarity ✅ MVP, document OCR/parsing 🔮 deferred
+- computer vision 🔮 deferred (no real image data)
+- geospatial validation 🔮 deferred (no GPS in real data — only State/Constituency)
+- predictive analytics ⭐ bonus, time permitting
 - explainable risk scoring
 
 ---
@@ -236,19 +238,18 @@ Each work should have one consolidated project state.
 Example:
 
 ```text
-PROJECT #MPL-004821
+WORK #<Work ID>
 
-Budget                ₹42 L
-Financial Progress    78%
-Physical Progress     54%
-Schedule Variance     +38 days
+Sanctioned Amount     Rs.42 L
+Financial Progress    78%  (disbursed / sanctioned — real field)
+Status Proxy          "In Progress"  (from Work Status field — real)
+Recommend->Sanction   +38 days  (flag if > 45-day guideline SLA)
 
-Documents             19/21 verified
-Evidence              14/17 verified
+Documents             [DEFERRED — no real document data]
+Evidence              [DEFERRED — no real image/evidence data]
 
 AI Risk               82/100
 Status                HIGH RISK
-Current Milestone     Structural Work
 ```
 
 ## Project object can contain
@@ -260,12 +261,12 @@ Current Milestone     Structural Work
 - Constituency
 - State
 - District
-- Location
-- GPS
+- Location (State + Constituency only — no GPS in real data)
 - Work category
 - Work description
-- Beneficiary information where appropriate
 - Implementing Agency
+
+*(GPS and beneficiary information are not present in the real export — drop from MVP identity fields.)*
 
 ### Scope
 
@@ -296,7 +297,7 @@ Current Milestone     Structural Work
 - Actual completion
 - Extensions
 
-### Evidence
+### Evidence `[DEFERRED — none of these fields exist in real data]`
 
 - Documents
 - Images
@@ -391,7 +392,7 @@ Each milestone can have:
 
 ---
 
-# I. Document verification
+# I. Document verification `[DEFERRED — no real document data]`
 
 ## Candidate documents
 
@@ -455,7 +456,7 @@ Detect:
 
 ---
 
-# J. Image verification
+# J. Image verification `[DEFERRED — no real image data]`
 
 ## Problems
 
@@ -570,12 +571,11 @@ Present these as **integrity risk**, not definitive proof of manipulation.
 
 # K. Duplicate project detection
 
-Compare:
+Compare (real fields only — no GPS in our data):
 
 - Work description
 - Category
-- Location
-- GPS
+- State + Constituency (proxy for location, not GPS)
 - MP
 - Agency
 - Amount
@@ -590,7 +590,7 @@ Embedding
     ↓
 Similarity Search
     ↓
-GIS Proximity
+Same State + Constituency check
     ↓
 Cost Similarity
     ↓
@@ -604,12 +604,14 @@ Example output:
 ```text
 Possible duplicate
 
-Text similarity       92%
-Location similarity   97%
-Cost similarity       89%
+Text similarity        92%
+Same constituency      yes
+Cost similarity        89%
 
-Overall probability   91%
+Overall probability    91%
 ```
+
+Say "same constituency" out loud in the demo, not "location similarity" — we don't have GPS to back a distance claim.
 
 This should remain a **potential duplicate** signal, not an accusation.
 
@@ -617,19 +619,19 @@ This should remain a **potential duplicate** signal, not an accusation.
 
 # L. Financial–physical mismatch
 
-One of the strongest project-level indicators.
+One of the strongest project-level indicators — and fully buildable on real data using a status proxy instead of visual progress.
 
 ```text
-Financial Progress
+Financial Progress (disbursed / sanctioned, real field)
 ████████████████ 88%
 
-Physical Progress
-██████████       52%
+Status Proxy ("Completed"=100%, "In Progress"=50%, else 0%)
+██████████       50%
 ```
 
 Gap:
 
-> **36 percentage points**
+> **38 percentage points** (label as a status proxy, not verified physical inspection)
 
 Possible interpretation:
 
@@ -643,80 +645,65 @@ Not:
 
 # M. Graph intelligence
 
-## Entities
+## Entities (real-data MVP)
 
 ```text
 MP
-PROJECT
-DISTRICT
-AGENCY
-OFFICER
+WORK
+STATE / CONSTITUENCY
+AGENCY (IDA)
 VENDOR
 PAYMENT
-DOCUMENT
-IMAGE
-LOCATION
 ```
+
+`[DEFERRED to Phase 2]`: OFFICER, DOCUMENT, IMAGE, LOCATION (GPS) — none exist in real data.
 
 ## Relationships
 
 ```text
-MP → recommends → Project
-Project → assigned_to → Agency
+MP → recommends → Work
+Work → assigned_to → Agency
 Agency → uses → Vendor
 Vendor → receives → Payment
-Project → has → Document
-Project → has → Image
-Project → located_at → Location
-Officer → uploads → Evidence
+Work → located_in → State/Constituency
 ```
 
-## Detect
+## Detect — already validated on real data
 
-- vendor concentration
-- repeated entities
-- suspicious clusters
-- shared evidence
-- repeated agencies
-- unusual cross-district relationships
-- related entities where the data supports inference
+- **Vendor concentration**: "Ajay Kumar Singh" — 119 payments from a single MP, ~10x the 99th-percentile vendor across the whole Lok Sabha expenditure dataset. Lead the demo with this.
+- Agency concentration by state/constituency
+- Suspicious work-description clusters (NLP similarity)
 
 ---
 
 # N. Risk engine
 
-All signals feed one risk model.
+All MVP signals feed one risk model. (Document Risk and Image Risk removed — deferred, see Scope Lock.)
 
 ```text
-Proposal Risk
+Financial Risk     25%
       +
-Compliance Risk
+Timeline Risk      20%
       +
-Financial Risk
+Compliance Risk    20%
       +
-Timeline Risk
+Duplicate Risk     15%
       +
-Document Risk
-      +
-Image Risk
-      +
-Duplicate Risk
-      +
-Graph Risk
+Graph Risk         20%
       ↓
-TOTAL RISK
+TOTAL RISK (0-100)
 ```
 
-Example:
+Example, using the real vendor-concentration case:
 
 ```text
-Financial anomaly       +21
-Timeline anomaly        +17
-Image inconsistency     +19
-Document inconsistency  +12
-Graph anomaly           +15
-                         ───
-Risk Score               84/100
+Financial (payment structuring)              +24
+Graph (vendor concentration, 10x 99th pctile) +20
+Compliance (below Rs.2.5L threshold)          +18
+Timeline anomaly                               +9
+Duplicate similarity                           +8
+                                               ───
+Risk Score                                    79/100
 ```
 
 ## Risk bands
@@ -739,19 +726,16 @@ Risk Score               84/100
 
 ## Judge-facing question
 
-> **Why was this project flagged?**
+> **Why was this vendor/work flagged?**
 
-Example:
+Example, using the real vendor-concentration finding:
 
 ```text
-RISK SCORE: 87/100
+RISK SCORE: 79/100
 
-31% cost deviation
-146-day delay
-Financial progress: 88%
-Physical progress: 52%
-Image similarity: 99.4%
-Certificate inconsistency
+119 payments from one MP (10x 99th percentile vendor)
+Payment amounts unusually uniform (~Rs.19,992 each)
+Multiple works below Rs.2.5L minimum threshold
 ```
 
 Drill-down:
@@ -763,12 +747,14 @@ Reason
  ↓
 Claim
  ↓
-Evidence
+Evidence (real data record)
  ↓
-Document / Image / Payment
+Payment / Work / Vendor
  ↓
-Original project event
+Original expenditure row
 ```
+
+`[Phase 2]`: once Document/Image Intelligence ships, the drill-down extends to Document / Image evidence too — not yet.
 
 This is one of the most important differentiators.
 
@@ -816,10 +802,12 @@ Use actual official terminology if later confirmed from the target workflow.
 
 Every alert can be traced to evidence.
 
-## 2. Multimodal verification
+## 2. Multimodal verification `[Phase 2 target — MVP uses Structured Data + Timeline + Payments only]`
 
 ```text
-Structured Data + Documents + Images + Location + Timeline + Payments
+Structured Data + Timeline + Payments  (MVP, real data)
+        +
+Documents + Images + GPS  (Phase 2, once available)
 ```
 
 ## 3. Lifecycle intelligence
@@ -991,21 +979,24 @@ One project card with budget, timeline, evidence and risk.
 # C. AI module architecture
 
 ```text
-                      AI LAYER
+                      AI LAYER (MVP - real data)
                          │
        ┌─────────────────┼─────────────────┐
        ↓                 ↓                 ↓
- Financial AI       Document AI        Vision AI
+ Financial AI      Compliance AI      Duplicate AI (NLP)
        │                 │                 │
        └─────────────────┼─────────────────┘
                          ↓
                      Graph AI
                          ↓
-                  Predictive AI
+                  Predictive AI ⭐ bonus
                          ↓
                     Risk Engine
                          ↓
                  Explanation AI
+
+  [Phase 2, not wired in]: Document AI ─┐
+  [Phase 2, not wired in]: Vision AI   ─┴→ would feed into Risk Engine once real data exists
 ```
 
 ---
@@ -1068,7 +1059,7 @@ Use for:
 
 ---
 
-# F. Document AI
+# F. Document AI `[DEFERRED — no real document data]`
 
 ```text
 PDF / Image
@@ -1090,7 +1081,7 @@ Potential output:
 
 ---
 
-# G. Computer Vision
+# G. Computer Vision `[DEFERRED — no real image data]`
 
 ## Image verification pipeline
 
@@ -1146,29 +1137,24 @@ Outputs:
 
 # I. Graph AI
 
-## Nodes
+## Nodes (real-data MVP)
 
 - MP
-- project
-- district
+- work
+- state / constituency
 - agency
 - vendor
-- officer
 - payment
-- document
-- image
-- location
+
+`[DEFERRED]`: officer, document, image, location (GPS)
 
 ## Edges
 
 - recommends
 - assigned_to
-- executed_by
 - paid_to
-- uploaded_by
-- located_at
-- supported_by
-- similar_to
+- located_in
+- similar_to (text-based, not GPS)
 
 ## Signals
 
@@ -1208,26 +1194,20 @@ IF image distance > configured threshold
 # K. Risk aggregation
 
 ```text
-Proposal Risk
+Financial Risk    25%
       +
-Compliance Risk
+Timeline Risk     20%
       +
-Financial Risk
+Compliance Risk   20%
       +
-Timeline Risk
+Duplicate Risk    15%
       +
-Document Risk
-      +
-Image Risk
-      +
-Duplicate Risk
-      +
-Graph Risk
+Graph Risk        20%
       ↓
-Weighted Risk Score
+Weighted Risk Score (0-100)
 ```
 
-Weights should be configurable.
+(Document Risk and Image Risk removed — deferred, see Scope Lock at top of file.) Weights should be configurable.
 
 ---
 
@@ -1304,11 +1284,20 @@ The current prototype data includes:
 11. Calamity Consent — Lok Sabha
 12. Calamity Consent — Rajya Sabha
 
-Approximate total rows in the uploaded CSV set:
+Verified total rows after cleaning (stripping the "Grand Total" footer row every raw file contains):
 
-> **~51.8k rows**
+> **45,806 real rows** (corrects the earlier "~51.8k" estimate, which wasn't computed from the actual cleaned data)
 
-Use the exact files as the baseline for prototype analysis.
+| Dataset | LS + RS |
+|---|---:|
+| Works Recommended | 7,000 + 4,000 = 11,000 |
+| Works Sanctioned | 5,000 + 5,000 = 10,000 |
+| Works Completed | 3,000 + 6,000 = 9,000 |
+| Expenditure | 8,000 + 7,000 = 15,000 |
+| Allocated Limit | 543 + 231 = 774 |
+| Calamity Consent | 12 + 20 = 32 |
+
+Use the cleaned, merged files (`/data/MPLADS_*.csv`) as the baseline for prototype analysis — not the raw uploads, which still contain the footer row and comma-formatted amount strings.
 
 ---
 
@@ -1350,69 +1339,62 @@ Important implementation note:
 
 # P. Prototype screens
 
-Candidate screens:
+Candidate screens — ✅ = real-data MVP, 🔮 = Phase 2 (needs document/image data):
 
-1. National dashboard
-2. State dashboard
-3. District heatmap
-4. Risk leaderboard
-5. Project digital twin
-6. Financial analytics
-7. Timeline view
-8. Document viewer
-9. Image verification
-10. Duplicate evidence viewer
-11. Graph view
-12. Risk explanation
-13. Investigation case
-14. AI Audit Copilot
+1. ✅ National/state dashboard
+2. ✅ District/agency risk leaderboard
+3. ✅ Work digital twin (financial + timeline + risk, no document/evidence panel)
+4. ✅ Financial analytics
+5. ✅ Timeline view
+6. ✅ Vendor/agency graph view
+7. ✅ Risk explanation (real-signal based)
+8. ✅ Investigation case
+9. ⭐ AI Audit Copilot (bonus, structured-data queries only)
+10. 🔮 Document viewer
+11. 🔮 Image verification
+12. 🔮 Duplicate evidence viewer (image-based)
 
 ---
 
 # Q. Demo flow
 
-## Demo project
+## Demo case (real, already validated — lead with this)
 
-> Community Hall — District X
+> Vendor "Ajay Kumar Singh" — 119 works, one MP (Babu Singh Kushwaha), Uttar Pradesh
 
 ## AI finds
 
 ```text
-Cost deviation       ⚠️
-Timeline delay       ⚠️
-Image inconsistency  ⚠️
-Financial mismatch   ⚠️
-Document mismatch    ⚠️
+Vendor concentration     ⚠️  10x the 99th-percentile vendor
+Payment uniformity       ⚠️  ~Rs.19,992 each, minimal variance
+Threshold circumvention  ⚠️  many works near the Rs.2.5L minimum
 ```
 
 ## Risk
 
-> **87 / 100 — HIGH**
+> **79 / 100 — HIGH**
 
 ## Why?
 
 ```text
-31% cost deviation
-146-day delay
-Image similarity: 99.4%
-Financial progress: 88%
-Physical progress: 52%
-Certificate inconsistency
+119 payments vs. 99th-percentile vendor's 12 payments
+Std dev of just Rs.808 on a Rs.19,566 average payment
+Total Rs.23.3L funneled in small, uniform tranches
 ```
 
 ## Evidence drill-down
 
 Show:
 
-- original image
-- similar image
-- document
-- expenditure record
-- timeline event
+- the actual expenditure rows (real CSV data, not mocked)
+- the vendor-concentration chart across all Lok Sabha vendors
+- the MP's other works, for context
 
 ## Final action
 
 > **Create Investigation Case**
+
+`[Phase 2]`: once Document/Image Intelligence ships, extend the drill-down to certificates and site photos for this same case — not available today.
 
 ---
 
@@ -1623,31 +1605,20 @@ An unusual project is not necessarily fraudulent.
 
 ---
 
-# F. Image verification challenge
+# F. Image verification challenge `[Currently: fully deferred, not a "which categories" question]`
 
-Not all work categories are equally suitable for visual stage detection.
+The real challenge isn't category suitability — it's that **no image data exists in the current public MPLADS export at all** (verified: the "Image" field in Works Completed is a text placeholder, not an image, link, or file).
 
-## MVP strategy
+## For SIH
 
-Start with controlled project categories where:
+Don't build this module. State it plainly as a roadmap item: *"the current eSAKSHI export doesn't expose image content — this is Phase 2 once that data is opened up."*
 
-- expected asset is clear
-- stages are visually distinguishable
-- evidence images are available
+## Phase 2, once real image data exists
 
-Use:
-
-- metadata
-- GPS
-- timestamp
-- image similarity
-- controlled visual classification
-
-Future:
-
-- stronger multimodal models
-- satellite imagery
-- field verification integrations
+- metadata / GPS / timestamp checks
+- image similarity (perceptual hashing, embeddings)
+- controlled visual classification, starting with categories where the expected asset is clear and stages are visually distinguishable
+- stronger multimodal models, satellite imagery, field verification integrations (further out)
 
 ---
 
@@ -1767,23 +1738,22 @@ CANONICAL DATA
 A strong development and demo mechanism:
 
 ```text
-REAL PROJECT
+REAL WORK RECORD
      ↓
-ATTACK GENERATOR
-     ├── Inflate cost
-     ├── Duplicate image
-     ├── Change date
-     ├── Alter amount
-     ├── Fake progress
-     ├── Duplicate document
-     └── Location mismatch
+ATTACK GENERATOR (structured-data only)
+     ├── Inflate cost vs. category median
+     ├── Change recommend->sanction date gap
+     ├── Alter amount below Rs.2.5L threshold (splitting)
+     ├── Delay completion beyond 1-year norm
+     ├── Duplicate work description in same constituency
+     └── Artificial vendor-payment concentration
      ↓
 AI DETECTOR
      ↓
 DETECTION RESULT
 ```
 
-This allows the team to demonstrate that the system can detect controlled anomalies without falsely claiming real-world fraud labels.
+("Duplicate image," "duplicate document," "location mismatch" attacks removed — deferred along with the modules they'd test.) This allows the team to demonstrate that the system can detect controlled anomalies without falsely claiming real-world fraud labels.
 
 ---
 
@@ -1791,15 +1761,16 @@ This allows the team to demonstrate that the system can detect controlled anomal
 
 | Component | SIH MVP | Production |
 |---|---|---|
-| MPLADS dataset ingestion | ✅ | ✅ |
+| MPLADS dataset ingestion (real, 45,806 rows) | ✅ | ✅ |
 | Risk engine | ✅ | ✅ |
 | Financial anomaly | ✅ | ✅ |
-| Duplicate detection | ✅ | ✅ |
-| Document AI | Prototype | ✅ |
-| Image similarity | Prototype | ✅ |
-| GPS verification | Prototype | ✅ |
-| Visual stage detection | Limited | Advanced |
-| Graph intelligence | Prototype | Advanced |
+| Compliance rule engine | ✅ | ✅ |
+| Duplicate detection (text-based, no GPS) | ✅ | ✅ |
+| Vendor/agency graph (HHI) | ✅ — already validated on real data | Advanced |
+| Document AI | 🔮 Deferred — no real document data available | ✅ (once data available) |
+| Image similarity | 🔮 Deferred — no real image data available | ✅ (once data available) |
+| GPS verification | 🔮 Deferred — no coordinates in real data | ✅ (once data available) |
+| Visual stage detection | 🔮 Deferred | Advanced |
 | Live eSAKSHI integration | Simulated | Authorized integration |
 | PFMS integration | Simulated | Authorized integration |
 | National scale | Demonstration | Future |
