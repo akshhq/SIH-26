@@ -1,0 +1,14 @@
+# GitHub Pages Configuration
+title: "MPLADS Sentinel (रक्षक)"
+description: "AI-Powered Multi-Source Surveillance & Risk Intelligence Platform for MPLADS"
+theme: ""
+
+# Explicitly exclude submodule directories, dependencies and large bundles from build
+exclude:
+  - MPLADS-Sentinel
+  - node_modules
+  - vendor
+  - .venv
+  - venv
+  - "New folder"
+  - New_folder
