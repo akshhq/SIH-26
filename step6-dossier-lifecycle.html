@@ -153,11 +153,21 @@
 
     <!-- Section 2: Evidence Card & PDF Dossier Standard -->
     <div class="content-box">
-      <h2 class="section-title"><i data-lucide="file-text" style="color:#818cf8;"></i> Tamper-Evident SHA-256 PDF Audit Dossier Standard</h2>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <h2 class="section-title" style="margin-bottom:0;"><i data-lucide="file-text" style="color:#818cf8;"></i> Tamper-Evident SHA-256 PDF Audit Dossier Standard</h2>
+        <div style="display:flex; gap:10px;">
+          <a href="audit-dossier-template.html" target="_blank" class="btn btn-outline" style="background:rgba(168,85,247,0.15); border-color:rgba(168,85,247,0.4); color:#c084fc;">
+            <i data-lucide="external-link"></i> Open Standalone Legal Report
+          </a>
+          <a href="audit-dossier-template.html" class="btn btn-primary" onclick="window.open('audit-dossier-template.html'); return false;">
+            <i data-lucide="printer"></i> Print / Save as PDF
+          </a>
+        </div>
+      </div>
 
       <div class="grid-2col">
         <div class="card-dark">
-          <h4 style="color:#818cf8; margin-bottom:10px;">Dossier Structure</h4>
+          <h4 style="color:#818cf8; margin-bottom:10px;">Official Dossier Structure</h4>
           <ul style="font-size:0.88rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:8px; margin-left:16px;">
             <li><strong>Executive Case Summary:</strong> Constituency, MP, Agency, Risk Score.</li>
             <li><strong>Statutory Rule Citations:</strong> Direct references to MPLADS Guidelines 2023 §3.4 and GFR 2017 Rules 130/157/238.</li>
@@ -178,6 +188,19 @@
           <p style="font-size:0.82rem; color:#34d399; margin-top:8px;">
             ⚡ Returns exact filtered records and mathematical risk citations in under 2 seconds.
           </p>
+        </div>
+      </div>
+
+      <!-- Live Embedded Legal Report Preview Frame -->
+      <div style="margin-top:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="font-family:var(--font-heading); font-size:1.15rem; color:var(--text-primary);">
+            <i data-lucide="file-check-2" style="color:#c084fc; vertical-align:middle;"></i> Live Interactive Legal Dossier Template (Official MoSPI Format)
+          </h3>
+          <span style="font-family:var(--font-mono); font-size:0.75rem; color:#34d399;">SHA-256 VERIFIED PROVENANCE</span>
+        </div>
+        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; background: white; height: 580px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+          <iframe src="audit-dossier-template.html" style="width: 100%; height: 100%; border: none;"></iframe>
         </div>
       </div>
     </div>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STATUTORY AUDIT DOSSIER — MOSPI/VIG/MPLADS/2026/CR-0842</title>
+
+  <!-- Google Fonts for Print / Document -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --text-dark: #0f172a;
+      --text-muted: #475569;
+      --border-dark: #cbd5e1;
+      --accent-red: #b91c1c;
+      --accent-blue: #1e3a8a;
+      --font-serif: 'Merriweather', serif;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #0b0f19;
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      padding: 30px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Top Action Bar */
+    .action-bar {
+      width: 100%;
+      max-width: 850px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: #1e293b;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      color: white;
+    }
+
+    .btn-print {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-print:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
+
+    .btn-back {
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      border: 1px solid #475569;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-back:hover { background: rgba(255, 255, 255, 0.15); color: white; }
+
+    /* Paper Page Container (Standard A4 Simulation) */
+    .document-page {
+      background: #ffffff;
+      width: 100%;
+      max-width: 850px;
+      min-height: 1100px;
+      padding: 50px 60px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+      border-radius: 4px;
+      position: relative;
+      color: #0f172a;
+      line-height: 1.55;
+      font-size: 13.5px;
+    }
+
+    /* Official Government Header */
+    .gov-header {
+      text-align: center;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .emblem-text {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .ministry-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .division-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 2px;
+    }
+
+    .security-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fee2e2;
+      border: 1px solid #f87171;
+      padding: 6px 14px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent-red);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Metadata Table */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border-dark);
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 12.5px;
+    }
+
+    .meta-row { display: flex; justify-content: space-between; padding: 2px 0; }
+    .meta-label { font-weight: 600; color: #475569; }
+    .meta-val { font-weight: 700; color: #0f172a; font-family: var(--font-mono); }
+
+    /* Section Headings */
+    .doc-section-title {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 4px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Callout Box */
+    .callout-box {
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #b91c1c;
+      background: #fff1f2;
+      padding: 12px 16px;
+      border-radius: 2px;
+      margin: 12px 0;
+      font-size: 12.5px;
+    }
+
+    /* Standard Data Tables */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin: 12px 0;
+    }
+    .doc-table th, .doc-table td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    .doc-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .doc-table tr:nth-child(even) { background: #f8fafc; }
+
+    /* Signature & Seal Block */
+    .seal-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 11.5px;
+    }
+
+    .sign-box { text-align: center; }
+    .sign-line { border-bottom: 1px solid #0f172a; width: 80%; margin: 30px auto 6px; }
+
+    .sha-footer {
+      margin-top: 28px;
+      padding-top: 10px;
+      border-top: 1px solid #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: #64748b;
+      word-break: break-all;
+      text-align: center;
+    }
+
+    /* Print Specific Styles */
+    @media print {
+      body { background: white; padding: 0; }
+      .action-bar { display: none; }
+      .document-page {
+        box-shadow: none;
+        max-width: 100%;
+        width: 100%;
+        padding: 20mm 20mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Bar for in-browser viewing -->
+  <div class="action-bar">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <a href="step6-dossier-lifecycle.html" class="btn-back"><i data-lucide="arrow-left"></i> Return to Step 6 Deep Dive</a>
+      <span style="font-weight:700; font-size:0.9rem;">Official Statutory Dossier Template</span>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn-print" onclick="window.print()">
+        <i data-lucide="printer"></i> Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Legal Document Page -->
+  <div class="document-page">
+    
+    <!-- Official Header -->
+    <div class="gov-header">
+      <div class="emblem-text">GOVERNMENT OF INDIA • STATUTORY VIGILANCE AUDIT RECORD</div>
+      <h1 class="ministry-title">Ministry of Statistics and Programme Implementation</h1>
+      <div class="division-title">Data Informatics & Innovation Division (DIID) — MPLADS Sentinel Vigilance Wing</div>
+    </div>
+
+    <!-- Security & Priority Classification -->
+    <div class="security-banner">
+      <span>Classification: CONFIDENTIAL // STATUTORY INQUIRY BRIEF</span>
+      <span>Risk Priority: CRITICAL (CRS 94/100)</span>
+    </div>
+
+    <!-- Master Case Metadata -->
+    <div class="meta-grid">
+      <div>
+        <div class="meta-row"><span class="meta-label">Case Ref. No.:</span><span class="meta-val">MOSPI/VIG/2026/CR-0842</span></div>
+        <div class="meta-row"><span class="meta-label">Target Work ID:</span><span class="meta-val">LS-EXP-2024-8842</span></div>
+        <div class="meta-row"><span class="meta-label">House / State:</span><span>Lok Sabha • Uttar Pradesh</span></div>
+        <div class="meta-row"><span class="meta-label">Constituency:</span><span>Varanasi (PC-77)</span></div>
+      </div>
+      <div>
+        <div class="meta-row"><span class="meta-label">Sanctioned Cost:</span><span class="meta-val">₹24,00,000</span></div>
+        <div class="meta-row"><span class="meta-label">Disbursed Spend:</span><span class="meta-val" style="color:#b91c1c;">₹23,79,048 (99.1%)</span></div>
+        <div class="meta-row"><span class="meta-label">Physical Progress:</span><span class="meta-val" style="color:#b91c1c;">35% (Plinth Only)</span></div>
+        <div class="meta-row"><span class="meta-label">Divergence Gap (&delta;):</span><span class="meta-val" style="color:#b91c1c;">+64.1% (Severe)</span></div>
+      </div>
+    </div>
+
+    <!-- 1. Executive Summary & Action Status -->
+    <h2 class="doc-section-title">1. Executive Case Summary & Vigilance Order</h2>
+    <p>
+      This Statutory Investigation Brief is issued pursuant to automated surveillance triggers generated by the <strong>MPLADS Sentinel Multi-Signal Risk Engine</strong> over official eSAKSHI parliamentary transaction logs. Project <strong>LS-EXP-2024-8842</strong> (<em>"Construction of Boundary Wall & Interlocking Pavers at Community Center"</em>) has scored a Calibrated Composite Risk Score of <strong>94 / 100</strong>, requiring immediate administrative intervention.
+    </p>
+
+    <div class="callout-box">
+      <strong>INTERIM ADMINISTRATIVE ORDER:</strong><br>
+      Pursuant to powers vested under Section 11.2 of the MPLADS Operational Guidelines (Revised 2023), all pending and future milestone disbursements to Implementing Agency <strong>M/s Ajay Kumar Singh Construction</strong> under CNA Account #UP-VAR-091 are hereby <strong>FROZEN WITH IMMEDIATE EFFECT 🔒</strong> pending formal inquiry.
+    </div>
+
+    <!-- 2. Statutory Violations -->
+    <h2 class="doc-section-title">2. Statutory Violations & Rulebook Citations</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Statutory Citation</th>
+          <th>Rule Description</th>
+          <th>Observed Irregularity & Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>GFR 2017 Rule 157</strong> &amp; Guidelines §3.12</td>
+          <td>Prohibition of contractor monopoly &amp; artificial tender splitting</td>
+          <td>Vendor <em>Ajay Kumar Singh</em> cornered <strong>119 payments</strong> from a single MP with uniform ~₹19,992 amounts (10x 99th percentile across Lok Sabha).</td>
+        </tr>
+        <tr>
+          <td><strong>MPLADS Guidelines 2023 §3.4</strong></td>
+          <td>Mandatory milestone-linked fund releases</td>
+          <td><strong>99.1% of funds (₹23.79 L)</strong> disbursed while physical construction verified on ground is only <strong>35%</strong> (Divergence Gap &delta; = +64.1%).</td>
+        </tr>
+        <tr>
+          <td><strong>GFR 2017 Rule 238</strong></td>
+          <td>Mandatory Utilization Certificate (GFR 12-A) submission</td>
+          <td>Project sanctioned &gt;18 months prior; no valid completion certificate or physical measurement book submitted.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 3. Forensic Multi-Signal Analysis -->
+    <h2 class="doc-section-title">3. Forensic Multi-Signal Cross-Dataset Evidence Chain</h2>
+    <p>
+      Cross-examination across 4 independent MoSPI datasets confirms coordinated irregularities:
+    </p>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Source Dataset</th>
+          <th>Record Identifier</th>
+          <th>Observed Data Point</th>
+          <th>Anomaly Flag</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Works Recommended (LS)</td><td>REC-UP-VAR-8842</td><td>Sanction recommended on 12-Jan-2024</td><td>Priced at 2.4x historical district median</td></tr>
+        <tr><td>Works Sanctioned (LS)</td><td>SANC-UP-VAR-8842</td><td>Sanction approved on 14-Jan-2024 (2 days)</td><td>0-Day rubber-stamped SLA anomaly</td></tr>
+        <tr><td>Expenditure as on Date (LS)</td><td>VCH-2024-001 to 052</td><td>52 Installments of ~₹19,992 each</td><td>Installment structuring below ₹20k threshold</td></tr>
+        <tr><td>Works Completed (LS)</td><td>CMP-UP-VAR-8842</td><td>Status: "Completed" (Null Photo Field)</td><td>Physical progress mismatch (&delta; = +64.1%)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4. On-Site GPS Field Verification -->
+    <h2 class="doc-section-title">4. Ground Field Verification Report (GPS & Visuals)</h2>
+    <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px 14px; border-radius:4px; font-size:12px; margin-bottom:10px;">
+      <div><strong>Inspecting Officer:</strong> Shri Rajesh Sharma, Field Verification Officer (ID: FVO-UP-041)</div>
+      <div><strong>Inspection Timestamp:</strong> 24-August-2026, 14:32:10 IST</div>
+      <div><strong>Registered Project Coordinates:</strong> <code>25.3176° N, 82.9739° E</code> | <strong>Verified Distance:</strong> 42 meters (&le;250m Geofence Passed)</div>
+      <div><strong>Verified Structural Rung:</strong> Plinth Level Only (Boundary wall unconstructed; paver blocks absent).</div>
+    </div>
+
+    <!-- 5. Formal Legal Recommendations -->
+    <h2 class="doc-section-title">5. Authorized Legal Directions & Recommendations</h2>
+    <ol style="margin-left: 20px; font-size: 12.5px; line-height: 1.6;">
+      <li><strong>Recovery of Public Funds:</strong> Initiate immediate proceedings under the Public Demands Recovery Act for <strong>₹15,40,000</strong> in unspent advances drawn without structural progress.</li>
+      <li><strong>Contractor Debarment:</strong> Blacklist M/s Ajay Kumar Singh Construction from participating in all central/state MPLADS tenders for a period of 3 years.</li>
+      <li><strong>Departmental Inquiry:</strong> Forward case file to the State Vigilance Directorate and CAG Principal Accountant General (Audit) for comprehensive forensic inquiry.</li>
+    </ol>
+
+    <!-- Signatures and Stamp -->
+    <div class="seal-block">
+      <div class="sign-box">
+        <div style="font-weight:700; color:#475569;">INVESTIGATION OFFICER</div>
+        <div class="sign-line"></div>
+        <div style="font-weight:700;">(Dr. Anand V. Prakash)</div>
+        <div style="color:#64748b;">Director, Vigilance & Forensic Oversight, MoSPI</div>
+      </div>
+      <div class="sign-box">
+        <div style="font-weight:700; color:#475569;">STATUTORY AUDIT CONTROLLER</div>
+        <div class="sign-line"></div>
+        <div style="font-weight:700;">(Smt. Meenakshi Sundaram, IA&AS)</div>
+        <div style="color:#64748b;">Principal Accountant General / Nodal Officer</div>
+      </div>
+    </div>
+
+    <!-- Cryptographic Hash Footer -->
+    <div class="sha-footer">
+      DIGITALLY VERIFIED STATUTORY AUDIT RECORD • GENERATED VIA MPLADS SENTINEL PLATFORM<br>
+      SHA-256 HASH: <code>e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</code><br>
+      VERIFICATION URL: <code>https://mplads.mospi.gov.in/sentinel/verify/MOSPI-VIG-2026-CR-0842</code>
+    </div>
+
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
