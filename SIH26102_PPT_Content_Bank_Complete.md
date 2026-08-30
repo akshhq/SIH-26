@@ -10,6 +10,41 @@ The supplied SIH template has six content slides including the title slide: **Ti
 
 ---
 
+# 🌟 EXECUTIVE 6-SLIDE QUICK PITCH (PLAIN-ENGLISH & AUDIENCE-FRIENDLY)
+> *Use this section for fast rehearsals, pitch scripts, and explaining the project to non-technical judges in under 2 minutes.*
+
+### 🎙️ SLIDE 1: The Title & Core Idea
+* **Project Name:** **MPLADS Sentinel (रक्षक)**
+* **The Problem Statement:** SIH26102 — AI Surveillance & Risk Intelligence for MPLADS (MoSPI DIID).
+* **The Simple Analogy:** *"e-SAKSHI is like a government receipt book; MPLADS Sentinel is the smart detective checking if the money was actually spent properly and if the building truly exists."*
+
+### 🎙️ SLIDE 2: The Big Problem & Our Fix
+* **The Problem:** Over ₹23,000 Crore is spent across India for local development, but e-SAKSHI cannot automatically tell if one contractor is secretly winning all projects, if a project was paid 88% while only 30% is built, or if 52 micro-installments were paid on one work ID to evade open tenders.
+* **Our Solution:** Sentinel connects directly to cloud data and continuously audits **45,806 real public records** across 12 datasets, ranking every work on an objective 0–100 Risk Score so officers know which 2% need immediate investigation.
+
+### 🎙️ SLIDE 3: How the 21-Module AI Works (In Simple Terms)
+* **1. Statutory Rule Checker:** Flags banned luxury/religious assets, outside-area caps (>₹25L), and mandatory SC/ST quota deficits.
+* **2. Price Outlier Math:** Uses machine learning (*Isolation Forest*) to catch works priced 2x higher than similar projects in the same district.
+* **3. Language AI (*Sentence-BERT*):** Spots duplicate or ghost projects by comparing project descriptions across neighboring wards.
+* **4. Contractor Network Graph (*NetworkX*):** Uncovers contractor monopolies and bid-rigging rings.
+
+### 🎙️ SLIDE 4: How We Prevent False Alarms
+* **The '2-Signal Rule':** A project **CANNOT enter Critical Risk from a single minor delay**. It strictly requires at least **two independent confirmatory red flags** before raising a Critical Alert.
+* **Physical–Financial Divergence Gap ($\delta$):** Flags when $(\%\text{ Money Disbursed}) - (\%\text{ Physical Completion}) > 35\%$.
+* **Transparent Reasons:** No black-box AI guesses; Sentinel shows the exact voucher numbers, contractor names, and rule citations.
+
+### 🎙️ SLIDE 5: 7-Role Institutional Governance & On-Site Action
+* **Strict Role Access:** 7 Roles (System Admin, MoSPI Officer, State Nodal, MP, Implementing Agency, Vigilance Investigator, Field Officer). Zero public self-registration.
+* **Instant Action:** When a work is Critical, Sentinel **freezes disbursals** and dispatches a Field Officer to capture live, GPS-stamped site photos.
+* **1-Click Legal PDF Dossier:** Automatically generates an auditor-ready investigation brief with an unalterable SHA-256 digital fingerprint.
+
+### 🎙️ SLIDE 6: Real-World Savings & Impact
+* **Public Money Saved:** In a state with ₹500 Crore annual funds, catching just **3% leakage saves ₹15 Crore every year** — enough to construct 150+ new rural health sub-centers.
+* **80% Faster Audits:** Replaces blind random sample inspections with an instant priority queue of high-risk projects.
+* **Zero Proprietary Cost:** 100% open-source, cloud-native architecture.
+
+---
+
 # SLIDE 1 — TITLE PAGE
 
 ## Official information
@@ -976,28 +1011,51 @@ One project card with budget, timeline, evidence and risk.
 
 ---
 
-# C. AI module architecture
+# C. Master 21-Module AI Engine Architecture
 
 ```text
-                      AI LAYER (MVP - real data)
-                         │
-       ┌─────────────────┼─────────────────┐
-       ↓                 ↓                 ↓
- Financial AI      Compliance AI      Duplicate AI (NLP)
-       │                 │                 │
-       └─────────────────┼─────────────────┘
-                         ↓
-                     Graph AI
-                         ↓
-                  Predictive AI ⭐ bonus
-                         ↓
-                    Risk Engine
-                         ↓
-                 Explanation AI
-
-  [Phase 2, not wired in]: Document AI ─┐
-  [Phase 2, not wired in]: Vision AI   ─┴→ would feed into Risk Engine once real data exists
+                               21-MODULE AI GRID (5 ANALYTICAL DOMAINS)
+                                                  │
+    ┌───────────────────────────┬─────────────────┼─────────────────┬───────────────────────────┐
+    ↓                           ↓                 ↓                 ↓                           ↓
+1. COMPLIANCE               2. FINANCIAL      3. ENTITY/GRAPH   4. EVIDENCE (PHASE 2)       5. GOVERNANCE/XAI
+• Mod 3: Proposal AI        • Mod 5: Cost AI  • Mod 9: SBERT Dup• Mod 11: Document OCR      • Mod 17: Risk Fusion
+• Mod 4: Statutory Rules    • Mod 6: Timeline • Mod 10: Vendor  • Mod 12: Doc Similarity   • Mod 18: XAI Explanations
+• 15% SC / 7.5% ST Quotas   • Mod 7: Payments • Mod 15: NetworkX• Mod 13: CV pHash/CLIP    • Mod 19: PDF Dossier
+• Banned Assets Lexicon     • Mod 8: Gap (δ)  • Cartel HHI >2500• Mod 14: GPS Haversine    • Mod 20: Audit Copilot RAG
+                            • Mod 16: Predict                   • >250m Geofence Breach     • Mod 21: Active Feedback
+    └───────────────────────────┴─────────────────┬─────────────────┴───────────────────────────┘
+                                                  ↓
+                                       CALIBRATED RISK FUSION
+                                    (Weighted 0–100 + Δ_multiplier)
+                                                  ↓
+                                   6-ROLE RBAC & INVESTIGATION QUEUE
+                                    (MoSPI, SNA, MP, IA, Inv, Field)
 ```
+
+### Complete 21-Module AI Mapping
+1. **Module 1 (Data Quality AI)**: Schema type enforcement, missing identifier checks, exact duplicate hash deduplication.
+2. **Module 2 (Entity Resolution AI)**: Hierarchical matching (`Exact -> Secondary -> Semantic Cosine > 0.88`) across 12 CSVs.
+3. **Module 3 (Proposal Intelligence)**: Pre-sanction price benchmarking & category admissibility scoring.
+4. **Module 4 (Statutory Compliance AI)**: Deterministic guideline checks (outside-constituency ₹25L caps, ₹50L repair caps, SC/ST quotas).
+5. **Module 5 (Cost Anomaly AI)**: Isolation Forest & Local Outlier Factor detecting unit-rate inflations.
+6. **Module 6 (Timeline Intelligence)**: Chronological state machine monitoring 45-day sanction and 1-year completion SLAs.
+7. **Module 7 (Financial Intelligence)**: Multi-installment structuring (52x) & exact duplicate ledger row flags (172 LS / 354 RS).
+8. **Module 8 (Physical-Financial Divergence AI)**: Calculates divergence gap $\delta = (\text{Disbursed}/\text{Sanctioned}) - \text{Physical Progress}$.
+9. **Module 9 (Duplicate / Split Work AI)**: SBERT (`all-MiniLM-L6-v2`) semantic duplicate detection and sub-₹10L work-splitting.
+10. **Module 10 (Vendor Intelligence)**: Fuzzy contractor name clustering (Jaro-Winkler) and Herfindahl-Hirschman Index (HHI).
+11. **Module 11 (Document Intelligence - Phase 2)**: PaddleOCR extraction from scanned bills, sanction letters, and measurement books.
+12. **Module 12 (Document Similarity AI - Phase 2)**: Document layout fingerprinting detecting reused certificates across works.
+13. **Module 13 (Visual Verification AI - Phase 2)**: Perceptual hashing (pHash/dHash) and CLIP embeddings detecting photo reuse.
+14. **Module 14 (Geospatial Intelligence - Phase 2)**: Haversine distance validation flagging EXIF GPS geofence breaches (>250m).
+15. **Module 15 (Graph Intelligence)**: NetworkX bipartite graph analytics identifying IDA=Vendor self-dealing and cartels.
+16. **Module 16 (Predictive Risk AI)**: Survival analysis / Ridge regression forecasting probability of chronic stalling.
+17. **Module 17 (Risk Fusion Engine)**: Multi-signal confirmation matrix requiring $\ge 2$ severe signals for Critical Risk (+15 multiplier).
+18. **Module 18 (Explanation Engine)**: Attribution trees and plain-English summaries citing specific source datasets and rule clauses.
+19. **Module 19 (Investigation Dossier Generator)**: Automated compiler producing tamper-evident PDF briefs with SHA-256 hashes.
+20. **Module 20 (MoSPI Audit Copilot)**: Grounded natural-language query interface with statutory RAG (Guidelines 2023, GFR 2017).
+21. **Module 21 (Active Feedback & Learning - Phase 2)**: Bayesian weight recalibration learning from auditor investigation outcomes.
+
 
 ---
 

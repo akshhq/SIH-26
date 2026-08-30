@@ -1,8 +1,147 @@
-# Ignore New_folder directory and all its contents
+# ====================================================================
+# SIH 2026 / MPLADS Sentinel — Root .gitignore
+# ====================================================================
+
+# --------------------------------------------------------------------
+# Dependencies & Package Managers
+# --------------------------------------------------------------------
+node_modules/
+*/node_modules/
+.pnp/
+.pnp.*
+package-lock.json.backup
+
+# --------------------------------------------------------------------
+# Python Virtual Environments & Caches
+# --------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# --------------------------------------------------------------------
+# Compressed Archives & Large Media / Audio Bundles
+# --------------------------------------------------------------------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.iso
+*.wav
+*.ogg
+*.mp3
+*.mp4
+*.mkv
+MPLADS-Sentinel.zip
+
+# --------------------------------------------------------------------
+# Environment Secrets & Credentials
+# --------------------------------------------------------------------
+.env
+.env.*
+*.env
+!.env.example
+!.env.local.example
+!.env.template
+!.env.*.example
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+
+# --------------------------------------------------------------------
+# Build & Compiled Outputs
+# --------------------------------------------------------------------
+.next/
+*/.next/
+out/
+*/out/
+build/
+*/build/
+dist/
+*/dist/
+.open-next/
+*.tsbuildinfo
+
+# --------------------------------------------------------------------
+# Uploads, Temporary, Scratch & Cache Folders
+# --------------------------------------------------------------------
 New_folder/
 New_folder/**
+New folder/
+"New folder/"
+uploads/*
+!uploads/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
+temp/
+*/temp/
+tmp/
+*/tmp/
+*.tmp
+*.temp
+.cache/
+*/.cache/
+.turbo/
 
-# Virtual Environment & Python cache
-.venv/
-__pycache__/
-*.pyc
+# --------------------------------------------------------------------
+# Logs & Process Dumps
+# --------------------------------------------------------------------
+logs/
+*/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+pm2.log
+*.pid
+
+# --------------------------------------------------------------------
+# Local Databases & SQLite
+# --------------------------------------------------------------------
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+dump.rdb
+
+# --------------------------------------------------------------------
+# OS & System Junk Files
+# --------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# --------------------------------------------------------------------
+# IDE & Editor Configurations
+# --------------------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~

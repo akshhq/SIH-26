@@ -21,6 +21,9 @@ Coordinated multi-MP calamity consent timing — several MPs consenting within a
 Year-end fund-dumping — abnormal spike in sanctions/expenditure near financial year-end
 Cross-year Work ID irregularities — one Work ID spanning two financial years, obscuring when money actually moved
 
+
+
+
 Needs additional eSAKSHI access or external data (not possible from current files alone):
 
 Reused/duplicate photos across different works — needs actual image files, not just filenames (found in CAG case: same photo reused for 65 works)

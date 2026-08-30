@@ -1,180 +1,482 @@
-# MPLADS Sentinel — Custom AI Specification
+# MPLADS Sentinel — Complete AI Module & Implementation Specification
 
-> **Purpose:** Complete specification of what the custom AI system should do, which AI technique should be used, what inputs it needs, what outputs it produces, and what is realistically achievable for SIH.
-
----
-
-## ⚠️ Scope Lock — read this before anything else
-
-We checked the real eSAKSHI/MPLADS export we're actually building on (12 CSVs, ~52k rows: Works Recommended/Sanctioned/Completed, Expenditure, Allocated Limits, Calamity Consent). It contains **no images and no document content** — the only trace of "evidence" is a text placeholder (`"Images"`) in one column, not an actual image, link, or file.
-
-**Consequence:** Document Intelligence (Module 6, 7) and Image Verification (Module 8, checks A–F) cannot run on real data. Building them anyway means demoing entirely synthetic images/documents and hoping no judge asks "is this real?" — that's a credibility risk, not a differentiator.
-
-**Decision:** these modules move to **Phase 2 / Future** in this spec. Every section below that depends on them is marked `[DEFERRED]`. The MVP AI stack (Section 28) has been rewritten to only include what real data supports. This keeps the spec internally consistent with `SIH26102_Complete_Knowledge_Base.md` §27 (MUST / BONUS / FUTURE) and `MPLADS_Sentinel_Curated_Project_Definition.md`.
+> **Purpose:** Master technical documentation for the AI, analytics, cross-dataset intelligence, computer-vision, graph, prediction, risk-fusion, and explainability capabilities of MPLADS Sentinel.
+>
+> **Primary design principle:** Sentinel is an intelligence and investigation-prioritization layer over MPLADS/eSAKSHI data. It should identify unusual patterns, connect evidence across datasets, explain why a case is risky, and recommend what a human auditor should verify. It must not autonomously declare a person or project fraudulent.
 
 ---
 
-# 1. AI Philosophy
+## 1. System Objective
 
-The project should not use one AI model for everything.
+MPLADS Sentinel should answer four questions:
 
-Use:
+1. **What is unusual?** — anomaly detection
+2. **Why is it unusual?** — evidence-backed explanation
+3. **How serious is it?** — calibrated risk score
+4. **What should be investigated first?** — investigation prioritization
 
-> **Rules for certainty + ML for patterns + NLP/LLMs for language + Computer Vision for images + Graph AI for relationships + Prediction for future risk.**
+The uploaded project specification explicitly recommends a hybrid approach rather than one model for everything:
 
-Architecture:
+- Rules for deterministic compliance
+- ML/statistics for numerical patterns
+- NLP/embeddings for descriptions and documents
+- Computer Vision for images
+- Graph intelligence for relationships
+- Prediction for future risk
+- Explanation AI for evidence-backed outputs
+
+This architecture is already reflected in the project's Custom AI Specification.
+
+---
+
+# 2. Data Foundation
+
+## 2.1 Uploaded datasets
+
+The current project contains these major structured datasets:
+
+### Lok Sabha
+- Works Recommended
+- Works Sanctioned
+- Works Completed
+- Expenditure on Completed and On-going Works
+- Allocated Limit for Hon'ble MPs
+
+### Rajya Sabha
+- Works Recommended
+- Works Sanctioned
+- Works Completed
+- Expenditure on Completed and On-going Works
+- Allocated Limit for Hon'ble MPs
+
+These datasets should be ingested into a normalized internal schema.
+
+## 2.2 Canonical entity
+
+The most important entity is the **Work ID**.
+
+A Work ID should be treated as the primary lifecycle key wherever it is present and reliable.
+
+Conceptually:
 
 ```text
-                 MPLADS AI
-                     │
-      ┌──────────────┼──────────────┐
-      ↓              ↓              ↓
- Financial AI     Document AI     Vision AI
-      │              │              │
-      └──────────────┼──────────────┘
-                     ↓
-                  Graph AI
-                     ↓
-              Predictive AI
-                     ↓
-                Risk Engine
-                     ↓
-             Explanation AI
+RECOMMENDED
+     |
+     v
+SANCTIONED
+     |
+     v
+EXPENDITURE
+     |
+     v
+COMPLETED
+     |
+     +---- DOCUMENTS
+     |
+     +---- IMAGES
+     |
+     +---- PAYMENTS
+```
+
+The same Work ID should therefore produce a single **Work Intelligence Profile**.
+
+## 2.3 Entity resolution
+
+Not every dataset will always match perfectly.
+
+Build an entity-resolution layer that can match using:
+
+### Exact keys
+- Work ID
+- Payment/reference ID
+- Certificate/reference number
+
+### Secondary keys
+- MP
+- constituency
+- district
+- state
+- implementing agency / IDA
+- vendor
+- amount
+- dates
+
+### Semantic keys
+- work description
+- project category
+- location text
+
+### Matching confidence
+
+Every non-exact match should carry:
+
+```text
+match_confidence
+match_method
+matched_fields
+unmatched_fields
+```
+
+Never silently merge uncertain records.
+
+---
+
+# 3. AI Module Map
+
+| # | Module | Main purpose | Core techniques | Priority |
+|---|---|---|---|---|
+| 1 | Data Quality AI | Validate and normalize input data | Rules, statistics | Critical |
+| 2 | Cross-Dataset Entity Intelligence | Join the same real-world work/entity across datasets | Entity resolution, rules, fuzzy matching | Critical |
+| 3 | Proposal Intelligence | Detect suspicious proposals | NLP + statistics | Critical |
+| 4 | Compliance Intelligence | Check statutory rules | Deterministic rules + NLP | Critical |
+| 5 | Cost Anomaly AI | Find unusual costs | Robust statistics, Isolation Forest, LOF | Critical |
+| 6 | Timeline Intelligence | Detect/predict delays | Rules + ML | Critical |
+| 7 | Financial Intelligence | Detect payment/fund anomalies | Statistics + rules + ML | Critical |
+| 8 | Financial–Physical Intelligence | Compare money spent to actual progress | Ratios, anomaly scoring | Critical |
+| 9 | Duplicate / Split-Work AI | Detect duplicate, overlapping and split works | Embeddings + GIS + amount/time | Critical |
+| 10 | Vendor Intelligence | Detect vendor concentration and unusual patterns | Statistics + graph | Critical |
+| 11 | Document Intelligence | Extract and verify document information | OCR + NLP/LLM | Critical |
+| 12 | Document Similarity AI | Detect reused/duplicated documents | Fingerprints + embeddings | High |
+| 13 | Image Evidence Verification AI | Verify project images | CV + metadata + embeddings | Critical |
+| 14 | Geospatial Intelligence | Check spatial consistency | GIS + distance/proximity | High |
+| 15 | Graph Intelligence | Detect relationship/network anomalies | NetworkX/graph ML | High |
+| 16 | Predictive Risk AI | Forecast future problems | ML | High |
+| 17 | Risk Fusion Engine | Combine signals into one investigation priority | Weighted aggregation | Critical |
+| 18 | Explanation Engine | Explain every alert | Evidence retrieval + attribution | Critical |
+| 19 | Investigation Dossier Generator | Create auditor-ready case briefs | Templates + LLM/RAG | Critical |
+| 20 | Audit Copilot | Query the structured intelligence layer | LLM + SQL/function calling/RAG | High |
+| 21 | Feedback & Learning | Learn from audit outcomes | Feedback data + recalibration | Future |
+
+---
+
+# 4. Module 1 — Data Quality AI
+
+## Objective
+
+Ensure that the data entering the AI engine is trustworthy enough to analyze.
+
+## Responsibilities
+
+### Schema validation
+- Required columns
+- Data types
+- Date formats
+- Numeric fields
+- Identifier formats
+
+### Missing-data analysis
+Detect:
+- missing Work ID
+- missing vendor
+- missing amount
+- missing dates
+- missing location
+- missing completion information
+
+### Duplicate record detection
+Detect:
+- exact duplicate rows
+- repeated Work IDs
+- duplicate payment references
+- suspicious repeated records
+
+### Normalization
+Normalize:
+- vendor names
+- agency names
+- district names
+- state names
+- constituency names
+- dates
+- currency/amount formats
+
+Example:
+
+```text
+"M/S ABC Construction"
+"ABC CONSTRUCTION"
+"M/s. A.B.C Construction"
+```
+
+should be candidates for the same normalized vendor entity.
+
+## Output
+
+```json
+{
+  "data_quality_score": 91,
+  "missing_fields": [],
+  "duplicate_records": 12,
+  "normalization_warnings": 4
+}
 ```
 
 ---
 
-# 2. AI Module Map
-
-| Module | Purpose | Technique | Priority |
-|---|---|---|---|
-| Compliance AI | Check rules/guidelines | Rules + NLP | 🔥 MVP |
-| Cost AI | Detect unusual estimates | ML/statistics | 🔥 MVP |
-| Timeline AI | Detect/predict delays | rules + ML | 🔥 MVP |
-| Duplicate AI | Find similar projects (text-based, no GIS/images) | NLP + embeddings | 🔥 MVP |
-| Financial AI | Detect payment anomalies | statistics/ML | 🔥 MVP |
-| Graph AI | Detect network anomalies (vendor/agency concentration) | graph algorithms/ML | 🔥 MVP — already validated on real data (see §17 note) |
-| Prediction AI | Forecast risk | ML | ⭐ Bonus |
-| Audit Copilot | Explain/query cases (over structured data only) | LLM + structured retrieval | ⭐ Bonus |
-| Proposal AI | Evaluate proposal anomalies | NLP + statistics | ⭐ Bonus — mostly overlaps Cost AI + Duplicate AI |
-| Document AI | Understand documents | OCR + NLP/LLM | 🔮 **[DEFERRED — no real document data]** |
-| Image AI | Verify visual evidence | CV | 🔮 **[DEFERRED — no real image data]** |
-| Evidence AI | Cross-check claims across docs/images | multimodal reasoning | 🔮 **[DEFERRED — depends on Document AI + Image AI]** |
-
----
-
-# 3. AI Module 1 — Proposal Intelligence *(⭐ Bonus, not MVP)*
-
-> This module is really Cost AI (§5) + Duplicate AI (§7) applied at the recommendation stage instead of the sanctioned stage. Don't build it as a separate pipeline — reuse those two modules and just run them earlier in the lifecycle if time permits. Listed here for completeness only.
+# 5. Module 2 — Cross-Dataset Entity Intelligence
 
 ## Objective
 
-Evaluate a proposal before or around sanction, using the same cost-comparison and description-similarity logic as Modules 3 and 5.
+Create a unified view of each project and its associated entities across all datasets.
 
-## Inputs available in real data
+This is a **core module** and should not be hidden inside Duplicate AI.
 
-- Work description, Work category, State, IDA, Recommended amount, Recommended date
+## Primary entities
 
-## Inputs we do NOT have (drop from scope)
+```text
+WORK
+MP
+CONSTITUENCY
+DISTRICT
+STATE
+IDA / AGENCY
+VENDOR
+PAYMENT
+DOCUMENT
+IMAGE
+LOCATION
+```
 
-- District/precise location, GPS coordinates — real data only has State + Constituency, not finer geography
-- "Similar beneficiary" — no beneficiary field exists in the export
+## Core matching
 
-## Output
+### Work-level
+
+```text
+Recommended Work ID
+       ↕
+Sanctioned Work ID
+       ↕
+Expenditure Work ID
+       ↕
+Completed Work ID
+```
+
+### Entity-level
+
+```text
+Vendor
+Agency
+MP
+Location
+Document
+Image
+Payment
+```
+
+## Cross-dataset checks
+
+### Recommendation vs sanction
+
+```text
+recommended_amount
+vs
+sanctioned_amount
+```
+
+### Sanction vs expenditure
+
+```text
+sanctioned_amount
+vs
+total_expenditure
+```
+
+### Expenditure vs completion
+
+```text
+financial_progress
+vs
+completion/physical_progress
+```
+
+### Vendor consistency
+
+Check whether vendor information is consistent across related records.
+
+### Timeline consistency
+
+Compare dates across lifecycle stages.
+
+## Important output
+
+```text
+Work Intelligence Profile
+├── Lifecycle
+├── Financial
+├── Vendor
+├── Agency
+├── Timeline
+├── Location
+├── Documents
+├── Images
+└── Risk signals
+```
+
+---
+
+# 6. Module 3 — Proposal Intelligence
+
+## Objective
+
+Evaluate a proposal before or around sanction.
+
+## Inputs
+
+- work description
+- category
+- state
+- district
+- location
+- recommended amount
+- historical comparable projects
+- guidelines
+
+## Detection
+
+### Cost comparison
+
+Compare proposed amount against similar historical works.
+
+### Description similarity
+
+Find semantically similar projects.
+
+### Duplicate proposal
+
+Compare:
+- location
+- description
+- amount
+- beneficiary
+- category
+- time period
+
+## Techniques
+
+- sentence embeddings
+- cosine similarity
+- statistical benchmarks
+- GIS proximity
+
+## Example
 
 ```text
 Proposal Risk: 63/100
 
 Reasons:
-⚠️ 34% above comparable median (same category, same state)
-⚠️ Description highly similar to Project X (text similarity only — no GPS confirmation available)
+- 34% above comparable median
+- Similar project nearby
+- Description highly similar to historical project
 ```
 
 ---
 
-# 4. AI Module 2 — Compliance Intelligence
+# 7. Module 4 — Compliance Intelligence
 
 ## Objective
 
-Convert MPLADS rules/guidelines into machine-checkable controls.
+Convert MPLADS rules into machine-checkable controls.
 
-## Use two layers
+## Layer A — deterministic rules
 
-### Deterministic rules
+Use for rules that can be represented explicitly.
+
+```text
+IF prohibited_asset = true
+THEN compliance_risk = HIGH
+```
+
+## Layer B — NLP
+
+Use NLP for ambiguous descriptions.
 
 Example:
 
 ```text
-IF work_type = prohibited
-→ Compliance Risk = HIGH
+"Construction of facility for..."
 ```
 
-### NLP
+The NLP layer determines whether the description appears consistent with allowed categories.
 
-For unstructured descriptions:
+## Important
 
-> Does the work description appear consistent with permitted categories?
-
-## Output
+The AI should return:
 
 ```text
-Compliance:
-✓ Location valid
-✓ Required fields present
-⚠️ Work description requires review
+COMPLIANT
+REVIEW
+NON-COMPLIANT
+UNKNOWN
 ```
+
+rather than pretending uncertain cases are certain.
 
 ---
 
-# 5. AI Module 3 — Cost Anomaly Detection
+# 8. Module 5 — Cost Anomaly AI
 
 ## Objective
 
-Detect unusually high/low estimates or expenditure.
+Detect unusually high or low project costs.
 
 ## Features
 
-- sanctioned amount
 - recommended amount
+- sanctioned amount
+- expenditure
 - project category
 - state
 - district
-- work description embedding
-- size/quantity where available
+- description embedding
+- quantity/size where available
 - historical comparable projects
-- implementing agency
+- agency
 - vendor
 
-## Models
+## Techniques
 
-Start simple:
+### Robust Z-score
 
-- Robust Z-score
-- Isolation Forest
-- Local Outlier Factor
+Useful when distributions contain outliers.
 
-Optional:
+### Isolation Forest
 
-- XGBoost for supervised outcomes later
+Unsupervised anomaly detection.
+
+### Local Outlier Factor
+
+Useful for local-density anomalies.
+
+## Benchmarking hierarchy
+
+Prefer:
+
+```text
+Same work category
++
+Same state
++
+Same district
++
+Similar description
++
+Similar scale
+```
+
+over simply comparing all projects nationally.
 
 ## Output
 
 ```text
+Submitted: ₹42L
+Comparable median: ₹30L
+Deviation: +40%
 Cost anomaly: HIGH
-
-Submitted:
-₹42L
-
-Comparable median:
-₹30L
-
-Deviation:
-+40%
 ```
 
 ---
 
-# 6. AI Module 4 — Timeline Intelligence
+# 9. Module 6 — Timeline Intelligence
 
 ## Objective
 
@@ -182,10 +484,12 @@ Detect current delays and predict future delays.
 
 ## Inputs
 
+- recommendation date
+- sanction date
 - planned dates
 - actual dates
 - milestone dates
-- dependencies
+- completion date
 - work status
 - expenditure progression
 
@@ -194,91 +498,217 @@ Detect current delays and predict future delays.
 - late start
 - late milestone
 - stalled work
-- dependency violation
-- unrealistic completion
 - repeated extensions
+- unrealistic completion
+- prolonged inactivity
 
 ## Prediction
 
-> Probability of missing deadline = 81%
+```text
+Probability of missing deadline: 81%
+```
+
+## MVP
+
+Start with rules and simple models.
+
+Do not overbuild deep temporal models without sufficient historical labels.
+
+---
+
+# 10. Module 7 — Financial Intelligence
+
+## Objective
+
+Find unusual payment and expenditure behavior.
+
+## Detection categories
+
+### Amount anomalies
+Unusually large/small payments.
+
+### Timing anomalies
+Payments unusually close to deadlines or milestones.
+
+### Frequency anomalies
+Many payments within a short interval.
+
+### Duplicate payments
+Same/similar:
+- reference
+- amount
+- vendor
+- Work ID
+
+### Split-payment patterns
+Repeated payments around a threshold.
+
+### Vendor concentration
+One vendor receives unusually high share.
+
+### Budget mismatch
+Component-level budget versus spending.
 
 ## Output
 
 ```text
-Timeline Risk: 76
+Financial Risk: HIGH
 
-Current delay:
-38 days
-
-Predicted delay:
-61 days
+Signals:
+- 5 payments in 9 days
+- 3 payments with near-identical amounts
+- vendor receives unusually high district share
 ```
 
 ---
 
-# 7. AI Module 5 — Duplicate Project Detection
+# 11. Module 8 — Financial–Physical Intelligence
 
 ## Objective
 
-Detect multiple projects that may represent the same or substantially overlapping work.
+Detect divergence between money spent and physical progress.
 
-## Inputs (real fields only — no GPS/coordinates in our data)
+## Core calculation
 
-- work description
-- work category
-- State + Constituency (coarse location proxy — not GPS)
-- MP / IDA
-- amount
-- date
+```text
+Financial Progress = expenditure / sanctioned_amount
+
+Physical Progress = reported/computed project progress
+```
+
+Then:
+
+```text
+Divergence = financial_progress - physical_progress
+```
+
+Example:
+
+```text
+Financial: 88%
+Physical: 52%
+
+Gap: 36 percentage points
+```
+
+## Risk
+
+A large unexplained gap should increase investigation priority.
+
+Do not automatically classify it as fraud because legitimate payment structures can create temporary differences.
+
+---
+
+# 12. Module 9 — Duplicate / Split-Work Intelligence
+
+## Objective
+
+Find works that may represent the same, overlapping, or artificially separated activity.
+
+## Detection levels
+
+### Level 1 — exact duplicate
+
+Same Work ID appearing multiple times unexpectedly.
+
+### Level 2 — semantic duplicate
+
+Different Work IDs with highly similar descriptions.
+
+### Level 3 — geographic overlap
+
+Similar works at nearby locations.
+
+### Level 4 — financial similarity
+
+Similar descriptions + similar amounts.
+
+### Level 5 — temporal recurrence
+
+Similar project repeated across years.
+
+### Level 6 — possible split work
+
+Multiple related works that individually sit around a threshold.
 
 ## Pipeline
 
 ```text
 Description
-    ↓
-Embedding (Sentence-BERT)
-    ↓
+   ↓
+Embedding
+   ↓
 Similarity search
-    ↓
-Same State + Constituency check   ← proxy for "location," not true GIS proximity
-    ↓
-Cost similarity
-    ↓
+   ↓
+Location proximity
+   ↓
+Amount similarity
+   ↓
 Time overlap
-    ↓
-Duplicate probability
+   ↓
+Vendor/Agency overlap
+   ↓
+Duplicate/Split probability
 ```
 
-## Output
-
-```text
-Possible duplicate
-
-NLP similarity: 92%
-Same constituency: yes
-Cost similarity: 89%
-
-Overall:
-91%
-```
-
-Be explicit in the demo that "location similarity" here means *same constituency*, not GPS proximity — we don't have coordinates. Don't imply more precision than the data supports.
-
 ---
 
----
-
-## 🔮 DEFERRED BLOCK — Modules 6, 7, 8 (Sections 8–16)
-
-Everything from here to Section 17 (Document Intelligence, Document Similarity, and all six Image Verification checks) is **kept in this document as a designed-but-not-built roadmap**, not part of the SIH MVP. Reason: zero real document or image data exists in the current MPLADS export (see the Scope Lock note at the top of this file). Do not schedule engineering time against these sections unless the team explicitly decides to build a small, clearly-labeled synthetic demo — and if so, say "synthetic" out loud on every slide and screen that shows it.
-
----
-
-# 8. AI Module 6 — Document Intelligence *(🔮 deferred)*
+# 13. Module 10 — Vendor Intelligence
 
 ## Objective
 
-Understand and cross-check project documents.
+Understand vendor behavior across projects, districts and MPs.
+
+## Vendor features
+
+For every normalized vendor calculate:
+
+- number of works
+- total sanctioned value
+- total expenditure
+- number of districts
+- number of constituencies
+- number of MPs
+- number of agencies
+- percentage of district spend
+- percentage of high-risk projects
+- repeated project categories
+
+## Detect
+
+### Vendor concentration
+
+```text
+Vendor A → 71%
+Vendor B → 12%
+Others → 17%
+```
+
+### Cross-district patterns
+
+Same vendor appearing unusually across distant districts.
+
+### Cross-MP patterns
+
+Same vendor repeatedly associated with multiple MPs.
+
+### Work-type concentration
+
+Vendor dominates a particular project category.
+
+### Risk correlation
+
+Vendor repeatedly associated with high-risk works.
+
+Important: these are **investigation signals**, not evidence of wrongdoing by themselves.
+
+---
+
+# 14. Module 11 — Document Intelligence
+
+## Objective
+
+Extract structured information from PDFs, scans, certificates and supporting documents.
 
 ## Pipeline
 
@@ -287,29 +717,29 @@ PDF/Image
    ↓
 OCR
    ↓
-Document Classification
+Document classification
    ↓
-Field Extraction
+Field extraction
    ↓
-Entity Normalization
+Entity normalization
    ↓
-Cross-document Comparison
+Cross-document comparison
 ```
 
 ## Extract
 
-- Project ID
-- Work description
-- Amount
-- Date
-- Authority
-- Agency
-- Milestone
-- Certificate number
-- Vendor
-- Reference numbers
+- Work ID
+- description
+- amount
+- date
+- authority
+- agency
+- vendor
+- milestone
+- certificate number
+- reference numbers
 
-## Cross-check
+## Cross-check chain
 
 ```text
 Sanction
@@ -323,88 +753,151 @@ Payment
 Completion Certificate
 ```
 
-## Output
+## Example
 
-> ⚠️ Completion certificate amount differs from verified expenditure.
+```text
+Completion certificate amount:
+₹24.5L
+
+Verified expenditure:
+₹19.8L
+
+Signal:
+Document/data inconsistency
+```
 
 ---
 
-# 9. AI Module 7 — Document Similarity *(🔮 deferred)*
+# 15. Module 12 — Document Similarity AI
 
-Detect:
+## Objective
+
+Detect reused or suspiciously similar documents.
+
+## Detect
 
 - reused certificates
 - duplicated reports
 - repeated wording
-- template manipulation
 - near-identical documents
+- template manipulation
+- repeated signatures/fields where technically detectable
 
-Methods:
+## Techniques
 
-- text embeddings
-- document fingerprints
+- text fingerprints
+- embeddings
 - similarity search
 - structured field comparison
+- OCR text comparison
 
-Output:
+## Example
 
-> **Potentially reused certificate detected across 7 projects.**
+```text
+Potentially reused certificate
+Similarity: 96%
+Seen across: 7 projects
+```
 
 ---
 
-# 10. AI Module 8 — Image Verification *(🔮 deferred)*
+# 16. Module 13 — Image Evidence Verification AI
 
-Designed in full for the Phase 2 roadmap. Not part of the SIH MVP — see the deferred-block note above §8.
+> **One of the most important modules.**
 
 ## Objective
 
-Determine whether submitted evidence is consistent with:
+Determine whether submitted visual evidence is consistent with:
 
 - project
+- asset type
 - location
 - milestone
-- expected asset
+- expected progress
 - previous evidence
+- image history
 
-## Inputs
+## Critical distinction
 
-- Image
-- Project ID
-- Expected asset
-- GPS
-- Timestamp
-- Milestone
-- Previous images
+The current structured CSV datasets may indicate that images exist, but the CSV itself does not necessarily contain the underlying image pixels.
+
+Therefore:
+
+```text
+CSV image reference
+      ↓
+Evidence repository / eSAKSHI
+      ↓
+Actual image
+      ↓
+Vision AI
+```
+
+Do not claim image analysis is being performed from a text-only image indicator.
 
 ---
 
-# 11. Image Check A — Location *(🔮 deferred)*
+## 16.1 Image Check A — Asset/Description Match
 
 Compare:
 
 ```text
-Project GPS
-      ↓
-Image GPS
-      ↓
-Distance
+Declared:
+"Construction of Community Hall"
+
+Image:
+visual evidence
 ```
+
+Use:
+
+- image embeddings
+- vision-language models
+- controlled asset classifiers
 
 Output:
 
-> ⚠️ Image captured 18.7 km from registered project location.
-
-If metadata is unavailable:
-
-> Location verification unavailable.
-
-Do not fabricate certainty.
+```text
+Asset match: 82%
+Status: REVIEW
+```
 
 ---
 
-# 12. Image Check B — Reuse *(🔮 deferred)*
+## 16.2 Image Check B — AI-Generated Image Risk
 
-Methods:
+Possible signals:
+
+- AI-image detector
+- metadata
+- provenance information where available
+- compression anomalies
+- forensic indicators
+
+Output:
+
+```text
+AI-generation risk: 73%
+Image integrity: REVIEW
+```
+
+### Important rule
+
+Never state:
+
+> "This image is definitely AI-generated."
+
+Use:
+
+> "AI-generation risk detected."
+
+AI-image detection is probabilistic and should be treated as a risk signal.
+
+---
+
+## 16.3 Image Check C — Reused Image Detection
+
+This is a major feature.
 
 ### Perceptual hashing
 
@@ -412,42 +905,91 @@ Good for near-identical images.
 
 ### Image embeddings
 
-Good for visually similar images.
+Good for visually similar images even after transformations.
 
 ### Vector search
 
-Find nearest images across the project database.
-
-Output:
+Search across:
 
 ```text
-Similarity:
-99.4%
+same Work ID
+same vendor
+same district
+same constituency
+same state
+ENTIRE PROJECT DATABASE
+```
+
+Example:
+
+```text
+Similarity: 97.8%
 
 Possible reused evidence.
+
+Previous association:
+Work ID: X
+District: Y
+Date: Z
 ```
 
 ---
 
-# 13. Image Check C — Wrong Asset *(🔮 deferred)*
+## 16.4 Image Check D — Location Verification
 
-Compare expected:
+If EXIF GPS is available:
 
-> Community Hall
+```text
+Project GPS
+    ↓
+Image GPS
+    ↓
+Distance
+```
 
-against visual classification.
+Example:
 
-Potential output:
+```text
+Project location: registered coordinates
+Image location: captured coordinates
 
-> ⚠️ Image appears inconsistent with declared asset type.
+Distance: 18.7 km
 
-This is a risk signal, not a final verdict.
+Signal: location inconsistency
+```
+
+If GPS is absent:
+
+```text
+Location verification: UNAVAILABLE
+```
+
+Never fabricate location certainty.
 
 ---
 
-# 14. Image Check D — Progress *(🔮 deferred)*
+## 16.5 Image Check E — Temporal Consistency
 
-Build project-specific visual stages.
+Compare:
+
+- image capture timestamp
+- upload timestamp
+- milestone date
+- completion date
+- previous image timestamps
+
+Detect:
+
+- image older than claimed milestone
+- repeated image over long periods
+- impossible sequence
+- completion evidence submitted before expected work stage
+
+---
+
+## 16.6 Image Check F — Physical Progress
+
+For supported categories, define a controlled visual taxonomy.
 
 Example:
 
@@ -461,534 +1003,1267 @@ Example:
 7. Completion
 ```
 
-AI estimates an observed stage.
-
-Example:
-
-```text
-Reported stage:
-6 / 7
-
-Visual signal:
-3 / 7
-
-→ Major inconsistency
-```
-
-This is feasible for selected project categories in an MVP if the visual taxonomy is controlled.
-
----
-
-# 15. Image Check E — Temporal Consistency *(🔮 deferred)*
-
 Compare:
 
-- capture time
-- upload time
-- previous evidence
-- milestone dates
+```text
+Reported stage: 6/7
+Visual stage: 3/7
 
-Detect:
+Major inconsistency
+```
 
-- image older than milestone
-- repeated image over long intervals
-- inconsistent sequence
+This should initially be limited to categories where visual progression can be reasonably defined.
 
 ---
 
-# 16. Image Check F — Manipulation Signals *(🔮 deferred)*
+## 16.7 Image Check G — Image Integrity
 
 Potential signals:
 
 - metadata anomalies
-- compression inconsistency
 - editing traces
-- inconsistent regions
+- compression inconsistency
 - duplicated regions
+- inconsistent image regions
 
-Important:
+Output:
 
-> This should be presented as **image integrity risk**, not definitive deepfake detection.
+```text
+Image integrity risk: HIGH
+```
 
-Advanced forensic detection is a future scope item.
+Do not present this as definitive deepfake detection.
 
 ---
 
-# 17. AI Module 9 — Financial Intelligence
+# 17. Module 14 — Geospatial Intelligence
 
 ## Objective
 
-Find unusual financial patterns.
+Use location as an independent evidence dimension.
+
+## Inputs
+
+- project coordinates
+- image GPS
+- district
+- constituency
+- location description
+- nearby projects
 
 ## Detect
 
-### Amount anomalies
+- project/image distance mismatch
+- unusually dense project clusters
+- repeated works at same location
+- nearby potentially duplicate works
+- same vendor/project clusters geographically
 
-Payment unusually large/small.
+## Core calculation
 
-### Timing anomalies
+```text
+distance(project_location, image_location)
+```
 
-Payment unusually close to deadline.
-
-### Frequency anomalies
-
-Many payments in a short time.
-
-### Duplicate payment
-
-Same reference/amount/vendor.
-
-### Split-payment patterns
-
-Many payments just below a threshold.
-
-### Vendor concentration
-
-One vendor receives unusually large share.
-
-### Budget-component mismatch
-
-Component budget ≠ component spending.
+Use geospatial thresholds appropriate to the project category.
 
 ---
 
-# 18. AI Module 10 — Financial vs Status Intelligence *(MVP — redefined for real data)*
+# 18. Module 15 — Graph Intelligence
 
-This should be a core feature — but "Physical Progress %" was originally scoped assuming visual/inspection data we don't have. Redefine using fields that actually exist: `Work Status` (Sanctioned/In Progress/Completed) from `Works_Sanctioned.csv`, cross-referenced with cumulative disbursed amount from `Expenditure.csv`.
+## Objective
 
-Calculate:
+Detect relationships that are difficult to see in tabular data.
+
+## Graph nodes
 
 ```text
-Financial Progress  (disbursed ÷ sanctioned amount)
-vs
-Status Progress     (crude proxy: "Completed" = 100%, "In Progress" = 50%, else 0%)
+MP
+PROJECT
+DISTRICT
+AGENCY
+OFFICER
+VENDOR
+PAYMENT
+DOCUMENT
+IMAGE
+LOCATION
+```
+
+## Graph edges
+
+```text
+MP → recommends → Project
+Project → assigned_to → Agency
+Agency → uses → Vendor
+Vendor → receives → Payment
+Project → has → Document
+Project → has → Image
+Project → located_at → Location
+Officer → uploads → Evidence
+```
+
+## Detect
+
+- highly central vendors
+- repeated entities
+- project clusters
+- shared evidence
+- cross-district relationships
+- unusual vendor/agency networks
+
+## MVP
+
+Use NetworkX.
+
+A graph database such as Neo4j can be added later if needed.
+
+---
+
+# 19. Module 16 — Predictive Risk AI
+
+## Objective
+
+Predict future project risk rather than only identifying existing anomalies.
+
+## Predictions
+
+### Completion risk
+
+```text
+Probability of missing deadline
+```
+
+### Cost overrun risk
+
+```text
+Probability of exceeding sanctioned amount
+```
+
+### Stalling risk
+
+```text
+Probability of becoming inactive
+```
+
+### Evidence risk
+
+```text
+Probability of future evidence inconsistency
+```
+
+## Model strategy
+
+Start with interpretable models.
+
+Do not build complex predictive systems until enough historical training/validation data exists.
+
+---
+
+# 20. Module 17 — Risk Fusion Engine
+
+## Objective
+
+Combine independent signals into one investigation priority.
+
+## Inputs
+
+```text
+Proposal Risk
+Compliance Risk
+Cost Risk
+Financial Risk
+Timeline Risk
+Physical Progress Risk
+Duplicate Risk
+Vendor Risk
+Document Risk
+Image Risk
+Geospatial Risk
+Graph Risk
+Predictive Risk
+```
+
+## Example
+
+```text
+Project Risk = 84/100
+
+Financial       21
+Timeline        17
+Image           19
+Document        12
+Graph           15
+```
+
+## Recommended principles
+
+### Multi-signal confirmation
+
+Avoid making a project critical from a single weak signal.
+
+Example:
+
+```text
+Critical alert:
+at least 2 independent strong signals
+```
+
+This is consistent with the project's existing false-positive mitigation strategy.
+
+### Evidence weighting
+
+Strong direct evidence should receive more weight than weak statistical correlation.
+
+### Uncertainty
+
+Every module should expose:
+
+```text
+score
+confidence
+reason
+evidence
+```
+
+---
+
+# 21. Module 18 — Explanation Engine
+
+## Objective
+
+Answer:
+
+> **Why is this project risky?**
+
+The explanation engine should never invent reasons.
+
+## Evidence chain
+
+```text
+Risk signal
+   ↓
+Underlying feature
+   ↓
+Source record
+   ↓
+Dataset/document/image
+```
+
+## Example
+
+```text
+Project Risk: 84/100
+
+Reasons:
+1. Expenditure is 31% above comparable projects.
+2. Physical progress is significantly below financial progress.
+3. Two submitted images are highly similar to evidence from another project.
+4. Vendor concentration is unusually high.
+```
+
+Every reason should link back to structured evidence.
+
+---
+
+# 22. Module 19 — Investigation Dossier Generator
+
+## Objective
+
+Convert machine findings into an auditor-ready investigation brief.
+
+## Structure
+
+```text
+CASE SUMMARY
+PROJECT PROFILE
+RISK SCORE
+TOP RISK SIGNALS
+FINANCIAL ANALYSIS
+TIMELINE ANALYSIS
+CROSS-DATA INCONSISTENCIES
+VENDOR ANALYSIS
+DUPLICATE ANALYSIS
+DOCUMENT ANALYSIS
+IMAGE ANALYSIS
+GEOSPATIAL ANALYSIS
+RELATED PROJECTS
+EVIDENCE
+RECOMMENDED VERIFICATION STEPS
+MODEL/RULE METADATA
+```
+
+## Important
+
+Use language such as:
+
+> "Requires verification"
+
+rather than:
+
+> "Fraud confirmed."
+
+---
+
+# 23. Module 20 — Audit Copilot
+
+## Objective
+
+Provide natural-language access to the structured intelligence system.
+
+## Example queries
+
+```text
+Show projects where spending exceeds 80%
+but physical progress is below 50%.
+
+Which vendors are associated with the
+most high-risk projects?
+
+Show projects with reused images.
+
+Why is Work X high risk?
+
+Find similar projects near Work X.
+
+Show all projects where recommended and
+sanctioned amounts differ significantly.
+
+What evidence should I verify for this case?
+```
+
+## Architecture
+
+```text
+User question
+     ↓
+Intent detection
+     ↓
+SQL / structured retrieval
+     ↓
+Evidence retrieval
+     ↓
+LLM explanation
+     ↓
+Answer + citations/evidence
+```
+
+The LLM should query structured data instead of inventing database facts.
+
+---
+
+# 24. AI/ML Techniques Required
+
+## 24.1 Classical statistics
+
+Use for:
+
+- medians
+- percentiles
+- ratios
+- deviations
+- robust Z-scores
+- concentration metrics
+- time gaps
+
+Libraries:
+
+```text
+numpy
+pandas
+scipy
+```
+
+---
+
+## 24.2 Unsupervised anomaly detection
+
+Use:
+
+```text
+Isolation Forest
+Local Outlier Factor
+Robust Z-score
+```
+
+Good for the current project because confirmed fraud labels are limited.
+
+---
+
+## 24.3 NLP / Embeddings
+
+Use for:
+
+- project similarity
+- duplicate detection
+- document similarity
+- semantic search
+- description normalization
+
+Candidate approach:
+
+```text
+sentence-transformers
+```
+
+The existing project specification proposes:
+
+```text
+all-MiniLM-L6-v2
+```
+
+for lightweight embeddings.
+
+---
+
+## 24.4 Vector database
+
+Required for:
+
+- project similarity
+- image similarity
+- document similarity
+- RAG
+
+Possible choices:
+
+```text
+FAISS
+Chroma
+Qdrant
+```
+
+For the free/local MVP, FAISS is a strong starting point.
+
+---
+
+# 25. Computer Vision Stack
+
+## Required
+
+### Image hashing
+
+```text
+pHash
+dHash
+aHash
+```
+
+### Image embeddings
+
+Use a pretrained image encoder.
+
+### Vision-language model
+
+Use for:
+
+- image ↔ description consistency
+- asset classification
+- visual reasoning
+
+### OCR
+
+Use for:
+
+- image-based documents
+- certificates
+- scanned evidence
+
+Possible open-source tools:
+
+```text
+Tesseract
+PaddleOCR
+EasyOCR
+```
+
+---
+
+# 26. Image Similarity Architecture
+
+```text
+                IMAGE
+                  |
+        ┌─────────┴─────────┐
+        ↓                   ↓
+   Perceptual Hash      Image Embedding
+        ↓                   ↓
+ Exact/near duplicate    Vector search
+        ↓                   ↓
+        └─────────┬─────────┘
+                  ↓
+          Similarity Engine
+                  ↓
+       Cross-project database
+                  ↓
+          Evidence reuse risk
+```
+
+---
+
+# 27. AI-Generated Image Detection Architecture
+
+```text
+Image
+  ↓
+Metadata/provenance
+  ↓
+Forensic signals
+  ↓
+AI-image detector
+  ↓
+Combined integrity assessment
+  ↓
+AI-generation risk
+```
+
+Output:
+
+```text
+AI-generation risk: 73%
+Confidence: 0.71
+Status: REVIEW
+```
+
+Never equate this with confirmed fraud.
+
+---
+
+# 28. Cross-Dataset + Image Intelligence
+
+This is the strongest combined capability.
+
+For an image:
+
+```text
+Image
+ ↓
+Work ID
+ ↓
+Project
+ ↓
+Vendor
+ ↓
+District
+ ↓
+Other projects
+ ↓
+Historical images
+```
+
+Search:
+
+```text
+Same Work ID
+        +
+Same vendor
+        +
+Same district
+        +
+Same constituency
+        +
+Same state
+        +
+Entire database
+```
+
+Then combine:
+
+```text
+Image similarity
++
+Description similarity
++
+Location proximity
++
+Vendor relationship
++
+Timeline relationship
 ```
 
 Example:
 
 ```text
-Financial: 88%
-Status: "In Progress" → 50% proxy
+Image similarity: 96%
+Description similarity: 91%
+Same vendor: YES
+Same district: YES
+Time gap: 11 months
 
-Gap: 38 percentage points
+Evidence reuse risk: HIGH
 ```
-
-Large unexplained gaps increase risk — this is your "zombie project" signal (high spend, no completion), and it's fully backed by real data. Label the status-proxy honestly in the UI as an approximation, not verified physical progress.
 
 ---
 
-# 19. AI Module 11 — Graph Intelligence
+# 29. Model Training Strategy
 
-## Graph entities *(real-data version — Document/Image/Officer dropped, none exist in our export)*
+## Important
+
+Do **not** claim that Sentinel requires training a new LLM from scratch.
+
+A custom AI system can be built from:
 
 ```text
-MP
-PROJECT (Work)
-STATE / CONSTITUENCY
-AGENCY (IDA)
-VENDOR
-PAYMENT
+Domain rules
++
+Custom features
++
+Pretrained ML models
++
+NLP models
++
+Vision models
++
+Graph algorithms
++
+Risk aggregation
++
+Domain-specific explanation
 ```
 
-## Edges
+The value is the domain-specific intelligence layer.
+
+---
+
+# 30. Training Data Strategy
+
+The project currently lacks reliable fraud labels.
+
+Therefore use:
+
+## Unsupervised learning
+
+For naturally occurring anomalies.
+
+## Synthetic attack generation
+
+Generate controlled examples:
 
 ```text
-MP → recommends → Project
-Project → assigned_to → Agency (IDA)
-Agency → uses → Vendor
-Vendor → receives → Payment
-Project → located_in → State/Constituency
+Inflated cost
+Duplicate payment
+Reused image
+Changed date
+Delayed milestone
+Altered amount
+Duplicate document
+Payment anomaly
 ```
 
-This is the module that's already validated on real data — see the "Ajay Kumar Singh" finding in the technical build guide: 119 near-identical payments to one vendor from one MP, ~10x the 99th-percentile vendor concentration across the whole Lok Sabha expenditure dataset. This is your strongest, fully-real demo case. Lead with it.
+Then test whether the system detects them.
 
-## Detect
+## Historical audit cases
 
-- unusually central vendors
-- repeated entities
-- project clusters
-- shared evidence
-- unusual cross-district relationships
-- possible related entities
+Where available, reproduce known irregularity patterns from audit findings.
 
----
+## Human feedback
 
-# 20. AI Module 12 — Risk Aggregation
-
-All MVP modules feed a common risk engine. (Document Risk and Image Risk removed from the live formula — deferred, see Scope Lock. Re-add them here once real evidence data exists.)
+Eventually record:
 
 ```text
-Financial Risk       25%
-      +
-Timeline Risk        20%
-      +
-Compliance Risk      20%
-      +
-Duplicate Risk       15%
-      +
-Graph/Agency Risk    20%
-      ↓
-TOTAL RISK (0–100)
+Flagged
+↓
+Reviewed
+↓
+Confirmed concern / legitimate
+↓
+Final outcome
 ```
 
-Example, using the real vendor-concentration case:
-
-```text
-PROJECT RISK = 79/100
-
-Financial (payment structuring pattern)   24
-Graph (vendor concentration, 10x 99th pctile)  20
-Compliance (works below Rs.2.5L threshold)     18
-Timeline                                        9
-Duplicate                                       8
-```
+This becomes future training/evaluation data.
 
 ---
 
-# 21. AI Module 13 — Explanation Engine
+# 31. Model Validation
 
-The AI must answer:
+Do not claim:
 
-> **Why is this project risky?**
+> "98% fraud detection accuracy."
 
-It should retrieve the actual structured evidence.
+Instead measure:
 
-Example, using only real-data signals:
+## Rule correctness
 
-> "This vendor has a risk score of 79 because it received 119 payments from a single MP — roughly 10x the volume of the 99th-percentile vendor across the entire Lok Sabha dataset — with unusually uniform amounts (~₹20,000 each, minimal variance), a pattern consistent with fund structuring below scrutiny thresholds."
+Does the rule identify known violations correctly?
 
-Every statement should link back to a real, queryable data point — no invented evidence.
+## Synthetic attack detection
 
----
+Can the system detect injected anomalies?
 
-# 22. AI Module 14 — AI Audit Copilot
+## Ranking quality
 
-This is an interface over the structured system.
+Do known/high-risk cases appear near the top?
 
-Examples:
+## Retrieval quality
 
-### Query
+Are similar projects/documents/images correctly retrieved?
 
-> Show works where disbursed amount is above 80% of sanctioned but status is still "In Progress."
+## Image similarity precision
 
-### Query
+How often are actual reused images among top matches?
 
-> Why is this vendor high risk?
+## False-positive rate
 
-### Query
-
-> Which MPs have the highest share of works below the ₹2.5 lakh sanction threshold?
-
-### Query
-
-> Which vendors are associated with the most high-risk works?
-
-### Query (deferred — needs document data)
-
-> ~~Show projects with repeated completion certificates.~~ *Not possible until Document Intelligence ships — no certificate data exists yet.*
-
-The LLM should query structured data rather than hallucinate.
+How many alerts are legitimate cases?
 
 ---
 
-# 23. AI Module 15 — Predictive Risk
+# 32. Explainability Requirements
 
-Future risk predictions:
-
-### Completion prediction
-
-> Probability of missing deadline.
-
-### Cost overrun prediction
-
-> Probability of exceeding sanctioned amount.
-
-### Stalling prediction
-
-> Probability that a project becomes inactive.
-
-### Evidence risk
-
-> Probability that upcoming milestone submission will be inconsistent.
-
----
-
-# 24. Custom AI Does NOT Need to Mean “Train an LLM From Scratch”
-
-A legitimate custom AI system can be:
-
-```text
-Domain Rules
-+
-Custom Features
-+
-ML Models
-+
-NLP Models
-+
-Vision Models
-+
-Graph Algorithms
-+
-Risk Aggregation
-+
-Domain-Specific Explanation
-```
-
-The value is in the **domain-specific system**, not in training a foundation model from zero.
-
----
-
-# 25. AI 20/80 Split
-
-## AI can accelerate ~20%
-
-AI-assisted development can rapidly generate:
-
-- APIs
-- database models
-- UI
-- preprocessing
-- ML pipelines
-- embedding search
-- OCR pipelines
-- image similarity
-- charts
-- synthetic data
-
-## The team still owns ~80%
-
-Humans must decide:
-
-- what constitutes risk
-- thresholds
-- domain rules
-- evidence requirements
-- acceptable false positives
-- model validation
-- data strategy
-- system architecture
-- governance
-- deployment
-
----
-
-# 26. Model Validation Strategy
-
-Because real fraud labels are limited:
-
-## Do not claim:
-
-> 98% fraud detection accuracy.
-
-Instead validate:
-
-### Rule correctness
-
-Does the rule correctly identify known violations?
-
-### Synthetic attack tests
-
-Create controlled examples:
-
-- duplicate payment
-- reused image
-- inflated amount
-- false progress
-
-### Historical audit cases
-
-Where possible, reproduce patterns from CAG findings.
-
-### Ranking quality
-
-Measure:
-
-> Are known/high-risk cases appearing near the top?
-
-This is more meaningful for an investigation-prioritization system.
-
----
-
-# 27. Synthetic Attack Generator
-
-A powerful development tool:
-
-```text
-REAL WORK RECORD
-     ↓
-ATTACK GENERATOR (structured-data only — MVP scope)
-     ├── Inflate cost vs. category median
-     ├── Change recommend→sanction date gap
-     ├── Delay completion beyond 1 year
-     ├── Alter amount below Rs.2.5L threshold (splitting)
-     ├── Duplicate work description in same constituency
-     └── Create artificial vendor-payment concentration
-     ↓
-AI
-     ↓
-Can it detect the attack?
-```
-
-("Duplicate image" / "Duplicate document" attacks removed — deferred along with the modules they'd test.) This can become a strong SIH demo precisely because every attack type above is something the AI can actually be shown catching, live, on real data.
-
----
-
-# 28. Recommended MVP AI Stack *(real-data only)*
-
-## Must build
-
-### Financial
-
-- Robust statistics (Modified Z-score / MAD)
-- Isolation Forest
-- Vendor concentration analysis (already validated — see §19 note)
-
-### NLP
-
-- Sentence embeddings (Sentence-BERT / all-MiniLM-L6-v2)
-- Similarity search over work descriptions
-
-### Compliance
-
-- Deterministic rule engine against MPLADS Guidelines 2023 thresholds (₹2.5L minimum, 45-day sanction SLA, 1-year completion norm, SC/ST quotas, prohibited categories)
-
-### Timeline
-
-- Rule-based delay detection (recommend→sanction, sanction→completion gaps)
-- Simple prediction model (optional, if time allows)
-
-### Risk
-
-- Weighted aggregation (5 components, see §20)
-- Explainable reason generator — plain-language, cites the actual data field that triggered each flag
-
----
-
-# 29. Strong Bonus *(if time allows, still real-data only)*
-
-### Graph
-
-- NetworkX — HHI-style agency/vendor concentration scoring
-- Full bipartite graph visualization in the dashboard
-
-### AI Copilot
-
-- LLM + retrieval over the structured risk-engine output (not raw documents — none exist yet)
-- SQL/function calling against the cleaned CSVs
-
----
-
-# 29b. Phase 2 / Future *(explicitly out of SIH MVP scope)*
-
-- Document Intelligence (OCR, cross-document consistency, forgery signals) — needs real document data MoSPI doesn't currently expose
-- Image Verification (reuse detection, GPS/timestamp checks, progress-stage CV, manipulation signals) — needs real image data MoSPI doesn't currently expose
-- Advanced predictive risk models requiring longer historical time series
-- Satellite imagery cross-verification
-
-State this plainly in the pitch as a roadmap item, not a gap in your team's ability — the data simply isn't public yet.
-
----
-
-# 30. AI Safety / Governance
-
-The AI must:
-
-- avoid accusing individuals
-- show evidence
-- show uncertainty
-- record model version
-- record rule/model that triggered alert
-- allow human override
-- maintain audit history
-
-Every prediction should have:
+Every AI finding must contain:
 
 ```text
 Model version
 Timestamp
 Input snapshot
 Risk score
-Reasons
-Confidence / uncertainty
+Triggering signals
+Evidence references
+Confidence
+Uncertainty
+```
+
+Example:
+
+```json
+{
+  "risk_score": 84,
+  "model_version": "sentinel-risk-v1.2",
+  "timestamp": "...",
+  "signals": [
+    "financial_physical_gap",
+    "image_similarity",
+    "vendor_concentration"
+  ],
+  "confidence": 0.87
+}
 ```
 
 ---
 
-# 31. Final AI Architecture
+# 33. AI Governance
+
+The system must:
+
+- avoid accusing individuals
+- show evidence
+- show uncertainty
+- record model version
+- record rule/model triggering the alert
+- allow human override
+- maintain an audit history
+
+The human auditor remains the final decision-maker.
+
+---
+
+# 34. Risk Taxonomy
+
+Use a common vocabulary across modules.
 
 ```text
-              MPLADS DATA (structured CSVs, real)
-                         │
-                         ↓
-                  FEATURE ENGINE
-                         │
-                         ↓
-               ┌──────────────────┐
-               │   AI ENGINES     │
-               │                  │
-               │ Financial        │
-               │ Timeline         │
-               │ Compliance Rules │
-               │ Duplicate (NLP)  │
-               │ Graph (Vendor/   │
-               │   Agency HHI)    │
-               │ Prediction ⭐    │
-               └────────┬─────────┘
-                        ↓
-                  RISK ENGINE
-                        ↓
-              EXPLANATION ENGINE
-                        ↓
-                AI COPILOT ⭐
-                        ↓
-                 OFFICER UI
-                        ↓
-                  CASE OUTCOME
-                        ↓
-                    FEEDBACK
+LOW
+MEDIUM
+HIGH
+CRITICAL
+```
 
-   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
-   🔮 Phase 2 (not wired in until real data exists):
-   DOCUMENTS → OCR/NLP → Document AI ─┐
-   IMAGES    → CV       → Vision AI  ─┴→ feeds into RISK ENGINE above
-   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+Each module should additionally return:
+
+```text
+raw_score
+normalized_score
+confidence
+severity
+reason
+evidence
 ```
 
 ---
 
-# 32. Ultimate AI Objective
+# 35. Recommended Data Architecture
 
-The custom AI should answer four questions:
-
-### 1. **What is unusual?**
-
-> Anomaly detection.
-
-### 2. **Why is it unusual?**
-
-> Explainability.
-
-### 3. **How serious is it?**
-
-> Risk scoring.
-
-### 4. **What should be investigated first?**
-
-> Prioritization.
-
-That is the real purpose of the AI system.
+```text
+                   RAW DATA
+                      |
+                INGESTION LAYER
+                      |
+                DATA QUALITY AI
+                      |
+              NORMALIZATION LAYER
+                      |
+            ENTITY RESOLUTION LAYER
+                      |
+        ┌─────────────┼──────────────┐
+        ↓             ↓              ↓
+ Structured       Documents        Images
+        ↓             ↓              ↓
+ Financial AI     Document AI      Vision AI
+ Timeline AI      OCR/NLP          Image Reuse
+ Cost AI          Similarity       Asset Match
+ Duplicate AI                     Location
+        ↓             ↓              ↓
+        └─────────────┼──────────────┘
+                      ↓
+                 GRAPH AI
+                      ↓
+               PREDICTIVE AI
+                      ↓
+                 RISK FUSION
+                      ↓
+              EXPLANATION ENGINE
+                      ↓
+            INVESTIGATION DOSSIER
+                      ↓
+                 AUDITOR UI
+                      ↓
+                 FEEDBACK
+```
 
 ---
 
-# 33. Final Principle
+# 36. Recommended Database Schema
 
-> **The AI should never replace evidence. It should connect evidence.**
+At minimum:
 
-The winning system is not:
+```text
+works
+work_lifecycle
+recommendations
+sanctions
+expenditures
+payments
+vendors
+agencies
+mps
+locations
+documents
+document_embeddings
+images
+image_embeddings
+image_hashes
+risk_signals
+risk_scores
+audit_cases
+model_runs
+feedback
+```
 
-> **“AI says fraud.”**
+## Relationships
+
+```text
+works
+ ├── recommendations
+ ├── sanctions
+ ├── expenditures
+ ├── payments
+ ├── documents
+ ├── images
+ ├── risk_signals
+ └── audit_cases
+```
+
+---
+
+# 37. Recommended AI Services
+
+A modular backend is preferable.
+
+```text
+/api/ingestion
+/api/entity-resolution
+/api/proposals
+/api/compliance
+/api/cost
+/api/timeline
+/api/financial
+/api/duplicates
+/api/vendors
+/api/documents
+/api/images
+/api/geospatial
+/api/graph
+/api/prediction
+/api/risk
+/api/explanations
+/api/dossiers
+/api/copilot
+```
+
+---
+
+# 38. MVP Priority
+
+## Phase 1 — Must work
+
+1. Data ingestion
+2. Data normalization
+3. Work ID entity resolution
+4. Cross-dataset joining
+5. Cost anomaly
+6. Financial anomaly
+7. Financial vs physical divergence
+8. Duplicate/split-work detection
+9. Vendor intelligence
+10. Basic image reuse detection
+11. Risk fusion
+12. Evidence cards
+
+## Phase 2
+
+13. Document OCR
+14. Document similarity
+15. Image description matching
+16. Image location verification
+17. Geospatial intelligence
+18. Graph intelligence
+
+## Phase 3
+
+19. Image progress estimation
+20. AI-generated image risk
+21. Predictive risk
+22. Audit Copilot
+23. Feedback learning
+
+---
+
+# 39. Recommended Technology Stack
+
+## Data
+
+```text
+Python
+Pandas
+NumPy
+SQLite/PostgreSQL
+```
+
+## ML
+
+```text
+scikit-learn
+SciPy
+```
+
+## NLP
+
+```text
+sentence-transformers
+FAISS
+```
+
+## Vision
+
+```text
+OpenCV
+Pillow
+pretrained vision/image encoders
+```
+
+## OCR
+
+```text
+Tesseract / PaddleOCR
+```
+
+## Graph
+
+```text
+NetworkX
+```
+
+## Backend
+
+```text
+FastAPI
+Pydantic
+Uvicorn
+```
+
+## LLM
+
+For a free/local MVP:
+
+```text
+Ollama
+local open-source model
+```
+
+## Frontend
+
+```text
+React / Next.js
+Recharts
+Leaflet / Mapbox
+```
+
+---
+
+# 40. Complete Risk Signal Catalogue
+
+## Financial
+
+- sanctioned vs recommended difference
+- sanctioned vs expenditure difference
+- unusual payment amount
+- duplicate payment
+- payment frequency
+- split payment
+- threshold proximity
+- financial/physical divergence
+
+## Project
+
+- duplicate description
+- duplicate location
+- repeated project
+- unusual cost
+- unusual duration
+- stalled project
+- repeated extensions
+
+## Vendor
+
+- high concentration
+- repeated high-risk projects
+- cross-district concentration
+- cross-MP concentration
+- unusual network centrality
+
+## Document
+
+- amount mismatch
+- date mismatch
+- Work ID mismatch
+- vendor mismatch
+- reused document
+- duplicate certificate
+- inconsistent fields
+
+## Image
+
+- wrong asset
+- image reuse
+- high visual similarity
+- GPS mismatch
+- timestamp mismatch
+- progress mismatch
+- AI-generation risk
+- manipulation/integrity risk
+
+## Graph
+
+- unusual centrality
+- dense clusters
+- shared vendors
+- shared images
+- shared documents
+- cross-district relationships
+
+---
+
+# 41. Example End-to-End Case
+
+```text
+WORK ID
+  ↓
+Join all lifecycle datasets
+  ↓
+Recommended = ₹18L
+Sanctioned = ₹20L
+Expenditure = ₹18.5L
+  ↓
+Financial progress = 92.5%
+  ↓
+Reported physical progress = 48%
+  ↓
+Financial-physical gap = 44.5 pp
+  ↓
+Vendor analysis finds unusually high district concentration
+  ↓
+NLP finds similar work nearby
+  ↓
+Image uploaded
+  ↓
+Image embedding search finds 96% similar image
+  ↓
+Previous image belongs to another project
+  ↓
+Timeline metadata is inconsistent
+  ↓
+Risk Fusion
+  ↓
+91/100 — HIGH INVESTIGATION PRIORITY
+  ↓
+Evidence Card
+  ↓
+Recommended verification actions
+```
+
+---
+
+# 42. Evidence Card Standard
+
+Every high-risk project should have a structured evidence card:
+
+```text
+PROJECT
+Work ID
+Description
+MP
+District
+Agency
+Vendor
+
+RISK
+Overall Risk
+Severity
+Confidence
+
+SIGNALS
+Financial
+Timeline
+Duplicate
+Vendor
+Document
+Image
+Geospatial
+Graph
+
+EVIDENCE
+Source dataset
+Source row/record
+Document
+Image
+Related project
+
+WHY FLAGGED
+Human-readable explanation
+
+WHAT TO VERIFY
+Specific auditor actions
+
+MODEL INFORMATION
+Model version
+Rule version
+Timestamp
+```
+
+---
+
+# 43. What Sentinel Must NOT Do
+
+Never:
+
+- declare a person guilty
+- call an anomaly proof of corruption
+- claim AI-image detection is perfect
+- fabricate GPS
+- fabricate missing data
+- treat semantic similarity as proof of duplication
+- treat vendor concentration as proof of cartel activity
+- treat cost outliers as proof of overpricing
+- generate unsupported explanations
+- hide uncertainty
+
+Correct wording:
+
+> "Potential anomaly requiring verification."
+
+Not:
+
+> "Fraud detected."
+
+---
+
+# 44. Final Architecture
+
+```text
+                         MPLADS DATA
+                              |
+             ┌────────────────┴────────────────┐
+             ↓                                 ↓
+      STRUCTURED DATA                      EVIDENCE
+             |                           /          \
+             ↓                          /            \
+      DATA QUALITY AI             DOCUMENTS         IMAGES
+             |                         |               |
+             ↓                         ↓               ↓
+   ENTITY RESOLUTION              DOCUMENT AI      VISION AI
+             |                         |               |
+             └─────────────┬───────────┴───────────────┘
+                           ↓
+                  CROSS-DATA INTELLIGENCE
+                           |
+          ┌────────────────┼─────────────────┐
+          ↓                ↓                 ↓
+     Financial AI      Duplicate AI      Vendor AI
+          ↓                ↓                 ↓
+     Timeline AI       Geo AI            Graph AI
+          └────────────────┼─────────────────┘
+                           ↓
+                    PREDICTIVE AI
+                           ↓
+                    RISK FUSION
+                           ↓
+                 EXPLANATION ENGINE
+                           ↓
+              INVESTIGATION DOSSIER
+                           ↓
+                     AUDITOR UI
+                           ↓
+                      FEEDBACK
+```
+
+---
+
+# 45. Final Implementation Principle
+
+The most important architectural principle is:
+
+> **Do not build "an AI model." Build a domain-specific evidence intelligence system.**
+
+The strongest Sentinel implementation combines:
+
+```text
+Cross-dataset joins
++
+Entity resolution
++
+Statistical anomaly detection
++
+NLP similarity
++
+Vendor intelligence
++
+Graph relationships
++
+Document verification
++
+Image verification
++
+Geospatial verification
++
+Predictive risk
++
+Evidence-backed explanations
+```
+
+The final output is not simply:
+
+```text
+"AI says this is suspicious."
+```
 
 It is:
 
-> **“AI found an inconsistency, here are the independent signals, here is the underlying evidence, and here is why this case should be investigated first.”**
+```text
+"Project X has a HIGH investigation priority because
+these independent signals were observed across these
+datasets and evidence sources. Here is the underlying
+evidence, confidence, uncertainty, related projects,
+and the exact checks an auditor should perform."
+```
+
+That is the intended role of MPLADS Sentinel.
