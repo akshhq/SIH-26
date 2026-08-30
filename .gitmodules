@@ -1,0 +1,4 @@
+[submodule "MPLADS-Sentinel"]
+	path = MPLADS-Sentinel
+	url = https://github.com/akshhq/MPLADS-Sentinel.git
+	branch = main
