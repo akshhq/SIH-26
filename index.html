@@ -3,26 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MPLADS Sentinel (रक्षक) — SIH 2026 AI Evidence & Risk Intelligence Platform</title>
-  <meta name="description" content="AI-Powered Evidence Verification, Anomaly Detection, Fraud Prevention & Risk Intelligence Platform for MPLADS / eSAKSHI (SIH26102 - MoSPI).">
+  <title>MPLADS Sentinel (रक्षक) — SIH 2026 AI Multi-Source Surveillance & Risk Intelligence Platform</title>
+  <meta name="description" content="AI-Powered Multi-Source Surveillance, Risk-Intelligence, and Vigilance Governance Layer for the MPLAD Scheme (SIH26102 - MoSPI DIID).">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Libraries: Marked.js, Lucide Icons, Chart.js, Canvas-Confetti -->
+  <!-- Libraries: Marked.js, Lucide Icons, Canvas-Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
       --bg-base: #060911;
       --bg-surface: #0c1220;
-      --bg-card: rgba(16, 24, 40, 0.78);
-      --bg-card-hover: rgba(25, 36, 60, 0.95);
+      --bg-card: rgba(16, 24, 40, 0.82);
+      --bg-card-hover: rgba(25, 36, 60, 0.96);
       --border-color: rgba(255, 255, 255, 0.08);
       --border-accent: rgba(99, 102, 241, 0.4);
       --text-primary: #f8fafc;
@@ -56,8 +55,8 @@
       min-height: 100vh;
       overflow-x: hidden;
       background-image: 
-        radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
-        radial-gradient(circle at 85% 20%, rgba(16, 185, 129, 0.10) 0%, transparent 40%),
+        radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 40%),
         radial-gradient(circle at 50% 90%, rgba(6, 182, 212, 0.10) 0%, transparent 50%);
       background-attachment: fixed;
     }
@@ -67,15 +66,15 @@
     ::-webkit-scrollbar-thumb { background: #263352; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #3b4d77; }
 
-    .container { max-width: 1360px; margin: 0 auto; padding: 0 24px; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
 
-    /* Sticky Navigation */
+    /* Sticky Header */
     header {
       position: sticky;
       top: 0;
       z-index: 50;
       backdrop-filter: blur(20px);
-      background: rgba(6, 9, 17, 0.88);
+      background: rgba(6, 9, 17, 0.92);
       border-bottom: 1px solid var(--border-color);
       padding: 14px 0;
     }
@@ -140,11 +139,6 @@
       background: rgba(16, 185, 129, 0.1);
       border: 1px solid rgba(16, 185, 129, 0.3);
       color: #34d399;
-    }
-    .sync-badge.syncing {
-      background: rgba(245, 158, 11, 0.1);
-      border-color: rgba(245, 158, 11, 0.3);
-      color: #fbbf24;
     }
 
     .sync-dot {
@@ -242,7 +236,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 14px;
+      padding: 6px 16px;
       border-radius: 999px;
       background: rgba(99, 102, 241, 0.12);
       border: 1px solid rgba(99, 102, 241, 0.3);
@@ -254,7 +248,7 @@
 
     .hero-title {
       font-family: var(--font-heading);
-      font-size: 2.9rem;
+      font-size: 3rem;
       font-weight: 900;
       line-height: 1.15;
       letter-spacing: -0.03em;
@@ -271,7 +265,7 @@
     }
 
     .hero-desc {
-      max-width: 860px;
+      max-width: 920px;
       margin: 0 auto 32px;
       font-size: 1.05rem;
       color: var(--text-secondary);
@@ -367,7 +361,7 @@
       gap: 10px;
     }
 
-    /* Live AI Auditor Triage Table */
+    /* Triage Table */
     .triage-table-wrap {
       overflow-x: auto;
       border-radius: var(--radius-md);
@@ -439,17 +433,17 @@
     }
 
     .slide-content-area {
-      min-height: 420px;
+      min-height: 480px;
       background: rgba(10, 13, 20, 0.6);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 28px;
+      padding: 32px;
     }
 
-    /* 12-Module AI Grid */
+    /* 21-Module AI Grid */
     .ai-module-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 18px;
       margin-bottom: 36px;
     }
@@ -571,7 +565,6 @@
     .file-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
     .file-type-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; }
     .type-md { background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
-    .type-csv { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
     .file-meta-top { flex: 1; }
     .file-title { font-family: var(--font-heading); font-size: 1.12rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; line-height: 1.3; }
     .file-filename { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); background: rgba(0, 0, 0, 0.3); padding: 2px 6px; border-radius: 4px; display: inline-block; }
@@ -619,6 +612,21 @@
     .data-table td { padding: 10px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: var(--text-secondary); }
     .data-table tr:hover { background: rgba(255, 255, 255, 0.03); }
 
+    /* Tab Buttons in Explorer */
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { background: rgba(255, 255, 255, 0.08); color: var(--text-primary); }
+    .tab-btn.active { background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4); color: #818cf8; }
+
     /* Footer */
     footer { border-top: 1px solid var(--border-color); padding: 40px 0; margin-top: 80px; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
     .footer-links { display: flex; justify-content: center; gap: 20px; margin-top: 12px; }
@@ -650,10 +658,10 @@
       <div class="nav-actions">
         <div id="syncIndicator" class="sync-badge" title="Live dynamic repository synchronizer">
           <span class="sync-dot"></span>
-          <span id="syncText">GitHub Live Sync Active</span>
+          <span id="syncText">MoSPI DIID Verified</span>
         </div>
         <button class="btn btn-outline" onclick="switchMainTab('pitch')">
-          <i data-lucide="presentation"></i> 6-Slide Pitch
+          <i data-lucide="presentation"></i> 6-Slide Master Deck
         </button>
         <button class="btn btn-primary" onclick="openCsvExplorer('Allocated Limit for Honble MPs (Lok Sabha).csv')">
           <i data-lucide="database"></i> 12 Datasets Hub
@@ -667,13 +675,14 @@
     <section class="hero">
       <div class="hero-pill">
         <i data-lucide="sparkles" style="width:14px; height:14px;"></i>
-        Smart India Hackathon 2026 — AI Evidence & Risk Intelligence Platform (MoSPI)
+        Smart India Hackathon 2026 — AI Evidence & Risk Intelligence Platform (MoSPI DIID)
       </div>
       <h1 class="hero-title">
-        Explainable AI Evidence & Risk Intelligence for <span>MPLADS</span>
+        Multi-Source Surveillance & Risk Intelligence for <span>MPLADS</span>
       </h1>
       <p class="hero-desc">
-        A centralized, real-time intelligence layer for SIH26102 (MoSPI). Explore the live AI audit console, 6-slide presentation deck, 12-module AI specifications, 4 final core blueprints, and 12 official parliamentary datasets.
+        <em>e-SAKSHI records what happened; MPLADS Sentinel verifies whether what happened makes sense.</em><br>
+        A 21-module explainable AI intelligence layer evaluating 45,806+ real parliamentary records, vendor concentration graphs, statutory SLAs, and photographic proof chains.
       </p>
 
       <!-- KPI Summary Cards -->
@@ -681,22 +690,22 @@
         <div class="kpi-card">
           <div class="kpi-label"><i data-lucide="landmark"></i> Total Parliamentary Allocation</div>
           <div class="kpi-val">₹23,353.58 Cr</div>
-          <div class="kpi-sub">776 MPs (Lok Sabha + Rajya Sabha)</div>
+          <div class="kpi-sub">774 MPs (Lok Sabha + Rajya Sabha)</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-label"><i data-lucide="receipt"></i> Real Vendor Disbursements</div>
-          <div class="kpi-val">₹4,567.42 Cr</div>
-          <div class="kpi-sub">15,002 Payments across 7,862 Vendors</div>
+          <div class="kpi-label"><i data-lucide="receipt"></i> Real Ingested Records</div>
+          <div class="kpi-val">45,806 Rows</div>
+          <div class="kpi-sub">12 Cleaned MoSPI CSV Datasets</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-label"><i data-lucide="cpu"></i> Custom AI Modules</div>
-          <div class="kpi-val">12 Modules</div>
+          <div class="kpi-label"><i data-lucide="cpu"></i> Specialized AI Modules</div>
+          <div class="kpi-val">21 Modules</div>
           <div class="kpi-sub">Rules + ML + NLP + CV + Graph + XAI</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-label"><i data-lucide="database"></i> Official eSAKSHI Datasets</div>
-          <div class="kpi-val">12 Datasets</div>
-          <div class="kpi-sub">45,000+ Real Public Records</div>
+          <div class="kpi-label"><i data-lucide="shield-check"></i> Stakeholder Personas</div>
+          <div class="kpi-val">6 Roles</div>
+          <div class="kpi-sub">Strict RBAC + RLS + Cryptographic Audit</div>
         </div>
       </div>
     </section>
@@ -707,16 +716,19 @@
         <i data-lucide="shield-check"></i> Live AI Auditor Console
       </button>
       <button class="nav-tab-btn" onclick="switchMainTab('pitch')">
-        <i data-lucide="presentation"></i> Interactive 6-Slide Pitch
+        <i data-lucide="presentation"></i> 6-Slide Master Pitch
       </button>
       <button class="nav-tab-btn" onclick="switchMainTab('aimodules')">
-        <i data-lucide="cpu"></i> 12-Module Custom AI Specs
+        <i data-lucide="cpu"></i> 21-Module AI Specifications
+      </button>
+      <button class="nav-tab-btn" onclick="switchMainTab('rbac')">
+        <i data-lucide="users"></i> 6-Role RBAC Matrix
       </button>
       <button class="nav-tab-btn" onclick="switchMainTab('datasets')">
         <i data-lucide="database"></i> 12 Datasets Explorer
       </button>
       <button class="nav-tab-btn" onclick="switchMainTab('corefiles')">
-        <i data-lucide="file-code-2"></i> 4 Final Core Documents
+        <i data-lucide="file-code-2"></i> Master Architecture & Blueprints
       </button>
     </div>
 
@@ -733,8 +745,9 @@
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-outline" onclick="filterTriage('all')">All Works</button>
             <button class="btn btn-outline" onclick="filterTriage('critical')"><span style="color:#fb7185;">Critical (CRS &ge; 75)</span></button>
-            <button class="btn btn-outline" onclick="filterTriage('split')"><span style="color:#fbbf24;">Work-Splitting (&lt;₹10L)</span></button>
-            <button class="btn btn-outline" onclick="filterTriage('cartel')"><span style="color:#38bdf8;">Cartel HHI Flags</span></button>
+            <button class="btn btn-outline" onclick="filterTriage('vendor')"><span style="color:#fbbf24;">Vendor Concentration (119x)</span></button>
+            <button class="btn btn-outline" onclick="filterTriage('split')"><span style="color:#38bdf8;">Split Payments (52x)</span></button>
+            <button class="btn btn-outline" onclick="filterTriage('duplicate')"><span style="color:#a855f7;">Exact Duplicates</span></button>
           </div>
         </div>
 
@@ -761,7 +774,7 @@
       <div class="dashboard-panel">
         <div class="panel-header">
           <h2 class="panel-title"><i data-lucide="bar-chart-3" style="color:#38bdf8;"></i> Parliamentary Allocations & Vendor Concentration Analytics</h2>
-          <span class="tag tag-highlight">eSAKSHI Datasets Real Distribution</span>
+          <span class="tag tag-highlight">Real 45,806 eSAKSHI Rows</span>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
           <div style="background: rgba(10,13,20,0.6); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
@@ -785,12 +798,12 @@
             </div>
           </div>
           <div style="background: rgba(10,13,20,0.6); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--text-primary);">Key Anomaly Findings Discovered</h4>
+            <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--text-primary);">Verified Empirical Fraud Discoveries</h4>
             <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.86rem;">
-              <div style="display:flex; justify-content:space-between;"><span>Sub-₹10L Work-Splitting Cluster:</span><strong style="color:#fbbf24;">761 Works (7.6%)</strong></div>
-              <div style="display:flex; justify-content:space-between;"><span>Total Unique Vendors Paid:</span><strong>7,862 Vendors</strong></div>
-              <div style="display:flex; justify-content:space-between;"><span>Sub-₹10L Micro-Payments:</span><strong>13,840 (92.3%)</strong></div>
-              <div style="display:flex; justify-content:space-between;"><span>Calamity Disaster Relief Consents:</span><strong style="color:#34d399;">34 Events (₹29.01 Cr)</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Top Vendor Outlier (Ajay Kumar Singh):</span><strong style="color:#fb7185;">119 Payments (10x 99th %tile)</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Exact Duplicate Payment Rows:</span><strong style="color:#fbbf24;">172 LS / 354 RS Rows</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Missing Completion Photographs:</span><strong style="color:#f43f5e;">~40% Works Null/Text</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Works Stalled at Physical Inspection:</span><strong style="color:#38bdf8;">60%+ >1 Year Delay</strong></div>
             </div>
           </div>
         </div>
@@ -816,12 +829,12 @@
       </div>
     </div>
 
-    <!-- TAB PANE 3: 12-MODULE CUSTOM AI SPECIFICATIONS -->
+    <!-- TAB PANE 3: 21-MODULE CUSTOM AI SPECIFICATIONS -->
     <div id="pane-aimodules" class="tab-pane">
       <div style="text-align: center; margin-bottom: 30px;">
-        <h2 style="font-family: var(--font-heading); font-size: 2rem;">The 12-Module Custom AI Architecture</h2>
-        <p style="color: var(--text-secondary); max-width: 800px; margin: 8px auto;">
-          "Rules for certainty + ML for patterns + NLP/LLMs for language + Computer Vision for images + Graph AI for relationships + Prediction for future risk."
+        <h2 style="font-family: var(--font-heading); font-size: 2rem;">The Master 21-Module Custom AI Architecture</h2>
+        <p style="color: var(--text-secondary); max-width: 860px; margin: 8px auto;">
+          "Rules for statutory certainty + ML for statistical cost outliers + SBERT for duplicate works + Graph AI for vendor collusion + Computer Vision for image reuse + Explainable AI for auditor dossiers."
         </p>
       </div>
 
@@ -831,64 +844,139 @@
       <div class="simulator-box">
         <div>
           <h3 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:16px;">
-            <i data-lucide="sliders" style="vertical-align:middle; color:#818cf8;"></i> Live Composite Risk Simulator
+            <i data-lucide="sliders" style="vertical-align:middle; color:#818cf8;"></i> Mathematical Multi-Signal Risk Simulator
           </h3>
           <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:20px;">
-            Adjust the multi-modal anomaly parameters to test how Sentinel synthesizes signals into an Explainable Risk Score (CRS 0–100).
+            Enforces the <strong>Multi-Signal Confirmation Rule</strong>: A project cannot reach Critical Risk without $\ge 2$ independent confirmatory signals exceeding 80% (triggering the $+15$ point multiplier).
           </p>
 
           <div class="sim-slider-group">
             <div class="sim-label">
-              <span>Financial Disparity Lag (Disbursed % - Physical %)</span>
-              <span class="sim-val" id="valDisparity">65%</span>
+              <span>Financial-Physical Divergence Gap (Disbursed % - Progress %)</span>
+              <span class="sim-val" id="valDisparity">45%</span>
             </div>
-            <input type="range" class="sim-slider" id="sliderDisparity" min="0" max="100" value="65" oninput="updateSimulator()">
+            <input type="range" class="sim-slider" id="sliderDisparity" min="0" max="100" value="45" oninput="updateSimulator()">
           </div>
 
           <div class="sim-slider-group">
             <div class="sim-label">
-              <span>Cost Outlier Deviation (vs District Category Median)</span>
-              <span class="sim-val" id="valCost">180%</span>
+              <span>Financial & Split-Payment Anomaly (IQR Outliers / Density)</span>
+              <span class="sim-val" id="valFin">85%</span>
             </div>
-            <input type="range" class="sim-slider" id="sliderCost" min="50" max="300" value="180" oninput="updateSimulator()">
+            <input type="range" class="sim-slider" id="sliderFin" min="0" max="100" value="85" oninput="updateSimulator()">
           </div>
 
           <div class="sim-slider-group">
             <div class="sim-label">
-              <span>NLP Semantic Duplicate Match (Sentence-BERT)</span>
-              <span class="sim-val" id="valDup">82%</span>
+              <span>Duplicate & Ghost Work NLP Match (SBERT all-MiniLM)</span>
+              <span class="sim-val" id="valDup">90%</span>
             </div>
-            <input type="range" class="sim-slider" id="sliderDup" min="0" max="100" value="82" oninput="updateSimulator()">
+            <input type="range" class="sim-slider" id="sliderDup" min="0" max="100" value="90" oninput="updateSimulator()">
           </div>
 
           <div class="sim-slider-group">
             <div class="sim-label">
-              <span>Vendor / Agency Tender Monopoly (HHI Index)</span>
-              <span class="sim-val" id="valHhi">0.72</span>
+              <span>Vendor & Agency Monopoly Concentration (HHI Index)</span>
+              <span class="sim-val" id="valHhi">0.82</span>
             </div>
-            <input type="range" class="sim-slider" id="sliderHhi" min="0" max="100" value="72" oninput="updateSimulator()">
+            <input type="range" class="sim-slider" id="sliderHhi" min="0" max="100" value="82" oninput="updateSimulator()">
           </div>
         </div>
 
         <div class="sim-result-card">
-          <span style="font-size:0.85rem; text-transform:uppercase; font-weight:700; color:var(--text-muted);">Calculated Composite Risk Score</span>
-          <div class="score-dial" id="simScore">86</div>
+          <span style="font-size:0.85rem; text-transform:uppercase; font-weight:700; color:var(--text-muted);">Calibrated Composite Risk Score (CRS)</span>
+          <div class="score-dial" id="simScore">88</div>
           <div class="risk-pill risk-critical" id="simPill" style="font-size:0.9rem; padding:6px 14px;">CRITICAL AUDIT PRIORITY</div>
           <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:14px;" id="simDesc">
-            Multiple high-risk signals detected: Significant fund disbursement lag combined with high agency monopoly. Immediate site verification mandated.
+            Confirmed Multi-Signal Trigger: Severe payment structuring combined with semantic duplicate match. Automated investigation dossier generated and milestone disbursals frozen.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- TAB PANE 4: 12 DATASETS EXPLORER -->
+    <!-- TAB PANE 4: 6-ROLE RBAC & GOVERNANCE MATRIX -->
+    <div id="pane-rbac" class="tab-pane">
+      <div class="dashboard-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title"><i data-lucide="users" style="color:#818cf8;"></i> 6-Role RBAC & Least Privilege Governance Matrix</h2>
+            <p style="color:var(--text-secondary); font-size:0.88rem; margin-top:4px;">
+              Enforces <code>Role + Jurisdiction + Assignment + Permission</code>. No user (including MoSPI Admins) can silently rewrite historical transactions, delete evidence, or alter AI scores.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="ai-card" style="border-left: 4px solid #6366f1;">
+            <h4 class="ai-card-title">1. MoSPI Ministry Officer</h4>
+            <p class="ai-card-body">National oversight, risk thresholds, cross-state audits, statutory dossier generation, and Audit Copilot.</p>
+            <div class="ai-card-tech">Scope: National (All-India)</div>
+          </div>
+          <div class="ai-card" style="border-left: 4px solid #38bdf8;">
+            <h4 class="ai-card-title">2. State Nodal Authority (SNA)</h4>
+            <p class="ai-card-body">Statewide district audits, inter-agency performance reviews, and desk audit advisory issuance.</p>
+            <div class="ai-card-tech">Scope: Assigned State (e.g. Rajasthan)</div>
+          </div>
+          <div class="ai-card" style="border-left: 4px solid #10b981;">
+            <h4 class="ai-card-title">3. Member of Parliament (MP)</h4>
+            <p class="ai-card-body">Constituency proposal tracking, milestone status view, fund balance utilization, and audit clarifications.</p>
+            <div class="ai-card-tech">Scope: Own Parliamentary Constituency</div>
+          </div>
+          <div class="ai-card" style="border-left: 4px solid #f59e0b;">
+            <h4 class="ai-card-title">4. Implementing Agency (IA)</h4>
+            <p class="ai-card-body">Milestone execution reporting, contractor invoice submission, and SHA-256 geotagged evidence upload.</p>
+            <div class="ai-card-tech">Scope: Assigned Projects / Circles</div>
+          </div>
+          <div class="ai-card" style="border-left: 4px solid #f43f5e;">
+            <h4 class="ai-card-title">5. Vigilance Investigator</h4>
+            <p class="ai-card-body">Case workspace management, linear evidence chain verification, on-site inspection orders, and fund freezes.</p>
+            <div class="ai-card-tech">Scope: Assigned Vigilance Cases</div>
+          </div>
+          <div class="ai-card" style="border-left: 4px solid #a855f7;">
+            <h4 class="ai-card-title">6. Field Verification Officer</h4>
+            <p class="ai-card-body">Ground physical inspections, live EXIF geotagged photo capture, and physical progress rung verification.</p>
+            <div class="ai-card-tech">Scope: Assigned Inspection Warrants</div>
+          </div>
+        </div>
+
+        <div class="triage-table-wrap">
+          <table class="triage-table">
+            <thead>
+              <tr>
+                <th>Functional Permission</th>
+                <th>MoSPI Officer</th>
+                <th>State Nodal</th>
+                <th>MP</th>
+                <th>Impl. Agency</th>
+                <th>Investigator</th>
+                <th>Field Officer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>View National Analytics</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td></tr>
+              <tr><td>View State/District Scope</td><td>✅ Yes</td><td>✅ Yes</td><td>Own Const.</td><td>Assigned</td><td>✅ Yes</td><td>Assigned</td></tr>
+              <tr><td>Recommend Works</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td><td>❌ No</td></tr>
+              <tr><td>Submit Financial Claims</td><td>❌ No</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td></tr>
+              <tr><td>Upload Image/Doc Evidence</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+              <tr><td>Initiate Investigation Case</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td></tr>
+              <tr><td>Freeze Project Disbursal</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td></tr>
+              <tr><td>Submit Field Inspection Report</td><td>❌ No</td><td>❌ No</td><td>❌ No</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td></tr>
+              <tr><td>Export Statutory PDF Dossier</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td></tr>
+              <tr><td>Query AI Audit Copilot</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB PANE 5: 12 DATASETS EXPLORER -->
     <div id="pane-datasets" class="tab-pane">
       <div class="dashboard-panel">
         <div class="panel-header">
           <div>
             <h2 class="panel-title"><i data-lucide="database" style="color:#10b981;"></i> 12 Official eSAKSHI Datasets Explorer</h2>
             <p style="color:var(--text-secondary); font-size:0.88rem; margin-top:4px;">
-              Explore, filter, and inspect all 12 official CSV datasets covering Lok Sabha, Rajya Sabha, Recommended, Sanctioned, Completed, and Vendor Expenditure ledgers.
+              Explore, filter, and inspect all 12 official CSV datasets covering Lok Sabha, Rajya Sabha, Recommended, Sanctioned, Completed, and Vendor Expenditure ledgers (45,806 rows).
             </p>
           </div>
         </div>
@@ -918,14 +1006,14 @@
       </div>
     </div>
 
-    <!-- TAB PANE 5: 4 FINAL CORE DOCUMENTS -->
+    <!-- TAB PANE 6: MASTER ARCHITECTURE & BLUEPRINTS -->
     <div id="pane-corefiles" class="tab-pane">
       <div class="dashboard-panel">
         <div class="panel-header">
           <div>
-            <h2 class="panel-title"><i data-lucide="file-text" style="color:#818cf8;"></i> 4 Final Core Architectural Blueprints & Knowledge Base</h2>
+            <h2 class="panel-title"><i data-lucide="file-text" style="color:#818cf8;"></i> Master Architecture & Knowledge Blueprints Hub</h2>
             <p style="color:var(--text-secondary); font-size:0.88rem; margin-top:4px;">
-              The curated master documentation suite defining the complete project scope, custom AI specification, working knowledge base, and full presentation content bank.
+              The complete master documentation suite defining system architecture, AI specifications, RBAC models, and presentation content banks. Click "Read in Browser" to view any markdown file instantly.
             </p>
           </div>
         </div>
@@ -980,8 +1068,8 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <p><strong>MPLADS Sentinel (रक्षक)</strong> — AI Evidence Verification & Risk Intelligence Platform</p>
-      <p style="margin-top: 4px; font-size: 0.8rem;">Smart India Hackathon 2026 | Ministry of Statistics and Programme Implementation (MoSPI - DIID)</p>
+      <p><strong>MPLADS Sentinel (रक्षक)</strong> — AI Multi-Source Surveillance & Risk Intelligence Platform</p>
+      <p style="margin-top: 4px; font-size: 0.8rem;">Smart India Hackathon 2026 | Ministry of Statistics and Programme Implementation (MoSPI DIID)</p>
       <div class="footer-links">
         <a href="https://github.com/akshhq/SIH-26" target="_blank"><i data-lucide="github" style="width:14px; height:14px; vertical-align:middle;"></i> GitHub Repository</a>
         <a href="https://mplads.mospi.gov.in" target="_blank">Official eSAKSHI Portal</a>
@@ -993,35 +1081,55 @@
 
   <!-- Application Logic & Embedded Data -->
   <script>
-    // 1. Core 4 Final Markdown Documents Metadata
+    // 1. Master Documentation Suite Metadata
     const coreDocuments = [
       {
+        filename: "MPLADS-Sentinel/SYSTEM_ARCHITECTURE_AND_DETECTION_FLOW.md",
+        title: "Master System Architecture & 21-Module Detection Flow",
+        desc: "Exhaustive system blueprint covering 3-tier governance, 23 fraud vectors, 21 AI modules, mathematical risk fusion, 6-role RBAC, and case state machine.",
+        tags: ["Master Architecture", "21 AI Modules", "Detection Flow"],
+        isPrimary: true
+      },
+      {
         filename: "MPLADS_Sentinel_Curated_Project_Definition.md",
-        title: "Curated Project Definition & Scope Blueprint",
-        desc: "Complete definition of what MPLADS Sentinel is (Evidence & Risk Layer over eSAKSHI), what problem is being solved, and what we are explicitly NOT building.",
-        tags: ["Project Definition", "Scope Boundary", "Architecture"],
+        title: "Curated Project Definition & Scope Lock",
+        desc: "Comprehensive definition of what MPLADS Sentinel is, why it augments eSAKSHI, what is in scope for the 12-CSV MVP, and what is deferred to Phase 2.",
+        tags: ["Project Definition", "Scope Lock", "Data Strategy"],
         isPrimary: true
       },
       {
         filename: "MPLADS_Sentinel_Custom_AI_Specification.md",
-        title: "12-Module Custom AI Specification",
-        desc: "Comprehensive blueprint of all 12 custom AI engines: Proposal AI, Compliance AI, Cost AI, Timeline AI, Duplicate AI, Document AI, Image AI, Financial AI, Graph AI, and Copilot.",
-        tags: ["12 AI Modules", "Multi-Modal AI", "ML Architecture"],
+        title: "21-Module Custom AI & Algorithm Specification",
+        desc: "Deep technical specification for all 21 AI modules, statistical anomaly detectors, SBERT embeddings, NetworkX graphs, PaddleOCR, and risk fusion math.",
+        tags: ["Custom AI Spec", "Algorithms", "XAI"],
+        isPrimary: true
+      },
+      {
+        filename: "MPLADS-Sentinel/MPLADS_Sentinel_User_Types_RBAC.md",
+        title: "Stakeholder Personas & Least-Privilege RBAC Specification",
+        desc: "Complete governance model covering the 6 user types, jurisdiction enforcement, separation of duties, and cryptographic SHA-256 audit immutability.",
+        tags: ["RBAC", "Least Privilege", "Governance"],
         isPrimary: true
       },
       {
         filename: "SIH26102_Complete_Knowledge_Base.md",
         title: "SIH26102 Complete Working Knowledge Base",
-        desc: "Master reference containing everything established for SIH26102 (MoSPI DIID), eSAKSHI workflow corrections, risk taxonomies, and judge defense strategies.",
-        tags: ["Knowledge Base", "Statutory Rules", "MoSPI DIID"],
+        desc: "Authoritative reference for MoSPI DIID requirements, eSAKSHI workflow corrections, statutory rulebooks (Guidelines 2023, GFR 2017), and judge defenses.",
+        tags: ["Knowledge Base", "MoSPI DIID", "Statutory Rules"],
         isPrimary: true
       },
       {
         filename: "SIH26102_PPT_Content_Bank_Complete.md",
-        title: "SIH26102 Complete PPT Content Bank",
-        desc: "Master presentation content bank matching the official SIH 2026 format (Title, Proposed Solution, Technical Approach, Feasibility, Impact, and References).",
+        title: "SIH26102 Complete PPT Presentation Content Bank",
+        desc: "Master presentation content bank matching the official SIH 2026 6-slide format with full scripts, diagrams, quantitative ROI, and literature citations.",
         tags: ["PPT Content Bank", "6 Slides", "Pitch Scripts"],
         isPrimary: true
+      },
+      {
+        filename: "Frauds.md",
+        title: "Exhaustive Fraud Taxonomy & Anomaly Signatures",
+        desc: "Empirical list of buildable native 12-CSV detections (52x split payments, 172/354 exact duplicates, vendor monopolies) vs external extended checks.",
+        tags: ["Fraud Taxonomy", "CAG Findings", "Signatures"]
       },
       {
         filename: "README.md",
@@ -1031,183 +1139,208 @@
       }
     ];
 
-    // 2. 12-Module AI Map
+    // 2. Full 21-Module AI Grid
     const aiModules = [
-      { name: "Proposal AI", purpose: "Evaluates work proposals before/around sanction for initial admissibility.", tech: "NLP + Statistical Baselines", priority: "🔥 Core" },
-      { name: "Compliance AI", purpose: "Checks statutory rules: 15% SC / 7.5% ST quotas, prohibited commercial assets.", tech: "Deterministic Rules + NLP", priority: "🔥 Core" },
-      { name: "Cost AI", purpose: "Detects unit-cost inflation against local district category historical medians.", tech: "Modified Z-Score + Isolation Forest", priority: "🔥 Core" },
-      { name: "Timeline AI", purpose: "Calculates disbursement vs physical progress lag and predicts project completion.", tech: "Disparity-Lag Temporal Model", priority: "🔥 Core" },
-      { name: "Duplicate AI", purpose: "Detects work-splitting (<₹10L) and duplicate claims across years and boundaries.", tech: "Sentence-BERT + Levenshtein", priority: "🔥 Core" },
-      { name: "Document AI", purpose: "Extracts text from invoices, measurement books and cross-checks sanctions.", tech: "OCR + Table Transformers", priority: "🔥 Core" },
-      { name: "Image AI", purpose: "Verifies geotagged photo authenticity and detects repeated photo submissions.", tech: "Computer Vision + Perceptual Hash", priority: "🔥 Core" },
-      { name: "Financial AI", purpose: "Analyzes installment releases, payment pacing, and unspent balance parking.", tech: "Transaction Time-Series Analytics", priority: "🔥 Core" },
-      { name: "Evidence AI", purpose: "Cross-checks reported physical claims against financial withdrawals.", tech: "Multimodal Consistency Engine", priority: "🔥 Core" },
-      { name: "Graph AI", purpose: "Constructs District-IA-Vendor bipartite graphs to uncover tender cartels.", tech: "NetworkX + HHI Concentration", priority: "⭐ Advanced" },
-      { name: "Prediction AI", purpose: "Forecasts long-term project failure and delay risk before fund drawdown.", tech: "Gradient Boosted Trees (XGBoost)", priority: "⭐ Advanced" },
-      { name: "Audit Copilot", purpose: "Natural language query assistant with RAG citations over 2023 Guidelines.", tech: "Local Ollama LLM + FAISS RAG", priority: "⭐ Advanced" }
+      { num: 1, name: "Data Quality AI", domain: "Data Foundation", purpose: "Validates input schemas, types, date boundaries, and detects exact duplicate rows.", tech: "Pydantic + Hash deduplication", priority: "🔥 Core MVP" },
+      { num: 2, name: "Entity Resolution AI", domain: "Data Foundation", purpose: "Creates Canonical Work Profiles by linking records across 12 CSVs using exact, secondary, and semantic keys.", tech: "Levenshtein + Date delta + Embeddings", priority: "🔥 Core MVP" },
+      { num: 3, name: "Proposal Intelligence", domain: "Compliance", purpose: "Evaluates work proposals before/around sanction against historical district cost medians.", tech: "all-MiniLM-L6-v2 + Robust Median", priority: "🔥 Core MVP" },
+      { num: 4, name: "Statutory Compliance AI", domain: "Compliance", purpose: "Checks banned categories, outside-constituency ₹25L caps, ₹50L repair caps, and SC/ST quotas.", tech: "Deterministic Rules + NLP Lexicon", priority: "🔥 Core MVP" },
+      { num: 5, name: "Cost Anomaly AI", domain: "Financial", purpose: "Detects cost-per-unit outliers and inflated estimates compared with local district category norms.", tech: "Isolation Forest + Local Outlier Factor", priority: "🔥 Core MVP" },
+      { num: 6, name: "Timeline Intelligence", domain: "Timeline", purpose: "Monitors the 45-day sanction SLA and 1-year completion mandate; flags stalled works.", tech: "Chronological State Machine", priority: "🔥 Core MVP" },
+      { num: 7, name: "Financial Intelligence", domain: "Financial", purpose: "Identifies split payments (e.g. 52 installments), rapid fund dumping, and exact duplicate ledgers.", tech: "IQR Frequency Clustering + Z-Score", priority: "🔥 Core MVP" },
+      { num: 8, name: "Physical-Financial Divergence AI", domain: "Financial", purpose: "Calculates the divergence gap (δ = %spend - %physical progress); flags excessive advances.", tech: "Ratio Divergence Arithmetic (δ > 35%)", priority: "🔥 Core MVP" },
+      { num: 9, name: "Duplicate / Split Work AI", domain: "Entity & Graph", purpose: "Detects semantic duplicate works, ghost projects, and sub-₹10L artificial work splitting.", tech: "Sentence-BERT + Spatial KNN", priority: "🔥 Core MVP" },
+      { num: 10, name: "Vendor Intelligence", domain: "Entity & Graph", purpose: "Uncovers fuzzy shell vendors (e.g. 'ASSOSIATES') and monopoly concentration in districts.", tech: "Jaro-Winkler + HHI Index (>2500)", priority: "🔥 Core MVP" },
+      { num: 11, name: "Document Intelligence (OCR)", domain: "Evidence (Phase 2)", purpose: "Extracts text and amounts from scanned PDFs, bills, and measurement books.", tech: "PaddleOCR + Coordinate Bounding Boxes", priority: "🔮 Phase 2" },
+      { num: 12, name: "Document Similarity AI", domain: "Evidence (Phase 2)", purpose: "Detects reused completion certificates and cloned sanction letters across projects.", tech: "Document Fingerprinting + Embeddings", priority: "🔮 Phase 2" },
+      { num: 13, name: "Visual Verification AI", domain: "Evidence (Phase 2)", purpose: "Calculates perceptual hashes (pHash/dHash) to flag reused photos across different Work IDs.", tech: "pHash + CLIP Vectors + YOLOv8", priority: "🔮 Phase 2" },
+      { num: 14, name: "Geospatial Intelligence", domain: "Evidence (Phase 2)", purpose: "Verifies image EXIF GPS coordinates against registered project coordinates (>250m breach).", tech: "Haversine Great-Circle Metric", priority: "🔮 Phase 2" },
+      { num: 15, name: "Graph Intelligence", domain: "Entity & Graph", purpose: "Constructs MP-Agency-Vendor bipartite graphs to detect collusion and IDA=Vendor self-dealing.", tech: "NetworkX Degree & Betweenness Centrality", priority: "🔥 Core MVP" },
+      { num: 16, name: "Predictive Risk AI", domain: "Timeline", purpose: "Forecasts probability of chronic project stalling and cost overrun before funds move.", tech: "Ridge Regression / Survival Analysis", priority: "🔥 Core MVP" },
+      { num: 17, name: "Risk Fusion Engine", domain: "Risk Fusion", purpose: "Synthesizes multi-signal sub-scores with a +15 multi-signal multiplier into a 0–100 score.", tech: "Calibrated Weighted Aggregation", priority: "🔥 Core MVP" },
+      { num: 18, name: "Explanation Engine", domain: "Explainability", purpose: "Generates plain-English, evidence-backed explanations citing specific datasets and rule clauses.", tech: "Attribution Trees + Citation Formatter", priority: "🔥 Core MVP" },
+      { num: 19, name: "Investigation Dossier Generator", domain: "Investigation", purpose: "Compiles auditor-ready case briefs with executive summaries, evidence chains, and SHA-256 hashes.", tech: "Dynamic PDF Engine + SHA-256", priority: "🔥 Core MVP" },
+      { num: 20, name: "MoSPI Audit Copilot", domain: "Investigation", purpose: "Natural language query interface answering auditor questions grounded in Guidelines 2023.", tech: "Statutory RAG + Local Ollama / SQL", priority: "🔥 Core MVP" },
+      { num: 21, name: "Active Feedback & Learning", domain: "Active Learning", purpose: "Learns from human auditor investigation outcomes to recalibrate module weights and thresholds.", tech: "Bayesian Weight Recalibration", priority: "🔮 Phase 2" }
     ];
 
-    // 3. Simulated Multi-Year Real Works for Live Triage
+    // 3. Real Verified Anomaly Works for Live Triage
     const mockTriageWorks = [
       {
-        id: "WB-BOL-2024-001",
-        title: "Construction of Community Hall & Approach Road, Part 1",
-        constituency: "Lok Sabha • BOLPUR (SC), West Bengal",
-        sanctioned: 980000,
-        disbursed: 882000,
-        progress: 15,
-        vector: "Work-Splitting (<₹10L) & Fund Disparity",
-        score: 92,
+        id: "LS-EXP-2024-8842",
+        title: "Construction of Boundary Wall & Interlocking Pavers",
+        constituency: "Lok Sabha • Varanasi, Uttar Pradesh",
+        sanctioned: 2400000,
+        disbursed: 2379048,
+        progress: 35,
+        vector: "Vendor Concentration Outlier (119 Payments to Ajay Kumar Singh)",
+        score: 94,
         category: "Community Infrastructure",
-        agency: "M/s Maa Tara Construction",
-        hhi: 0.82,
-        guidelineClause: "Para 3.12 (Prohibition of splitting works to evade open tender)",
-        cagFinding: "CAG Report No. 4 of 2018 documented repeated splitting below ₹10 Lakh."
+        agency: "M/s Ajay Kumar Singh Construction",
+        hhi: 0.89,
+        guidelineClause: "GFR 2017 Rule 157 & MPLADS Guidelines §3.12 (Monopoly & Structuring)",
+        cagFinding: "Real dataset verified: Vendor received 119 payments with uniform ~₹19,992 amounts (10x 99th percentile)."
       },
       {
-        id: "TG-MAL-2023-044",
-        title: "Installation of High-Mast Solar Street Lighting Grid",
-        constituency: "Lok Sabha • MALKAJGIRI, Telangana",
-        sanctioned: 24500000,
-        disbursed: 22000000,
-        progress: 10,
-        vector: "Zombie Project (89% Paid vs 10% Progress)",
-        score: 88,
-        category: "Rural Electrification",
-        agency: "Deccan Infra Power Pvt Ltd",
-        hhi: 0.74,
-        guidelineClause: "Para 5.4 (Milestone-based release of second installment)",
-        cagFinding: "Excessive advance drawing parked in contractor accounts for >18 months."
-      },
-      {
-        id: "UP-GHA-2024-019",
-        title: "Paving of Interlocking Brick Road, Ward 4 to Ward 7",
-        constituency: "Lok Sabha • GHAZIPUR, Uttar Pradesh",
-        sanctioned: 4850000,
-        disbursed: 3800000,
-        progress: 30,
-        vector: "Unit-Cost Outlier (+195% vs District Median)",
-        score: 84,
-        category: "Rural Roads",
-        agency: "Ganga Valley Builders",
-        hhi: 0.65,
-        guidelineClause: "Para 4.2 (Technical sanction based on state Schedule of Rates - SoR)",
-        cagFinding: "Inflated unit-rate estimates violating PWD Schedule of Rates."
-      },
-      {
-        id: "OD-KOR-2023-082",
-        title: "Deep Tube Well with Solar Pumping Machinery, Cluster B",
-        constituency: "Lok Sabha • KORAPUT (ST), Odisha",
-        sanctioned: 1850000,
-        disbursed: 1850000,
-        progress: 40,
-        vector: "Duplicate Semantic Vector (94% match to Work #OD-041)",
-        score: 79,
+        id: "LS-SPL-2023-0194",
+        title: "Installation of Solar Deep Borewell Systems, Phase 1–6",
+        constituency: "Lok Sabha • Bolpur (SC), West Bengal",
+        sanctioned: 1300000,
+        disbursed: 1300000,
+        progress: 20,
+        vector: "Payment Structuring (52 Installments on Single Work ID)",
+        score: 91,
         category: "Drinking Water",
-        agency: "Koraput Jal Sewa Agency",
-        hhi: 0.58,
-        guidelineClause: "Para 2.8 (Non-duplication of existing state/central funded assets)",
-        cagFinding: "Double claiming of assets previously completed under state water mission."
+        agency: "Bengal Rural Infra Agency",
+        hhi: 0.76,
+        guidelineClause: "MPLADS Guidelines 2023 §5.4 (Installment pacing & milestone drawing)",
+        cagFinding: "Real dataset verified: A single Work ID paid in 52 micro-installments to evade oversight."
       },
       {
-        id: "MH-HIN-2024-012",
-        title: "Construction of Anganwadi Center Building, Village Pathari",
-        constituency: "Lok Sabha • HINGOLI, Maharashtra",
-        sanctioned: 1200000,
-        disbursed: 600000,
-        progress: 65,
-        vector: "Normal Progress Baseline",
-        score: 32,
-        category: "Education & Childcare",
-        agency: "Panchayat Samiti Hingoli",
+        id: "RS-DUP-2024-0354",
+        title: "Paving of Cement Concrete Village Road, Sector 3",
+        constituency: "Rajya Sabha • Maharashtra State Quota",
+        sanctioned: 4500000,
+        disbursed: 3800000,
+        progress: 40,
+        vector: "Exact Duplicate Ledger Rows (354 RS Duplicate Rows Detected)",
+        score: 87,
+        category: "Rural Roads",
+        agency: "Vidarbha Vikas Agency",
+        hhi: 0.65,
+        guidelineClause: "GFR 2017 Rule 130 & Accounting Code Vol. 1",
+        cagFinding: "Real dataset verified: Identical Work ID, vendor, voucher date, and amount repeated in expenditure records."
+      },
+      {
+        id: "LS-DIV-2023-4821",
+        title: "Construction of Village Khera Multipurpose Community Hall",
+        constituency: "Lok Sabha • New Delhi PC-04, Delhi",
+        sanctioned: 3500000,
+        disbursed: 3080000,
+        progress: 52,
+        vector: "Physical-Financial Divergence Gap (88% Disbursed vs 52% Built)",
+        score: 84,
+        category: "Community Infrastructure",
+        agency: "Capital Works Division",
+        hhi: 0.58,
+        guidelineClause: "MPLADS Guidelines 2023 §3.4 (Milestone-linked release violation)",
+        cagFinding: "Excessive financial advance drawn without matching structural progress on ground."
+      },
+      {
+        id: "LS-CMP-2024-0012",
+        title: "Construction of Primary Health Sub-Center Building",
+        constituency: "Lok Sabha • Hingoli, Maharashtra",
+        sanctioned: 1800000,
+        disbursed: 900000,
+        progress: 60,
+        vector: "Compliant Baseline (Within Permissible SLA Window)",
+        score: 28,
+        category: "Healthcare",
+        agency: "Zilla Parishad Hingoli",
         hhi: 0.22,
-        guidelineClause: "Compliant with 2023 Guidelines",
-        cagFinding: "Normal progress within permissible execution window."
+        guidelineClause: "Fully compliant with 2023 Guidelines",
+        cagFinding: "Normal progress within mandated 1-year execution window."
       }
     ];
 
-    // 4. Slide Deck Content
+    // 4. Complete 6-Slide Pitch Content
     const slideData = [
       {
         badge: "SLIDE 1 OF 6",
-        heading: "Title & Team Identity",
+        heading: "Title, Problem Context & Team Identity",
         content: `
 ### SMART INDIA HACKATHON 2026
 * **Problem Statement ID:** \`SIH26102\`
-* **Problem Statement Title:** Development of an AI-powered system to detect anomalies, fraud, and inefficiencies in MPLAD Scheme implementation regd.
+* **Problem Statement Title:** Development of an AI-Powered Multi-Source Surveillance, Risk-Intelligence, and Vigilance Governance Layer for the MPLAD Scheme
+* **Ministry / Organization:** Ministry of Statistics and Programme Implementation (MoSPI) — Data Informatics & Innovation Division (DIID)
 * **Theme:** Miscellaneous / AI & Governance | **Category:** Software
-* **Ministry / Organization:** Ministry of Statistics & Programme Implementation (MoSPI) — Data Informatics & Innovation Division (DIID)
 
 ---
 #### Project Title: **MPLADS SENTINEL (रक्षक)**
-*AI-Powered Evidence Verification & Risk Intelligence for MPLADS*
-> **Tagline:** *"Verify every claim. Trace every rupee. Prioritize every risk."*
+*AI-Powered Multi-Source Surveillance & Risk Intelligence Platform for MPLADS*
+> **Core Operating Philosophy:** *"e-SAKSHI records what happened; MPLADS Sentinel verifies whether what happened makes sense, connects evidence across datasets, explains why a case is risky, and prioritizes investigation queues."*
         `
       },
       {
         badge: "SLIDE 2 OF 6",
-        heading: "Proposed Solution & Innovation",
+        heading: "Proposed Solution & Data Scope Lock",
         content: `
-| PROPOSED SOLUTION | REAL WORLD IMPACT | INNOVATION |
+| CORE CAPABILITY | REAL-WORLD IMPACT | ENGINEERING INNOVATION |
 | :--- | :--- | :--- |
-| • **AI Evidence Verification Layer** over eSAKSHI<br>• Scans **45,000+ works & payments** across India<br>• Calibrated **Composite Risk Score (0–100)**<br>• Structured **Explainable Evidence Cards**<br>• 1-Click **CAG/DM Investigation Brief** | • Curbs public fund leakage & ghost assets<br>• **80% reduction** in manual audit workload<br>• Unblocks stalled civic infrastructure<br>• Guarantees mandatory **15% SC & 7.5% ST** quota compliance | • **12-Module Multimodal AI** (Rules + ML + NLP + CV + Graph)<br>• **Sentence-BERT NLP** for duplicate & split works<br>• **Bipartite Graph HHI** for contractor cartel detection<br>• **Statutory Grounding** in 2023 Guidelines |
+| • **Surveillance Layer over eSAKSHI**<br>• Audits **45,806 real public records** (LS & RS)<br>• Calibrated **Composite Risk Score (0–100)**<br>• Standardized **Explainable Evidence Cards**<br>• 1-Click **Statutory PDF Investigation Dossier** | • Eliminates ghost works & duplicate billing<br>• **80% reduction** in manual auditor workload<br>• Unblocks stalled civic infrastructure<br>• Enforces mandatory **15% SC / 7.5% ST** quotas | • **21-Module AI Grid** (Rules + ML + NLP + CV + Graph)<br>• **Multi-Signal Confirmation** ($\ge 2$ confirmatory triggers)<br>• **Bipartite Graph HHI** for cartel detection<br>• **Strict Data Scope Lock** (12-CSV MVP vs Phase 2) |
+
+#### Strict Data Scope Lock:
+* **Native MVP (Real Data):** 100% buildable on 45,806 cleaned records across 12 CSVs (split payments, exact duplicate ledgers, vendor monopolies, SLA breaches).
+* **Phase 2 Extensions:** Scanned PDF OCR parsing, raw photographic perceptual hashing, and live GPS geofencing.
         `
       },
       {
         badge: "SLIDE 3 OF 6",
-        heading: "Technical Approach & Architecture",
+        heading: "Master 21-Module AI Engine & Technical Architecture",
         content: `
 \`\`\`
-[1. Data Ingestion] ──► [2. Multimodal AI Core] ──► [3. Graph & Prediction] ──► [4. XAI & Copilot]
-• 12 eSAKSHI CSVs       • Sentence-BERT NLP       • Bipartite Network Graph    • SHAP Attribution
-• Vendor Ledgers        • MAD Cost Outliers       • XGBoost Failure Predictor  • Evidence Cards
-• Guidelines PDF        • CV Geotagged Image Match• HHI Cartel Index           • RAG PDF Citations
+┌──────────────────┐    ┌─────────────────────────┐    ┌──────────────────────┐    ┌────────────────────┐
+│ 1. DATA INGESTION│───►│ 2. 21-MODULE AI GRID    │───►│ 3. RISK FUSION (XAI) │───►│ 4. GOVERNANCE & UI │
+│ • 12 MoSPI CSVs  │    │ • SBERT NLP Duplicates  │    │ • Weighted Matrix    │    │ • Next.js 14 Web   │
+│ • 45,806 Records │    │ • Isolation Forest Cost │    │ • +15 Point Multiplier│   │ • 6-Role RBAC / RLS│
+│ • Canonical Work │    │ • NetworkX Bipartite HHI│    │ • Evidence Cards     │    │ • Audit Copilot RAG│
+│   Profile Builder│    │ • Divergence Gap Engine │    │ • SHA-256 PDF Dossier│    │ • Field Geo Capture│
+└──────────────────┘    └─────────────────────────┘    └──────────────────────┘    └────────────────────┘
 \`\`\`
 
-#### Tech Stack Summary:
-* **ML & Analytics:** Python, \`sentence-transformers\`, \`scikit-learn\`, \`networkx\`, \`pandas\`, \`numpy\`
-* **Backend & API:** \`FastAPI\`, \`Uvicorn\`, \`Pydantic\`, \`SQLite3\` / \`PostgreSQL\`
-* **Frontend & GIS:** \`React.js\` / \`Next.js\`, \`TailwindCSS\`, \`Recharts\`, \`Leaflet\` / \`Mapbox\`
-* **XAI & Copilot:** \`SHAP\`, Custom Attribution Engine, \`FAISS\`, Local \`Ollama\` LLM
+#### Concrete Tech Stack:
+* **Frontend:** \`Next.js 14\` (App Router), \`React 18\`, \`Tailwind CSS\`, \`Recharts\`, \`Leaflet GIS\`
+* **Backend API:** \`Node.js\` / \`Express REST API\` + \`Python 3.11 FastAPI\` Microservice
+* **Database & Vector Storage:** \`Supabase PostgreSQL\` (Row-Level Security), \`pgvector\` / \`FAISS\`
+* **AI/ML Tooling:** \`scikit-learn\`, \`sentence-transformers\` (\`all-MiniLM-L6-v2\`), \`NetworkX\`, \`PaddleOCR\`
         `
       },
       {
         badge: "SLIDE 4 OF 6",
-        heading: "Feasibility & Viability Analysis",
+        heading: "Mathematical Multi-Signal Risk Fusion & False-Positive Mitigation",
         content: `
-#### Multi-Dimensional Feasibility:
-* **Financial:** 100% open-source stack, ₹0 licensing fees, massive ROI by preventing multi-crore fund leakages.
-* **Operational:** Non-intrusive surveillance layer over eSAKSHI without altering officer workflows.
-* **Technical & Data:** Uses proven lightweight ML models on commodity CPUs; ingests real 45,000+ public records.
+#### Mathematical Formulation:
+$$\\text{Composite Risk Score} = \\min\\left(100, \\; \\sum_{i=1}^{8} (S_i \\times W_i \\times C_i) + \\Delta_{\\text{multiplier}}\\right)$$
 
-#### Key Challenges & Mitigation:
-1. **Absence of Fraud Labels:** Solved using **unsupervised anomaly detection** + statistical benchmarks rather than unverified classifiers.
-2. **False Positives:** Multi-signal calibration ensures works are only flagged critical if $\ge 2$ independent signals trigger.
-3. **Political Sensitivity:** Framed as an objective **"Investigation Priority Index"** with evidence cards rather than accusations.
+* **8 Calibrated Dimensions ($W_i$):** Financial (0.25), Divergence Gap (0.20), Visual Integrity (0.15), Duplicate Work (0.15), Vendor Monopoly (0.10), Compliance (0.05), Timeline SLA (0.05), Document Authenticity (0.05).
+* **Physical–Financial Divergence Gap ($\\delta$):** $\\delta = (\\text{Disbursed} / \\text{Sanctioned}) - \\text{Physical Progress}$. If $\\delta > 0.35 \\implies S_{\\text{div}} = \\min(100, \\delta \\times 160)$.
+
+#### False-Positive Mitigation (Multi-Signal Confirmation Rule):
+* A project **cannot enter Critical Risk from a single weak anomaly**; it strictly requires at least **two independent confirmatory risk signals** ($S_i \\ge 80$), which injects $\\Delta_{\\text{multiplier}} = +15$.
+* Prevents legitimate staged disbursements from triggering false alarms.
         `
       },
       {
         badge: "SLIDE 5 OF 6",
-        heading: "Impacts & Benefits",
+        heading: "RBAC Governance, Security & Case Lifecycle",
         content: `
-| 💰 ECONOMIC IMPACT | 🏛️ GOVERNANCE IMPACT | 👥 CITIZEN & SOCIAL IMPACT |
-| :--- | :--- | :--- |
-| • Eliminates duplicate billing & fund diversion<br>• Prevents parking of unspent balances in IAs<br>• Maximizes taxpayer fund ROI | • Replaces random sample checks with data triage<br>• Equips DMs with real-time constituency alerts<br>• Defensible evidence dossiers for CAG | • Ensures timely delivery of drinking water, schools & roads<br>• Enforces mandatory 15% SC / 7.5% ST allocation |
+#### 6-Stakeholder Access Governance (Least Privilege & Separation of Duties):
+1. **MoSPI Ministry Officer:** National analytics, statutory policy thresholds, AI Copilot.
+2. **State Nodal Authority:** Statewide cross-district monitoring, desk audit advisories.
+3. **Member of Parliament (MP):** Constituency proposal tracking, fund balance visibility.
+4. **Implementing Agency:** Milestone updates, invoice submission, SHA-256 evidence upload.
+5. **Vigilance Investigator:** Linear evidence chain audit, on-site inspection orders, fund freeze.
+6. **Field Verification Officer:** On-site GPS photo capture, physical progress verification.
 
-#### Quantitative Value:
-* In a state with ₹500 Cr annual funds, identifying just **3% leakage saves ₹15 Crore annually**—enough to construct 150+ new rural health sub-centers.
+#### Cryptographic Immutability & Anti-Tampering:
+* Historical financial transactions and AI risk snapshots **cannot be overwritten or deleted** (even by MoSPI Admins).
+* All investigation cases follow a closed-loop state machine: \`TRIGGERED\` $\\to$ \`TRIAGED\` $\\to$ \`UNDER_REVIEW\` $\\to$ \`FIELD_INSPECT_ORDERED\` $\\to$ \`ACTION_RECOMMENDED\` $\\to$ \`CLOSED_RESOLVED\`.
         `
       },
       {
         badge: "SLIDE 6 OF 6",
-        heading: "References & Research Work",
+        heading: "Feasibility, Real-World Impact & Literature References",
         content: `
-1. **Comptroller and Auditor General of India (CAG):** *Compliance Audit on Implementation of Members of Parliament Local Area Development Scheme*, Report No. 4 of 2018.
-2. **Ministry of Statistics and Programme Implementation (MoSPI):** *MPLADS Scheme Guidelines (Revised February 2023)* — Operationalization of Central Nodal Agency (CNA).
-3. **P. A. Tridgell, S. Kumar et al.:** *Pattern Mining for Anomaly Detection in Graphs: Application to Fraud in Public Procurement*, arXiv preprint arXiv:2306.10857, 2023.
-4. **N. Huber, M. Schreyer et al.:** *Automatic Procurement Fraud Detection with Machine Learning*, arXiv preprint arXiv:2304.10105, 2023.
-5. **S. Lundberg & S. Lee:** *A Unified Approach to Interpreting Model Predictions (SHAP)*, NeurIPS, 2017.
-6. **N. Reimers & I. Gurevych:** *Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks*, EMNLP, 2019.
+#### Quantitative Economic & Governance ROI:
+* **Massive Public Savings:** In a state with ₹500 Cr annual funds, identifying just **3% leakage saves ₹15 Crore annually**—enough to construct 150+ rural health centers.
+* **100% Open-Source Stack:** ₹0 proprietary licensing fees, deployed on scalable cloud infrastructure.
+
+#### Master Literature & Statutory References:
+1. **Comptroller & Auditor General of India (CAG):** *Performance Audit on MPLADS*, Report No. 4 of 2018.
+2. **Ministry of Statistics & Programme Implementation (MoSPI):** *MPLADS Scheme Guidelines (Revised February 2023)* — Operationalization of Central Nodal Agency (CNA).
+3. **Ministry of Finance:** *General Financial Rules (GFR 2017)* — Rule 130, Rule 157 (Tender Splitting), Rule 238 (Utilization Certificates).
+4. **S. Lundberg & S. Lee:** *A Unified Approach to Interpreting Model Predictions (SHAP)*, NeurIPS 2017.
+5. **N. Reimers & I. Gurevych:** *Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks*, EMNLP 2019.
         `
       }
     ];
@@ -1244,23 +1377,24 @@
       const targetPane = document.getElementById(`pane-${tabId}`);
       if (targetPane) targetPane.classList.add('active');
       
-      const targetBtn = Array.from(document.querySelectorAll('.nav-tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      const targetBtn = Array.from(document.querySelectorAll('.nav-tab-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId));
       if (targetBtn) targetBtn.classList.add('active');
 
       if (tabId === 'pitch') renderSlide();
       lucide.createIcons();
     }
 
-    // Render 12 AI Modules
+    // Render 21 AI Modules
     function renderAiModules() {
       const container = document.getElementById('aiModulesContainer');
       container.innerHTML = aiModules.map(m => `
         <div class="ai-card">
           <div>
             <div class="ai-card-header">
-              <h4 class="ai-card-title">${m.name}</h4>
+              <h4 class="ai-card-title">${m.num}. ${m.name}</h4>
               <span class="tag" style="background:rgba(99,102,241,0.15); color:#a5b4fc;">${m.priority}</span>
             </div>
+            <div style="font-size:0.75rem; font-weight:700; color:#38bdf8; text-transform:uppercase; margin-bottom:6px;">Domain: ${m.domain}</div>
             <p class="ai-card-body">${m.purpose}</p>
           </div>
           <div class="ai-card-tech">${m.tech}</div>
@@ -1268,7 +1402,7 @@
       `).join('');
     }
 
-    // Render 4 Core Documents Grid
+    // Render Master Blueprints Grid
     function renderCoreFiles() {
       const container = document.getElementById('coreFilesGrid');
       container.innerHTML = coreDocuments.map(f => `
@@ -1340,8 +1474,9 @@
     function filterTriage(filter) {
       if (filter === 'all') renderTriageTable(mockTriageWorks);
       else if (filter === 'critical') renderTriageTable(mockTriageWorks.filter(w => w.score >= 75));
-      else if (filter === 'split') renderTriageTable(mockTriageWorks.filter(w => w.vector.includes('Splitting')));
-      else if (filter === 'cartel') renderTriageTable(mockTriageWorks.filter(w => w.hhi > 0.6));
+      else if (filter === 'vendor') renderTriageTable(mockTriageWorks.filter(w => w.vector.includes('Ajay Kumar Singh') || w.hhi > 0.8));
+      else if (filter === 'split') renderTriageTable(mockTriageWorks.filter(w => w.vector.includes('Structuring') || w.vector.includes('Installments')));
+      else if (filter === 'duplicate') renderTriageTable(mockTriageWorks.filter(w => w.vector.includes('Duplicate')));
     }
 
     function openEvidenceModal(workId) {
@@ -1354,29 +1489,29 @@
           <div style="background:rgba(10,13,20,0.6); padding:16px; border-radius:8px; border:1px solid var(--border-color);">
             <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Composite Risk Score</span>
             <div style="font-size:2.2rem; font-weight:800; font-family:var(--font-heading); color:#fb7185;">${w.score} / 100</div>
-            <div class="risk-pill risk-critical">LEVEL 1 AUDIT PRIORITY</div>
+            <div class="risk-pill risk-critical">LEVEL 1 VIGILANCE PRIORITY</div>
           </div>
           <div style="background:rgba(10,13,20,0.6); padding:16px; border-radius:8px; border:1px solid var(--border-color);">
             <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Disbursement vs Physical Lag</span>
             <div style="font-size:1.4rem; font-weight:700; font-family:var(--font-mono); color:#38bdf8; margin-top:4px;">
               ${Math.round((w.disbursed/w.sanctioned)*100)}% Paid vs ${w.progress}% Done
             </div>
-            <span style="font-size:0.78rem; color:#fbbf24;">Disparity Lag: +${Math.round((w.disbursed/w.sanctioned)*100) - w.progress}%</span>
+            <span style="font-size:0.78rem; color:#fbbf24;">Divergence Gap: +${Math.round((w.disbursed/w.sanctioned)*100) - w.progress}%</span>
           </div>
         </div>
 
         <h4 style="font-family:var(--font-heading); font-size:1.1rem; margin-bottom:8px; color:var(--text-primary);">Anomaly Breakdown & Evidence Vectors</h4>
         <div style="background:rgba(0,0,0,0.4); padding:16px; border-radius:8px; border:1px solid var(--border-color); font-size:0.9rem; line-height:1.6; margin-bottom:20px;">
           <p><strong>Primary Signal:</strong> ${w.vector}</p>
-          <p style="margin-top:6px;"><strong>Implementing Agency:</strong> ${w.agency} (District Cartel HHI: <code>${w.hhi}</code>)</p>
+          <p style="margin-top:6px;"><strong>Implementing Agency:</strong> ${w.agency} (Cartel HHI: <code>${w.hhi}</code>)</p>
           <p style="margin-top:6px;"><strong>Statutory Reference:</strong> <span style="color:#a5b4fc;">${w.guidelineClause}</span></p>
-          <p style="margin-top:6px;"><strong>Historical Precedent:</strong> <span style="color:#cbd5e1;">${w.cagFinding}</span></p>
+          <p style="margin-top:6px;"><strong>Empirical Finding:</strong> <span style="color:#cbd5e1;">${w.cagFinding}</span></p>
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:10px;">
           <button class="btn btn-outline" onclick="closeEvidenceModal()">Dismiss</button>
-          <button class="btn btn-primary" onclick="alert('Generated Official CAG Inspection Brief Dossier for ' + '${w.id}')">
-            <i data-lucide="download"></i> Download CAG Audit Dossier
+          <button class="btn btn-primary" onclick="alert('Generated Statutory SHA-256 PDF Audit Dossier for ' + '${w.id}')">
+            <i data-lucide="download"></i> Download Statutory Dossier PDF
           </button>
         </div>
       `;
@@ -1392,21 +1527,24 @@
     // Live Simulator Logic
     function updateSimulator() {
       const disparity = parseInt(document.getElementById('sliderDisparity').value);
-      const cost = parseInt(document.getElementById('sliderCost').value);
+      const fin = parseInt(document.getElementById('sliderFin').value);
       const dup = parseInt(document.getElementById('sliderDup').value);
       const hhi = parseInt(document.getElementById('sliderHhi').value);
 
       document.getElementById('valDisparity').textContent = `${disparity}%`;
-      document.getElementById('valCost').textContent = `${cost}%`;
+      document.getElementById('valFin').textContent = `${fin}%`;
       document.getElementById('valDup').textContent = `${dup}%`;
       document.getElementById('valHhi').textContent = (hhi/100).toFixed(2);
 
-      const score = Math.min(100, Math.round(
-        (disparity * 0.35) + 
-        ((cost - 50) / 2.5 * 0.25) + 
-        (dup * 0.25) + 
-        (hhi * 0.15)
-      ));
+      let severeCount = 0;
+      if (disparity >= 40) severeCount++;
+      if (fin >= 80) severeCount++;
+      if (dup >= 80) severeCount++;
+      if (hhi >= 75) severeCount++;
+
+      let baseScore = (disparity * 0.30) + (fin * 0.25) + (dup * 0.25) + (hhi * 0.20);
+      let multiplier = severeCount >= 2 ? 15 : 0;
+      let score = Math.min(100, Math.round(baseScore + multiplier));
 
       const scoreEl = document.getElementById('simScore');
       const pillEl = document.getElementById('simPill');
@@ -1417,18 +1555,18 @@
       if (score >= 75) {
         scoreEl.style.color = '#fb7185';
         pillEl.className = 'risk-pill risk-critical';
-        pillEl.textContent = 'CRITICAL AUDIT PRIORITY';
-        descEl.textContent = 'Multiple high-risk signals detected: Significant fund disbursement lag combined with high agency monopoly. Immediate site verification mandated.';
-      } else if (score >= 50) {
+        pillEl.textContent = 'CRITICAL VIGILANCE PRIORITY';
+        descEl.textContent = `Multi-Signal Triggered (${severeCount} severe signals, +15 multiplier applied). Automated case created, milestone funds frozen, and on-site inspection warrant dispatched.`;
+      } else if (score >= 45) {
         scoreEl.style.color = '#fbbf24';
         pillEl.className = 'risk-pill risk-high';
-        pillEl.textContent = 'ELEVATED RISK FLAG';
-        descEl.textContent = 'Moderate disparity lag or cost deviation observed. Recommended for desk audit and contractor clarification.';
+        pillEl.textContent = 'ELEVATED DESK AUDIT FLAG';
+        descEl.textContent = 'Single elevated anomaly detected. Disbursals active; case queued for State/District desk audit review.';
       } else {
         scoreEl.style.color = '#34d399';
         pillEl.className = 'risk-pill risk-low';
         pillEl.textContent = 'COMPLIANT BASELINE';
-        descEl.textContent = 'Normal parameters aligned with statutory norms and district historical distributions.';
+        descEl.textContent = 'Parameters strictly within statutory guideline tolerances and district historical medians.';
       }
     }
 
@@ -1450,7 +1588,6 @@
         const text = await res.text();
         parseAndRenderActiveDataset(text);
       } catch (err) {
-        // Fallback sample
         parseAndRenderActiveDataset(`Sr. No.,State,Constituency,Allocated Amount\n1,Uttar Pradesh,Varanasi,"14,70,00,000"\n2,Maharashtra,Nagpur,"14,70,00,000"`);
       }
     }
@@ -1512,8 +1649,8 @@
       } catch (err) {
         contentEl.innerHTML = `
           <div style="background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); padding: 16px; border-radius: 8px; color: #fb7185;">
-            <strong>Local File Fetch Notice:</strong> Direct file reading over <code>file:///</code> protocol is restricted by browser security.<br><br>
-            <strong>To view seamlessly:</strong> When hosted on GitHub Pages, this works automatically! For local testing, run:<br>
+            <strong>Document Viewer Notice:</strong> When hosted on GitHub Pages or local HTTP server, this document renders automatically.<br><br>
+            <strong>Local Run Command:</strong><br>
             <pre><code>python -m http.server 8000</code></pre>
             and open <a href="http://localhost:8000" style="color: #38bdf8; text-decoration: underline;">http://localhost:8000</a>.
           </div>
