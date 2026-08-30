@@ -1279,6 +1279,8 @@
       {
         badge: "STEP 1 OF 6: THE CORE PROBLEM",
         badgeColor: "#ef4444",
+        deepDiveUrl: "step1-problem.html",
+        deepDiveText: "Read Step 1 Problem Deep Dive (CAG Findings & Root Cause) →",
         title: "e-SAKSHI Records What Happened — But Doesn't Check If It Makes Sense",
         desc: "Today, e-SAKSHI works like a digital receipt book. When an MP recommends a project, tenders are issued, contractors submit bills, and funds are disbursed. However, no automated engine cross-checks whether the vendor is real, whether the price is inflated, or whether the building actually exists on the ground.",
         bullets: [
@@ -1302,6 +1304,8 @@
       {
         badge: "STEP 2 OF 6: DATA INGESTION",
         badgeColor: "#38bdf8",
+        deepDiveUrl: "step2-ingestion.html",
+        deepDiveText: "Read Step 2 Cloud Ingestion & 12 Datasets Deep Dive →",
         title: "Continuous Cloud Streaming Over 45,806 Real Parliamentary Records",
         desc: "Sentinel connects directly to Supabase Cloud Storage to stream 12 official CSV datasets covering Lok Sabha and Rajya Sabha (recommendations, administrative sanctions, completion dates, and vendor expenditure ledgers) with in-memory LRU caching.",
         bullets: [
@@ -1329,6 +1333,8 @@
       {
         badge: "STEP 3 OF 6: 21-MODULE AI GRID",
         badgeColor: "#818cf8",
+        deepDiveUrl: "step3-ai-modules.html",
+        deepDiveText: "Read Step 3 AI Modules Deep Dive (Exhaustive 21 Module Breakdown) →",
         title: "21 Specialized AI Modules Screen Every Work Across 5 Analytical Domains",
         desc: "Instead of relying on a single black-box model, Sentinel runs every project through 21 targeted AI modules combining deterministic statutory rules, robust statistics (Isolation Forest), natural language matching (SBERT), and relationship networks (NetworkX).",
         bullets: [
@@ -1352,6 +1358,8 @@
       {
         badge: "STEP 4 OF 6: MATHEMATICAL RISK FUSION",
         badgeColor: "#f59e0b",
+        deepDiveUrl: "step4-risk-fusion.html",
+        deepDiveText: "Read Step 4 Risk Fusion Deep Dive (Formula & False-Positive Defense) →",
         title: "Calibrated 0–100 Composite Risk Score with False-Positive Mitigation",
         desc: "Sentinel combines sub-scores using a weighted mathematical formula. Crucially, Sentinel enforces the 'Multi-Signal Confirmation Rule': a project CANNOT enter Critical Risk from a single weak anomaly; it strictly requires at least 2 independent confirmatory signals (which injects a +15 multiplier).",
         bullets: [
@@ -1373,6 +1381,8 @@
       {
         badge: "STEP 5 OF 6: 7-ROLE GOVERNANCE & FIELD ACTION",
         badgeColor: "#10b981",
+        deepDiveUrl: "step5-governance-rbac.html",
+        deepDiveText: "Read Step 5 7-Role RBAC & GPS Field Inspection Deep Dive →",
         title: "Institutional RBAC & Dispatched On-Site GPS Field Verification",
         desc: "Strict access control enforced across 7 roles (System Admin, MoSPI Officer, State Nodal, MP, Implementing Agency, Investigator, and Field Officer). When a work is flagged Critical, Sentinel automatically freezes milestone disbursements and orders a ground inspection.",
         bullets: [
@@ -1395,6 +1405,8 @@
       {
         badge: "STEP 6 OF 6: AUTOMATED AUDIT DOSSIER",
         badgeColor: "#a855f7",
+        deepDiveUrl: "step6-dossier-lifecycle.html",
+        deepDiveText: "Read Step 6 Legal PDF Dossier & Audit Copilot Deep Dive →",
         title: "1-Click Tamper-Evident Legal Audit Dossier with SHA-256 Stamp",
         desc: "Sentinel compiles machine findings, contractor bills, historical district benchmarks, and field inspection photos into a standardized, auditor-ready PDF Investigation Brief with an unalterable SHA-256 cryptographic hash.",
         bullets: [
@@ -1444,6 +1456,13 @@
             <ul class="flow-bullets">
               ${step.bullets.map(b => `<li><i data-lucide="check-circle-2" style="width:18px; height:18px; color:#34d399; flex-shrink:0; margin-top:2px;"></i> <div>${b}</div></li>`).join('')}
             </ul>
+
+            <div style="margin-top:20px;">
+              <a href="${step.deepDiveUrl}" class="btn btn-outline" style="border-color:${step.badgeColor}66; color:white; background:rgba(255,255,255,0.06); font-weight:700;">
+                <i data-lucide="book-open" style="color:${step.badgeColor};"></i> ${step.deepDiveText}
+              </a>
+            </div>
+
             <div style="display:flex; gap:12px; margin-top:24px;">
               ${idx > 0 ? `<button class="btn btn-outline" onclick="setFlowStep(${idx - 1})"><i data-lucide="arrow-left"></i> Previous Step</button>` : ''}
               ${idx < flowSteps.length - 1 ? `<button class="btn btn-primary" onclick="setFlowStep(${idx + 1})">Next Step: ${flowSteps[idx+1].title.split('—')[0]} <i data-lucide="arrow-right"></i></button>` : `<button class="btn btn-primary" onclick="triggerConfetti(); alert('Walkthrough complete! Feel free to explore the Live AI Auditor Console tab.')"><i data-lucide="sparkles"></i> Walkthrough Complete!</button>`}

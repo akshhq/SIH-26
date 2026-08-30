@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 5 Deep Dive: 7-Role Institutional Governance & GPS Field Verification — MPLADS Sentinel</title>
+  <meta name="description" content="Detailed architecture of 7-role institutional RBAC, least-privilege security policies, immutable cryptographic audit logging, and on-site GPS field inspection.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(16, 24, 40, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(16, 185, 129, 0.4);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --primary: #6366f1;
+      --accent-emerald: #10b981;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 26px;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      background: rgba(6, 9, 17, 0.92);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 0;
+    }
+
+    .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
+    .brand-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; color: white; }
+    .brand-title { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s ease; }
+    .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); color: var(--text-primary); }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.08); }
+    .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; }
+
+    .step-hero { padding: 48px 0 32px; text-align: left; }
+    .step-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); color: #34d399; margin-bottom: 16px; }
+    .step-title { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 900; line-height: 1.2; margin-bottom: 16px; }
+    .step-lead { font-size: 1.15rem; color: var(--text-secondary); max-width: 900px; line-height: 1.65; }
+
+    .content-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 36px; margin-bottom: 32px; backdrop-filter: blur(16px); }
+    .section-title { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+
+    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+    .card-dark { background: rgba(10, 13, 20, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 22px; }
+
+    .data-table-wrap { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 16px; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    .data-table th { background: rgba(15, 23, 42, 0.9); padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 1px solid var(--border-color); }
+    .data-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: var(--text-secondary); }
+
+    .step-nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-top: 1px solid var(--border-color); margin-top: 40px; }
+
+    @media(max-width:768px){ .grid-2col { grid-template-columns: 1fr; } .step-title { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand">
+        <div class="brand-icon"><i data-lucide="shield-check"></i></div>
+        <div class="brand-title">MPLADS Sentinel <span style="color:#34d399;">— Step 5 Deep Dive</span></div>
+      </a>
+      <div style="display:flex; gap:10px;">
+        <a href="step4-risk-fusion.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Step 4 Risk Fusion</a>
+        <a href="step6-dossier-lifecycle.html" class="btn btn-primary">Next: Step 6 Legal Dossier <i data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="step-hero">
+      <div class="step-badge"><i data-lucide="users" style="width:14px;"></i> SYSTEM FLOW STEP 5</div>
+      <h1 class="step-title">7-Role Institutional Governance & On-Site GPS Field Verification</h1>
+      <p class="step-lead">
+        Sentinel enforces least-privilege security across <strong>7 institutional roles</strong>: <code>Role + Jurisdiction + Assignment + Permission</code>. No public self-registration, no silent admin deletions, and verified ground field inspections.
+      </p>
+    </section>
+
+    <!-- Section 1: The 7 Roles -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="user-check" style="color:#10b981;"></i> The 7 Institutional Personas & Jurisdictions</h2>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:16px;">
+        <div class="card-dark" style="border-left:4px solid #ef4444;">
+          <h4 style="color:#ef4444;">⚙️ 1. System Administrator</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            Sole user provisioning authority, RBAC policy enforcement, cloud dataset sync, and system audit log review. Zero public registration.
+          </p>
+        </div>
+        <div class="card-dark" style="border-left:4px solid #6366f1;">
+          <h4 style="color:#818cf8;">🏛️ 2. MoSPI Central Officer</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            National all-India surveillance, national risk thresholds, inter-state disparity analysis, policy copilot queries, and CAG reports.
+          </p>
+        </div>
+        <div class="card-dark" style="border-left:4px solid #38bdf8;">
+          <h4 style="color:#38bdf8;">📍 3. State Nodal Authority</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            Statewide district monitoring, desk audit assignments, inter-district resource benchmarking, and implementing agency performance reviews.
+          </p>
+        </div>
+        <div class="card-dark" style="border-left:4px solid #10b981;">
+          <h4 style="color:#34d399;">🇮🇳 4. Member of Parliament</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            Constituency proposal tracker, live physical milestone updates, remaining entitlement balances, and formal audit clarifications.
+          </p>
+        </div>
+        <div class="card-dark" style="border-left:4px solid #f59e0b;">
+          <h4 style="color:#fbbf24;">🏗️ 5. Implementing Agency (IA)</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            Submits milestone claims, uploads contractor invoices (RA Bills), and registers measurement book entries. Cannot alter sanctioned budgets.
+          </p>
+        </div>
+        <div class="card-dark" style="border-left:4px solid #f43f5e;">
+          <h4 style="color:#fb7185;">🔍 6. Vigilance Investigator</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            Assigned investigation workspace, examines linear evidence chains, issues disbursal freezes, and dispatches field inspection orders.
+          </p>
+        </div>
+        <div class="card-dark" style="border-left:4px solid #a855f7;">
+          <h4 style="color:#c084fc;">📋 7. Field Verification Officer</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            Receives on-site inspection warrants, visits project locations, and uploads live EXIF GPS geotagged photo proof via mobile app.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Comprehensive Permission Matrix -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="lock" style="color:#818cf8;"></i> Full 7-Role Institutional RBAC Permissions Matrix</h2>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Functional Permission</th>
+              <th>MoSPI</th>
+              <th>State Nodal</th>
+              <th>MP</th>
+              <th>Impl. Agency</th>
+              <th>Investigator</th>
+              <th>Field Officer</th>
+              <th>System Admin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>User & Access Provisioning</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td></tr>
+            <tr><td>View National Analytics</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td></tr>
+            <tr><td>View State/District Scope</td><td>✅</td><td>✅</td><td>Own Const.</td><td>Assigned</td><td>✅</td><td>Assigned</td><td>✅</td></tr>
+            <tr><td>Recommend Works</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td></tr>
+            <tr><td>Submit Financial Claims (RA Bills)</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td></tr>
+            <tr><td>Upload Geotagged Proof / Evidence</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Initiate Formal Investigation</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td></tr>
+            <tr><td>Freeze Project Disbursals</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+            <tr><td>Submit Field Inspection Report</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td></tr>
+            <tr><td>Export Statutory PDF Dossier</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td></tr>
+            <tr><td>Query AI Audit Copilot</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td></tr>
+            <tr><td>Inspect System Audit Logs</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3: Ground Field Inspection Workflow -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="map-pin" style="color:#38bdf8;"></i> On-Site GPS Field Verification Workflow</h2>
+
+      <div class="grid-2col">
+        <div class="card-dark">
+          <h4 style="color:#38bdf8; margin-bottom:8px;">Live Geofence Verification (&gt;250m Check)</h4>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+            1. Field Officer arrives at registered project site with the mobile PWA.<br>
+            2. App enforces camera-only capture (gallery uploads disabled).<br>
+            3. Photo EXIF GPS latitude/longitude is validated via Haversine distance.<br>
+            4. If distance &gt; 250 meters from master project location, the upload is flagged as a <em>Geofence Breach</em>.
+          </p>
+        </div>
+        <div class="card-dark">
+          <h4 style="color:#34d399; margin-bottom:8px;">Physical Progress Rung Mapping</h4>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+            Field Officers select the verified physical construction rung:<br>
+            <code>Site Selected (0%) ──► Foundation (20%) ──► Plinth (40%) ──► Roof (60%) ──► Finishing (80%) ──► Fully Functional (100%)</code><br>
+            This immediately updates the physical progress score and closes the Divergence Gap.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="step-nav">
+      <a href="step4-risk-fusion.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Back to Step 4 Risk Fusion</a>
+      <a href="step6-dossier-lifecycle.html" class="btn btn-primary">Proceed to Step 6: Legal PDF Dossier & Copilot <i data-lucide="arrow-right"></i></a>
+    </div>
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

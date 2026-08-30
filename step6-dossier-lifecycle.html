@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 6 Deep Dive: Legal PDF Dossier, Case Lifecycle & Audit Copilot — MPLADS Sentinel</title>
+  <meta name="description" content="Architecture of 1-click legal PDF audit dossiers, SHA-256 cryptographic fingerprints, 6-state case lifecycle, and MoSPI Statutory Audit Copilot.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(16, 24, 40, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(168, 85, 247, 0.4);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --primary: #6366f1;
+      --accent-purple: #a855f7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 26px;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      background: rgba(6, 9, 17, 0.92);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 0;
+    }
+
+    .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
+    .brand-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: linear-gradient(135deg, #a855f7, #7e22ce); display: flex; align-items: center; justify-content: center; color: white; }
+    .brand-title { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s ease; }
+    .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); color: var(--text-primary); }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.08); }
+    .btn-primary { background: linear-gradient(135deg, #a855f7, #7e22ce); color: white; border: none; }
+
+    .step-hero { padding: 48px 0 32px; text-align: left; }
+    .step-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #c084fc; margin-bottom: 16px; }
+    .step-title { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 900; line-height: 1.2; margin-bottom: 16px; }
+    .step-lead { font-size: 1.15rem; color: var(--text-secondary); max-width: 900px; line-height: 1.65; }
+
+    .content-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 36px; margin-bottom: 32px; backdrop-filter: blur(16px); }
+    .section-title { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+
+    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+    .card-dark { background: rgba(10, 13, 20, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 22px; }
+
+    .state-machine-flow { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+    .state-step { display: flex; align-items: center; gap: 14px; background: rgba(10, 13, 20, 0.6); padding: 14px 18px; border-radius: var(--radius-md); border-left: 4px solid #a855f7; font-size: 0.9rem; }
+    .state-name { font-family: var(--font-mono); font-weight: 700; color: #c084fc; width: 220px; flex-shrink: 0; }
+
+    .step-nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-top: 1px solid var(--border-color); margin-top: 40px; }
+
+    @media(max-width:768px){ .grid-2col { grid-template-columns: 1fr; } .step-title { font-size: 2rem; } .state-step { flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand">
+        <div class="brand-icon"><i data-lucide="file-check"></i></div>
+        <div class="brand-title">MPLADS Sentinel <span style="color:#c084fc;">— Step 6 Deep Dive</span></div>
+      </a>
+      <div style="display:flex; gap:10px;">
+        <a href="step5-governance-rbac.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Step 5 Governance</a>
+        <a href="index.html" class="btn btn-primary"><i data-lucide="home"></i> Return to Main Hub</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="step-hero">
+      <div class="step-badge"><i data-lucide="award" style="width:14px;"></i> SYSTEM FLOW STEP 6</div>
+      <h1 class="step-title">Automated Legal PDF Dossier, 6-State Case Lifecycle & Audit Copilot</h1>
+      <p class="step-lead">
+        How Sentinel transitions machine detections into legal audit evidence, generates <strong>tamper-evident SHA-256 PDF Investigation Briefs</strong>, enforces the 6-state case machine, and empowers auditors with natural language statutory queries.
+      </p>
+    </section>
+
+    <!-- Section 1: Case State Machine -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="git-branch" style="color:#c084fc;"></i> The 6-State Case Lifecycle Machine</h2>
+      <p style="color:var(--text-secondary); font-size:0.92rem; line-height:1.7;">
+        Every flagged project follows a strict state transition path ensuring legal due process and accountability:
+      </p>
+
+      <div class="state-machine-flow">
+        <div class="state-step" style="border-color:#ef4444;">
+          <div class="state-name">1. TRIGGERED</div>
+          <div>Multi-Signal AI triggers Critical Risk (CRS &ge; 75). Case automatically generated with an initial Evidence Card.</div>
+        </div>
+        <div class="state-step" style="border-color:#fbbf24;">
+          <div class="state-name">2. TRIAGED</div>
+          <div>Vigilance Investigator verifies trigger parameters and issues milestone disbursement freeze lock 🔒.</div>
+        </div>
+        <div class="state-step" style="border-color:#38bdf8;">
+          <div class="state-name">3. UNDER_REVIEW</div>
+          <div>Desk audit initiated. Formal electronic explanation notice dispatched to Implementing Agency (7-day response SLA).</div>
+        </div>
+        <div class="state-step" style="border-color:#6366f1;">
+          <div class="state-name">4. FIELD_INSPECT_ORDERED</div>
+          <div>On-site physical inspection warrant assigned to Field Verification Officer with registered GPS coordinates.</div>
+        </div>
+        <div class="state-step" style="border-color:#10b981;">
+          <div class="state-name">5. EVIDENCE_ATTACHED</div>
+          <div>Field Officer uploads live geotagged photographs and verifies the structural progress rung on the ground.</div>
+        </div>
+        <div class="state-step" style="border-color:#a855f7;">
+          <div class="state-name">6. ACTION_RECOMMENDED</div>
+          <div>Final 1-click legal PDF dossier generated with SHA-256 stamp for recovery, penalty, or formal compliance clearance.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Evidence Card & PDF Dossier Standard -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="file-text" style="color:#818cf8;"></i> Tamper-Evident SHA-256 PDF Audit Dossier Standard</h2>
+
+      <div class="grid-2col">
+        <div class="card-dark">
+          <h4 style="color:#818cf8; margin-bottom:10px;">Dossier Structure</h4>
+          <ul style="font-size:0.88rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:8px; margin-left:16px;">
+            <li><strong>Executive Case Summary:</strong> Constituency, MP, Agency, Risk Score.</li>
+            <li><strong>Statutory Rule Citations:</strong> Direct references to MPLADS Guidelines 2023 §3.4 and GFR 2017 Rules 130/157/238.</li>
+            <li><strong>Financial Evidence Chain:</strong> Chronological ledger of all vouchers, dates, and amounts.</li>
+            <li><strong>Field Photo Proofs:</strong> Geotagged site inspection photos with EXIF coordinates.</li>
+            <li><strong>Cryptographic Digital Signature:</strong> SHA-256 hash ensuring legal admissibility in CAG & judicial inquiries.</li>
+          </ul>
+        </div>
+
+        <div class="card-dark">
+          <h4 style="color:#38bdf8; margin-bottom:10px;">MoSPI Statutory Audit Copilot</h4>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+            A local natural language query interface (powered by local quantized LLM & RAG retrieval) allowing auditors to ask natural questions:
+          </p>
+          <div style="background:rgba(0,0,0,0.5); padding:12px; border-radius:6px; font-family:var(--font-mono); font-size:0.8rem; color:#38bdf8; margin-top:8px;">
+            "Show all works in Varanasi where vendor Ajay Kumar Singh was paid within 5 days of sanction."
+          </div>
+          <p style="font-size:0.82rem; color:#34d399; margin-top:8px;">
+            ⚡ Returns exact filtered records and mathematical risk citations in under 2 seconds.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="step-nav">
+      <a href="step5-governance-rbac.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Back to Step 5 Governance</a>
+      <a href="index.html" class="btn btn-primary"><i data-lucide="home"></i> Return to Main Platform Hub</a>
+    </div>
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

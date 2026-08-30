@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 4 Deep Dive: Mathematical Risk Fusion & False-Positive Defense — MPLADS Sentinel</title>
+  <meta name="description" content="Mathematical formulation of calibrated multi-signal risk fusion, 8-dimension weighted aggregation, and false-positive mitigation algorithms.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(16, 24, 40, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(245, 158, 11, 0.4);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --primary: #6366f1;
+      --accent-amber: #f59e0b;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 26px;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(245, 158, 11, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(244, 63, 94, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      background: rgba(6, 9, 17, 0.92);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 0;
+    }
+
+    .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
+    .brand-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; color: white; }
+    .brand-title { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s ease; }
+    .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); color: var(--text-primary); }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.08); }
+    .btn-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; }
+
+    .step-hero { padding: 48px 0 32px; text-align: left; }
+    .step-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.35); color: #fbbf24; margin-bottom: 16px; }
+    .step-title { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 900; line-height: 1.2; margin-bottom: 16px; }
+    .step-lead { font-size: 1.15rem; color: var(--text-secondary); max-width: 900px; line-height: 1.65; }
+
+    .content-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 36px; margin-bottom: 32px; backdrop-filter: blur(16px); }
+    .section-title { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+
+    .formula-card { background: rgba(10, 13, 20, 0.8); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; font-family: var(--font-mono); font-size: 0.92rem; color: #a5b4fc; margin-bottom: 20px; line-height: 1.8; }
+
+    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+    .card-dark { background: rgba(10, 13, 20, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 22px; }
+
+    .band-item { padding: 16px; border-radius: var(--radius-md); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .band-critical { background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.35); color: #fb7185; }
+    .band-high { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; }
+    .band-med { background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.35); color: #22d3ee; }
+    .band-low { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); color: #34d399; }
+
+    .step-nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-top: 1px solid var(--border-color); margin-top: 40px; }
+
+    @media(max-width:768px){ .grid-2col { grid-template-columns: 1fr; } .step-title { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand">
+        <div class="brand-icon"><i data-lucide="scale"></i></div>
+        <div class="brand-title">MPLADS Sentinel <span style="color:#fbbf24;">— Step 4 Deep Dive</span></div>
+      </a>
+      <div style="display:flex; gap:10px;">
+        <a href="step3-ai-modules.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Step 3 AI Modules</a>
+        <a href="step5-governance-rbac.html" class="btn btn-primary">Next: Step 5 Governance <i data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="step-hero">
+      <div class="step-badge"><i data-lucide="calculator" style="width:14px;"></i> SYSTEM FLOW STEP 4</div>
+      <h1 class="step-title">Mathematical Multi-Signal Risk Fusion & False-Positive Mitigation</h1>
+      <p class="step-lead">
+        How Sentinel synthesizes dozens of AI sub-scores into an objective <strong>0–100 Composite Risk Score (CRS)</strong>, prevents false alarms on honest contractors, and enforces the statutory <strong>2-Signal Confirmation Rule</strong>.
+      </p>
+    </section>
+
+    <!-- Section 1: Mathematical Formulation -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="sigma" style="color:#fbbf24;"></i> The 8-Dimension Risk Fusion Formula</h2>
+      <p style="color:var(--text-secondary); margin-bottom:16px; font-size:0.92rem;">
+        Every project's score is computed as a calibrated convex combination of 8 analytical sub-scores plus a non-linear multi-signal booster:
+      </p>
+
+      <div class="formula-card">
+        <div><strong>CRS = min( 100, &sum; [ W_i * S_i ] + &Delta;_multiplier )</strong></div>
+        <div style="color:var(--text-muted); font-size:0.8rem; margin-top:8px;">Where &sum; W_i = 1.0, and &Delta;_multiplier = +15 if &ge;2 independent signals exceed 80%.</div>
+      </div>
+
+      <div class="grid-2col">
+        <div class="card-dark">
+          <h4 style="color:#fbbf24; margin-bottom:10px;">Sub-Score Weights (W_i)</h4>
+          <ul style="font-size:0.88rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:6px; margin-left:16px;">
+            <li><strong>W1 (20%):</strong> Financial / Cost Anomaly Score</li>
+            <li><strong>W2 (15%):</strong> Physical-Financial Divergence Gap (&delta;)</li>
+            <li><strong>W3 (15%):</strong> Duplicate / SBERT Cloned Work Probability</li>
+            <li><strong>W4 (15%):</strong> Vendor Monopoly Concentration (HHI)</li>
+            <li><strong>W5 (10%):</strong> Statutory Guideline Violation Severity</li>
+            <li><strong>W6 (10%):</strong> Timeline SLA Breach / Stalling Probability</li>
+            <li><strong>W7 (10%):</strong> Document & Certificate Layout Similarity</li>
+            <li><strong>W8 (5%):</strong> Visual Photo Reuse / Geofence Breach</li>
+          </ul>
+        </div>
+
+        <div class="card-dark">
+          <h4 style="color:#34d399; margin-bottom:10px;">Why False Positives Are Eliminated</h4>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+            <strong>The Problem with Simple Averages:</strong> In normal administration, a project might face a 60-day rain delay. A naive system flags it as "high risk", inundating district magistrates with false alarms.<br><br>
+            <strong>The Sentinel Fix:</strong> A single timeline delay can ONLY raise the score by at most 10 points. To cross into <em>Critical Risk (&ge;75)</em>, there MUST be independent corroborating evidence (such as 88% funds drawn + 119 payments to one contractor).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Divergence Gap Deep Dive -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="trending-down" style="color:#f43f5e;"></i> Deep Dive: Physical–Financial Divergence Gap (δ)</h2>
+      <p style="color:var(--text-secondary); font-size:0.92rem; line-height:1.7;">
+        The Divergence Gap &delta; is one of Sentinel's most powerful empirical indicators:
+      </p>
+      <div class="formula-card" style="border-left: 4px solid #f43f5e;">
+        <div><strong>&delta; = (Disbursed Amount / Sanctioned Cost * 100) - (Physical Progress %)</strong></div>
+      </div>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">
+        * If <strong>&delta; &le; 10%</strong>: Healthy, synchronous milestone drawdown.<br>
+        * If <strong>15% &lt; &delta; &le; 35%</strong>: Elevated fiscal advance; queued for desk audit.<br>
+        * If <strong>&delta; &gt; 35%</strong>: <strong>Critical Anomaly</strong> — indicates unearned advance funds parked in contractor accounts.
+      </p>
+    </div>
+
+    <!-- Section 3: Risk Classification Bands -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="layers" style="color:#818cf8;"></i> The 4 Institutional Risk Bands & Automated Protocols</h2>
+
+      <div class="band-item band-critical">
+        <div>
+          <strong>🔴 CRITICAL AUDIT PRIORITY (CRS &ge; 75 / 100)</strong>
+          <div style="font-size:0.82rem; margin-top:2px;">Confirmed Multi-Signal Smoking Gun. Immediate automated disbursal freeze 🔒 & Field inspection warrant dispatched.</div>
+        </div>
+        <div style="font-family:var(--font-mono); font-weight:700;">Top 2% Works</div>
+      </div>
+
+      <div class="band-item band-high">
+        <div>
+          <strong>🟠 ELEVATED DESK AUDIT (50 &le; CRS &lt; 75)</strong>
+          <div style="font-size:0.82rem; margin-top:2px;">Multiple moderate anomalies or single severe compliance breach. Assigned to State Nodal Authority desk audit.</div>
+        </div>
+        <div style="font-family:var(--font-mono); font-weight:700;">Top 8% Works</div>
+      </div>
+
+      <div class="band-item band-med">
+        <div>
+          <strong>🟡 ROUTINE ADVISORY (30 &le; CRS &lt; 50)</strong>
+          <div style="font-size:0.82rem; margin-top:2px;">Minor timeline lag or slight unit-rate variance within district standard deviations. Soft reminder sent.</div>
+        </div>
+        <div style="font-family:var(--font-mono); font-weight:700;">15% Works</div>
+      </div>
+
+      <div class="band-item band-low">
+        <div>
+          <strong>🟢 COMPLIANT BASELINE (CRS &lt; 30)</strong>
+          <div style="font-size:0.82rem; margin-top:2px;">All parameters strictly within statutory guidelines, district historical medians, and milestone schedules.</div>
+        </div>
+        <div style="font-family:var(--font-mono); font-weight:700;">75% Works</div>
+      </div>
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="step-nav">
+      <a href="step3-ai-modules.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Back to Step 3 AI Modules</a>
+      <a href="step5-governance-rbac.html" class="btn btn-primary">Proceed to Step 5: 7-Role RBAC & Field Verification <i data-lucide="arrow-right"></i></a>
+    </div>
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

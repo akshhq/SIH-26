@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 1 Deep Dive: The Core Problem & Blindspots in e-SAKSHI — MPLADS Sentinel</title>
+  <meta name="description" content="In-depth analysis of systemic vulnerabilities in e-SAKSHI, CAG audit findings, and why automated cross-dataset surveillance is critical for MPLADS.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: #0c1220;
+      --bg-card: rgba(16, 24, 40, 0.85);
+      --bg-card-hover: rgba(25, 36, 60, 0.98);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.4);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.35);
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-cyan: #06b6d4;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 26px;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(239, 68, 68, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      background: rgba(6, 9, 17, 0.92);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 0;
+    }
+
+    .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
+    .brand-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: linear-gradient(135deg, #ef4444, #f43f5e); display: flex; align-items: center; justify-content: center; color: white; }
+    .brand-title { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s ease; }
+    .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); color: var(--text-primary); }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.08); }
+    .btn-primary { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; }
+
+    .step-hero { padding: 48px 0 32px; text-align: left; }
+    .step-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); color: #fb7185; margin-bottom: 16px; }
+    .step-title { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 900; line-height: 1.2; margin-bottom: 16px; }
+    .step-lead { font-size: 1.15rem; color: var(--text-secondary); max-width: 900px; line-height: 1.65; }
+
+    .content-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 36px; margin-bottom: 32px; backdrop-filter: blur(16px); }
+    .section-title { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+
+    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+    .card-dark { background: rgba(10, 13, 20, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 22px; }
+
+    .vuln-item { border-left: 4px solid #ef4444; padding-left: 16px; margin-bottom: 20px; }
+    .vuln-item h4 { font-family: var(--font-heading); font-size: 1.1rem; color: #fb7185; margin-bottom: 4px; }
+    .vuln-item p { font-size: 0.9rem; color: var(--text-secondary); }
+
+    .step-nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-top: 1px solid var(--border-color); margin-top: 40px; }
+
+    @media(max-width:768px){ .grid-2col { grid-template-columns: 1fr; } .step-title { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand">
+        <div class="brand-icon"><i data-lucide="shield-alert"></i></div>
+        <div class="brand-title">MPLADS Sentinel <span style="color:#ef4444;">— Step 1 Deep Dive</span></div>
+      </a>
+      <div style="display:flex; gap:10px;">
+        <a href="index.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Back to Main Hub</a>
+        <a href="step2-ingestion.html" class="btn btn-primary">Next: Step 2 Ingestion <i data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="step-hero">
+      <div class="step-badge"><i data-lucide="alert-triangle" style="width:14px;"></i> SYSTEM FLOW STEP 1</div>
+      <h1 class="step-title">The Core Problem: Why Transaction Recording Fails Without Continuous AI Surveillance</h1>
+      <p class="step-lead">
+        The Member of Parliament Local Area Development Scheme (MPLADS) handles over <strong>₹23,353 Crore</strong> across Lok Sabha and Rajya Sabha. While the existing <strong>e-SAKSHI</strong> portal records administrative milestones, it operates as a digital ledger rather than an active audit engine.
+      </p>
+    </section>
+
+    <!-- Section 1: The Recording vs Verification Dichotomy -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="split" style="color:#818cf8;"></i> The Architectural Difference: Recording vs. Verification</h2>
+      <p style="color:var(--text-secondary); margin-bottom:20px;">
+        A fundamental misconception in public governance software is that digitizing paper receipts prevents fraud. In reality, digitizing a fraudulent bill simply creates a digital record of a fraudulent bill.
+      </p>
+
+      <div class="grid-2col">
+        <div class="card-dark" style="border-left:4px solid #94a3b8;">
+          <h3 style="font-family:var(--font-heading); color:#94a3b8; margin-bottom:10px;">What e-SAKSHI Does Today (Administrative Layer)</h3>
+          <ul style="font-size:0.9rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:8px; margin-left:18px;">
+            <li>Records MP proposal submissions with estimated costs.</li>
+            <li>Generates administrative and technical sanction orders.</li>
+            <li>Records disbursement vouchers through the Single Nodal Account (SNA).</li>
+            <li>Accepts contractor invoices and claimed completion status strings.</li>
+            <li><strong>The Limitation:</strong> Assumes all entered data is truthful and internally consistent.</li>
+          </ul>
+        </div>
+
+        <div class="card-dark" style="border-left:4px solid #ef4444;">
+          <h3 style="font-family:var(--font-heading); color:#fb7185; margin-bottom:10px;">What MPLADS Sentinel Adds (Intelligence Layer)</h3>
+          <ul style="font-size:0.9rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:8px; margin-left:18px;">
+            <li>Cross-examines claims across 12 datasets in real time.</li>
+            <li>Checks if a contractor received 119 payments in a district (Monopoly detection).</li>
+            <li>Checks if 88% of funds were disbursed while physical progress is only 30%.</li>
+            <li>Computes semantic text embeddings to catch duplicate projects in adjacent wards.</li>
+            <li>Calculates calibrated 0–100 risk scores and prioritizes inspection queues.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: 5 Empirical Fraud Vectors Discovered in Real Data -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="shield-x" style="color:#ef4444;"></i> The 5 Primary Vulnerabilities (Empirically Validated)</h2>
+
+      <div class="vuln-item">
+        <h4>1. Vendor Monopoly & Coordinated Contractor Concentration</h4>
+        <p>
+          <strong>Empirical Finding in Lok Sabha:</strong> Contractor <em>"Ajay Kumar Singh"</em> was found receiving <strong>119 payments</strong> from a single Member of Parliament with uniform payment amounts (~₹19,992) and near-zero variance (~10x the 99th percentile across the entire parliamentary expenditure ledger).
+        </p>
+      </div>
+
+      <div class="vuln-item">
+        <h4>2. Artificial Work Splitting & Installment Structuring</h4>
+        <p>
+          <strong>Statutory Violation (GFR 2017 Rule 157):</strong> Work packages are intentionally sliced into micro-claims under ₹10 Lakh (or ₹2.5 Lakh) or disbursed in up to <strong>52 split installments</strong> on a single Work ID to bypass open competitive tendering mandates.
+        </p>
+      </div>
+
+      <div class="vuln-item">
+        <h4>3. Exact Duplicate Ledger Registrations</h4>
+        <p>
+          <strong>Data Inconsistency:</strong> Analysis of the official expenditure exports revealed <strong>172 exact duplicate rows in Lok Sabha</strong> and <strong>354 exact duplicate rows in Rajya Sabha</strong> with matching Work IDs, vendors, voucher dates, and claimed amounts.
+        </p>
+      </div>
+
+      <div class="vuln-item">
+        <h4>4. The Physical–Financial Divergence Gap (δ)</h4>
+        <p>
+          Implementing agencies frequently draw <strong>80% to 100% of sanctioned funds</strong> while on-site physical construction remains stalled at foundation or plinth level (<30% completed). The unspent public money sits parked in contractor accounts for years.
+        </p>
+      </div>
+
+      <div class="vuln-item">
+        <h4>5. Missing & Reused Evidence Binaries</h4>
+        <p>
+          In the official <em>Works Completed</em> datasets, over <strong>40% of records contain null or generic text placeholders</strong> (such as <code>"Images"</code>) instead of verifiable photo proof, creating blindspots for ghost assets.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 3: Why Manual Sample Audits Fail -->
+    <div class="content-box">
+      <h2 class="section-title"><i data-lucide="file-bar-chart" style="color:#38bdf8;"></i> Why Traditional Manual Audits Cannot Scale</h2>
+      <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem;">
+        Under current guidelines, district authorities are mandated to inspect a random 10% sample of works annually. However, with over <strong>45,000 active projects</strong> spread across 543 Lok Sabha constituencies and 28 States, random sampling misses 90% of irregular works.
+      </p>
+      <p style="color:var(--text-secondary); line-height:1.7; font-size:0.92rem; margin-top:10px;">
+        <strong>The Sentinel Paradigm:</strong> Instead of inspecting a blind random 10%, Sentinel screens 100% of projects algorithmically, isolating the top <strong>2% highest-risk outliers</strong> for immediate, evidence-backed on-site physical inspection.
+      </p>
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="step-nav">
+      <a href="index.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Back to Main Hub</a>
+      <a href="step2-ingestion.html" class="btn btn-primary">Proceed to Step 2: Cloud Ingestion & Entity Resolution <i data-lucide="arrow-right"></i></a>
+    </div>
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
